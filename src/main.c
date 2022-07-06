@@ -21,6 +21,9 @@ int main(int ac, char **av)
         else
             printf("Run it like ./a.out echo [input]\n");
     }
-    printf("run it like ./a.out echo [input]\n");
+    else
+    {
+        printf("run it like ./minishell echo [input]\n");
+    }
     return (0);
 }

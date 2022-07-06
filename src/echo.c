@@ -51,18 +51,6 @@ int ft_echo(char **args)
         printf("%s", args[i]);
     }
     if (is_n == 0)
-        write(1, "\n", 1);
+        printf("\n");
     return (0);
 }
-// int main(int ac, char **av)
-// {
-//     if (ac > 2)
-//     {
-//         if (ft_strcmp(av[1], "echo") == 0)
-//             ft_echo(av);
-//         else
-//             printf("run it like ./a.out echo [input]\n");
-//     }
-//     printf("run it like ./a.out echo [input]\n");
-//     return (0);
-// }
