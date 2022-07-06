@@ -37,12 +37,13 @@ int ft_echo(char **args)
     len = num_args(args);
     if (len > 1)
     {
-        if ((ft_strcmp(args[i], "-n") == 0))
+        while ((ft_strcmp(args[i], "-n") == 0) && args[1])
         {
             is_n = 1;
-            while (args[i] && (ft_strcmp(args[i], "-n") == 0))
-                i++;
+            i++;
         }
+        while (((ft_strcmp(args[i], "-e") == 0) || (ft_strcmp(args[i], "-E") == 0) ) && args[1])
+            i++;
         while (args[i] && i < (len - 1))
         {
             printf("%s ",args[i]);
