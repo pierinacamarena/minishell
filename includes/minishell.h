@@ -15,9 +15,12 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-/*echo*/
+/*built_ins*/
 int ft_echo(char **args);
+int ft_pwd(void);
+int ft_env(char **env);
 
 /* utils */
 int	ft_strcmp(const char *s1, const char *s2);

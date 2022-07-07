@@ -17,7 +17,7 @@ HEADER = includes
 SRC = src
 OBJ = objects
 SOURCES =	main.c \
-			echo.c \
+			built_in.c \
 			ft_strcmp.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))

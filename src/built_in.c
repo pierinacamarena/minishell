@@ -16,7 +16,7 @@
 Command that outputs the strings that are passed to it as arguments
 */
 
-int num_args(char **args)
+static int num_args(char **args)
 {
     int num;
 
@@ -42,8 +42,6 @@ int ft_echo(char **args)
             is_n = 1;
             i++;
         }
-        while (((ft_strcmp(args[i], "-e") == 0) || (ft_strcmp(args[i], "-E") == 0) ) && args[1])
-            i++;
         while (args[i] && i < (len - 1))
         {
             printf("%s ",args[i]);
@@ -53,5 +51,24 @@ int ft_echo(char **args)
     }
     if (is_n == 0)
         printf("\n");
+    return (0);
+}
+
+int ft_pwd(void)
+{
+    printf("%s\n", getenv("PWD"));
+    return (0);
+}
+
+int ft_env(char **env)
+{
+    int i;
+
+    i = 0;
+    while(env[i] != NULL)
+    {
+        printf("%s\n", env[i]);
+        i++;
+    }
     return (0);
 }
