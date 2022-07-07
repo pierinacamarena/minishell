@@ -35,7 +35,7 @@ int ft_echo(char **args)
     i = 2;
     is_n = 0;
     len = num_args(args);
-    if (len > 1)
+    if (len > 2)
     {
         while ((ft_strcmp(args[i], "-n") == 0) && args[1])
         {
