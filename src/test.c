@@ -4,14 +4,11 @@
 
 int main (void)
 {
-    // pid_t child;
-    // pid_t child_2;
-
-    // child = fork();
-    // if (child != 0)
-    //     child_2 = fork();
-
-        
-    printf("%s\n", getenv("ENV"));
+    char arr[100];
+    printf("%s\n", getcwd(arr, 100));
+    chdir("..");
+    printf("%s\n", getcwd(arr, 100));
+    chdir("..");
+    printf("%s\n", getcwd(arr, 100));
     return (0);
 }
