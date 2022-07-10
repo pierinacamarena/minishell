@@ -103,3 +103,31 @@ void	ft_strdel(char **str)
 		*str = NULL;
 	}
 }
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*copy;
+
+	copy = (void *)malloc(size * count);
+	if (!copy)
+		return (NULL);
+	ft_bzero(copy, size * count);
+	return (copy);
+}
+
+void	ft_bzero(void *str, size_t n)
+{
+	ft_memset(str, 0, n);
+}
+
+void	*ft_memset(void *str, int character, size_t n)
+{
+	char			*str2;
+	unsigned char	character2;
+
+	str2 = (char *)str;
+	character2 = (unsigned char)character;
+	while (n--)
+		*str2++ = character2;
+	return (str);
+}

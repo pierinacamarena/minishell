@@ -22,7 +22,7 @@ char *ft_prompt(char const *str)
     return (prompt);
 }
 
-int check_builtin(char *cmd)
+int check_builtin(char *cmd, char **env)
 {
     int is_built;
 
@@ -37,11 +37,11 @@ int check_builtin(char *cmd)
         ft_pwd();
         is_built = 1;
     }
-    // else if (ft_strcmp(cmd, "env") == 0)
-    // {
-    //     ft_env(env);
-    //     is_built = 1;
-    // }
+    else if (ft_strcmp(cmd, "env") == 0)
+    {
+        ft_env(env);
+        is_built = 1;
+    }
     else if (ft_strcmp(cmd, "exit") == 0)
     {
         ft_exit(0, cmd);
@@ -51,20 +51,28 @@ int check_builtin(char *cmd)
     return (is_built);
 }
 
-int main(void)
+int main(int ac, char **av, char **env)
 {
     char    *str;
+    // char    **cmds;
     int     built_in;
 
     str = NULL;
-    while (1)
-    {
-        str = ft_prompt(PROMPT_NAME);
-        built_in = check_builtin(str);
-        if (built_in == 0)
-            printf("%s\n", str);
-        if (str)
-            free(str);
+    
+    if (ac == 1)
+    {    
+        while (1)
+        {
+            (void)av;
+            str = ft_prompt(PROMPT_NAME); 
+            // cmds = cmd_split(str);
+            built_in = check_builtin(str, env);
+            if (built_in == 0)
+                printf("%s\n", str);
+            if (str)
+                free(str);
+        }
+    
     }
     return (1);
 }

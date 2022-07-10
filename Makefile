@@ -18,7 +18,8 @@ SRC = src
 OBJ = objects
 SOURCES =	minishell.c \
 			ft_utils.c \
-			built_in.c
+			built_in.c \
+			basic_parsing.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))
