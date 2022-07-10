@@ -32,17 +32,17 @@ int check_builtin(char *cmd)
     //     ft_echo();
     //     is_built = 1;
     // }
-    // else if (ft_strcmp(cmd, "pwd") == 0)
-    // {
-    //     ft_pwd();
-    //     is_built = 1;
-    // }
+    if (ft_strcmp(cmd, "pwd") == 0)
+    {
+        ft_pwd();
+        is_built = 1;
+    }
     // else if (ft_strcmp(cmd, "env") == 0)
     // {
     //     ft_env(env);
     //     is_built = 1;
     // }
-    if (ft_strcmp(cmd, "exit") == 0)
+    else if (ft_strcmp(cmd, "exit") == 0)
     {
         ft_exit(0, cmd);
     }
