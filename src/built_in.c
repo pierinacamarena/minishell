@@ -73,9 +73,10 @@ int ft_env(char **env)
     return (0);
 }
 
-void    ft_exit(long long i)
+void    ft_exit(long long i, char *str)
 {
     //free anything allocated once we are more advanced in the project :P
+    free(str);
     if (i <= INT_MAX || i >= INT_MIN)
         exit(i);
 }

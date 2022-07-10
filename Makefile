@@ -16,17 +16,9 @@ FLAGS = -Wall -Werror -Wextra
 HEADER = includes
 SRC = src
 OBJ = objects
-# SOURCES =	main.c \
-# 			built_in.c \
-# 			cd.c \
-# 			execute.c \
-# 			ft_utils.c \
-# 			gnl.c \
-# 			pwd.c \
-# 			ft_strcmp.c
 SOURCES =	minishell.c \
-			gnl.c \
 			ft_utils.c \
+			built_in.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))
