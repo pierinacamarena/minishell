@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = minishell
-CC = gcc -g
+CC = gcc
 FLAGS = -Wall -Werror -Wextra
 HEADER = includes
 SRC = src
@@ -37,7 +37,7 @@ $(OBJ):
 	mkdir -p $(OBJ)
 
 $(NAME): $(OBJS)
-	$(CC) $(FLAGS) $(THREADS) -o $(NAME) $(OBJS) -g
+	$(CC) $(FLAGS) $(THREADS) -o $(NAME) $(OBJS) -g -lreadline
 
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(FLAGS) $(THREADS) -o $@ -c $^ -I$(HEADER)

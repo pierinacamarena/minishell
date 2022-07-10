@@ -18,6 +18,10 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+#define PROMPT_NAME "minishell% "
 
 /*built_ins*/
 int ft_echo(char **args);
