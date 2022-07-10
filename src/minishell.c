@@ -12,22 +12,26 @@
 
 #include "../includes/minishell.h"
 
+
 void    ft_prompt(char *str)
 {
-    printf("minishell:%s$\n", str);
+    printf("minishell:%s %%", str);
 }
 
 int main(void)
 {
-    int loop;
-    char *env;
+    char    *env;
+    char    *line;
+    int     gnl;
 
-    loop = 1;
-    while(loop)
+    while(1)
     {
         env = getcwd(NULL, 0);
         ft_prompt(env);
-        exit (1);
+        if ((gnl = get_next_line(0, &line)) == -1)
+            return (1);
+        printf("%s\n", line);
+        free(line);
     }
     return (0);
 }

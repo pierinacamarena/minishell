@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <stdbool.h>
 
 /*built_ins*/
 int ft_echo(char **args);
@@ -24,5 +25,21 @@ int ft_pwd(void);
 int ft_env(char **env);
 
 /* utils */
-int	ft_strcmp(const char *s1, const char *s2);
+int     ft_strcmp(const char *s1, const char *s2);
+size_t	ft_strlen(char const *str);
+char	*ft_strdup(char const *str);
+char	*ft_strchr(char const *str, int c);
+char	*ft_substr(char const *str, unsigned int start, size_t len);
+void	ft_strdel(char **str);
+
+/*gnl*/
+int     get_next_line(int fd, char **line);
+char	*ft_eof(char *temp, char **line);
+char	*ft_strnjoin(char *s1, char *s2);
+size_t	ft_strlcpy(char *dst, char const *src, size_t size);
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 2
+#endif
+
 #endif
