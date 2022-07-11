@@ -95,13 +95,18 @@ char	*ft_substr(char const *str, unsigned int start, size_t len)
 	return (substr);
 }
 
-void	ft_strdel(char **str)
+void	ft_free(char **str)
 {
-	if (str && *str)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		free(*str);
-		*str = NULL;
+		free(str[i]);
+		i++;
 	}
+	free(str);
+	str = NULL;
 }
 
 void	*ft_calloc(size_t count, size_t size)

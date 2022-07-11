@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 char *ft_prompt(char const *str)
 {
@@ -22,26 +20,31 @@ char *ft_prompt(char const *str)
     return (prompt);
 }
 
-int check_builtin(char *cmd, char **cmds, char **env)
+int check_builtin(char **cmds, char **env)
 {
     if (ft_strcmp(cmds[0], "echo") == 0)
     {
         ft_echo(cmds);
         return (1);
     }
-    else if (ft_strcmp(cmd, "pwd") == 0)
+    else if (ft_strcmp(cmds[0], "pwd") == 0)
     {
         ft_pwd();
         return (1);
     }
-    else if (ft_strcmp(cmd, "env") == 0)
+    else if (ft_strcmp(cmds[0], "env") == 0)
     {
         ft_env(env);
         return (1);
     }
-    else if (ft_strcmp(cmd, "exit") == 0)
+    else if (ft_strcmp(cmds[0], "exit") == 0)
     {
-        ft_exit(0, cmd);
+        ft_exit(0, cmds);
+    }
+    else if (ft_strcmp(cmds[0], "cd") == 0)
+    {
+        ft_cd(cmds);
+        return (1);
     }
     return (0);
 }
@@ -61,14 +64,15 @@ int main(int ac, char **av, char **env)
             (void)av;
             str = ft_prompt(PROMPT_NAME); 
             if (str)
+            {
                 cmds = cmd_split(str);
-            built_in = check_builtin(str, cmds, env);
+                free(str);
+            }
+            built_in = check_builtin(cmds, env);
             if (built_in == 0)
                 printf("%s\n", str);
-            if (str)
-                free(str);
             if (cmds)
-                ft_strdel(cmds);
+                ft_free(cmds);
         }
     
     }

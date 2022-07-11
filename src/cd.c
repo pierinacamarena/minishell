@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minishell.h"
+
 int len_cmds(char **cmds)
 {
     int len;
@@ -22,7 +24,8 @@ int len_cmds(char **cmds)
 
 int ft_cd(char **cmds)
 {
-    int len;
+    int     len;
+    char    *env;
 
     if (!cmds)
         return (-1);
@@ -37,8 +40,11 @@ int ft_cd(char **cmds)
         printf("still not handled :] \n");
         return (1);
     }
-    else if (len == 2)
+    else
     {
-        
+        env = getcwd(NULL, 0);
+        chdir(cmds[1]);
+        printf("%s\n", env);
+        return (0);
     }
 }

@@ -31,11 +31,17 @@ typedef struct s_splitter {
 	int		count;
 }	t_splitter;
 
+typedef struct s_mini
+{
+	char **cmds;
+	char *env;
+}	t_mini;
+
 /*built_ins*/
-int ft_echo(char **args);
-int ft_pwd(void);
-int ft_env(char **env);
-void    ft_exit(long long i, char *str);
+int		ft_echo(char **args);
+int		ft_pwd(void);
+int		ft_env(char **env);
+void    ft_exit(long long i, char **cmds);
 
 /* utils */
 int     ft_strcmp(const char *s1, const char *s2);
@@ -43,10 +49,10 @@ size_t	ft_strlen(char const *str);
 char	*ft_strdup(char const *str);
 char	*ft_strchr(char const *str, int c);
 char	*ft_substr(char const *str, unsigned int start, size_t len);
-void	ft_strdel(char **str);
 void	ft_bzero(void *str, size_t n);
 void	*ft_memset(void *str, int character, size_t n);
 void	*ft_calloc(size_t count, size_t size);
+void	ft_free(char **str);
 
 /*gnl*/
 int     get_next_line(int fd, char **line);
@@ -64,6 +70,8 @@ int     ft_len(char const *s, char c, int i);
 char	**cmd_malloc(char *str, char **cmd, t_splitter *split);
 char	**cmd_split(const char *str);
 
+/*cd*/
+int		ft_cd(char **cmds);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2
