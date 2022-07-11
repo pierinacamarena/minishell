@@ -31,11 +31,19 @@ typedef struct s_splitter {
 	int		count;
 }	t_splitter;
 
-typedef struct s_mini
+typedef struct s_env
+{
+	char			*content;
+	char			*key;
+	int				size;
+	struct s_env	*next;
+}				t_env;
+
+typedef struct s_shell
 {
 	char **cmds;
-	char *env;
-}	t_mini;
+	t_env *env;
+}				t_shell;
 
 /*built_ins*/
 int		ft_echo(char **args);

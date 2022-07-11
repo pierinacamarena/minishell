@@ -101,6 +101,8 @@ char	**cmd_malloc(char *str, char **cmd, t_splitter *split)
 {
 	split->i = 0;
 	split->j = 0;
+	if (!str)
+		return (NULL);
 	while (str[split->i] && split->j < split->len)
 	{
 		split->count = 0;

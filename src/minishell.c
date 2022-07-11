@@ -20,30 +20,30 @@ char *ft_prompt(char const *str)
     return (prompt);
 }
 
-int check_builtin(char **cmds, char **env)
+int check_builtin(t_shell *shell, char **env)
 {
-    if (ft_strcmp(cmds[0], "echo") == 0)
+    if (ft_strcmp(shell->cmds[0], "echo") == 0)
     {
-        ft_echo(cmds);
+        ft_echo(shell->cmds);
         return (1);
     }
-    else if (ft_strcmp(cmds[0], "pwd") == 0)
+    else if (ft_strcmp(shell->cmds[0], "pwd") == 0)
     {
         ft_pwd();
         return (1);
     }
-    else if (ft_strcmp(cmds[0], "env") == 0)
+    else if (ft_strcmp(shell->cmds[0], "env") == 0)
     {
         ft_env(env);
         return (1);
     }
-    else if (ft_strcmp(cmds[0], "exit") == 0)
+    else if (ft_strcmp(shell->cmds[0], "exit") == 0)
     {
-        ft_exit(0, cmds);
+        ft_exit(0, shell->cmds);
     }
-    else if (ft_strcmp(cmds[0], "cd") == 0)
+    else if (ft_strcmp(shell->cmds[0], "cd") == 0)
     {
-        ft_cd(cmds);
+        ft_cd(shell->cmds);
         return (1);
     }
     return (0);
@@ -51,8 +51,8 @@ int check_builtin(char **cmds, char **env)
 
 int main(int ac, char **av, char **env)
 {
+    t_shell shell;
     char    *str;
-    char    **cmds;
     int     built_in;
 
     str = NULL;
@@ -65,14 +65,14 @@ int main(int ac, char **av, char **env)
             str = ft_prompt(PROMPT_NAME); 
             if (str)
             {
-                cmds = cmd_split(str);
+                shell.cmds = cmd_split(str);
                 free(str);
             }
-            built_in = check_builtin(cmds, env);
+            built_in = check_builtin(&shell, env);
             if (built_in == 0)
                 printf("%s\n", str);
-            if (cmds)
-                ft_free(cmds);
+            if (shell.cmds)
+                ft_free(shell.cmds);
         }
     
     }
