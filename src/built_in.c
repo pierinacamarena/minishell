@@ -32,10 +32,12 @@ int ft_echo(char **args)
     int is_n;
     int i;
 
-    i = 2;
+    i = 1;
     is_n = 0;
     len = num_args(args);
-    if (len > 2)
+    // still need to handle the case of echo -nnnnnnn -n -n -n -n abc
+    // still need to handle the case of echo ${numbers}
+    if (len > 1)
     {
         while ((ft_strcmp(args[i], "-n") == 0) && args[1])
         {

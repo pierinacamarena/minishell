@@ -22,39 +22,34 @@ char *ft_prompt(char const *str)
     return (prompt);
 }
 
-int check_builtin(char *cmd, char **env)
+int check_builtin(char *cmd, char **cmds, char **env)
 {
-    int is_built;
-
-    is_built = 0;
-    // if (ft_strcmp(cmd, "echo") == 0)
-    // {
-    //     ft_echo();
-    //     is_built = 1;
-    // }
-    if (ft_strcmp(cmd, "pwd") == 0)
+    if (ft_strcmp(cmds[0], "echo") == 0)
+    {
+        ft_echo(cmds);
+        return (1);
+    }
+    else if (ft_strcmp(cmd, "pwd") == 0)
     {
         ft_pwd();
-        is_built = 1;
+        return (1);
     }
     else if (ft_strcmp(cmd, "env") == 0)
     {
         ft_env(env);
-        is_built = 1;
+        return (1);
     }
     else if (ft_strcmp(cmd, "exit") == 0)
     {
         ft_exit(0, cmd);
     }
-    else
-        is_built = 0;
-    return (is_built);
+    return (0);
 }
 
 int main(int ac, char **av, char **env)
 {
     char    *str;
-    // char    **cmds;
+    char    **cmds;
     int     built_in;
 
     str = NULL;
@@ -65,12 +60,15 @@ int main(int ac, char **av, char **env)
         {
             (void)av;
             str = ft_prompt(PROMPT_NAME); 
-            // cmds = cmd_split(str);
-            built_in = check_builtin(str, env);
+            if (str)
+                cmds = cmd_split(str);
+            built_in = check_builtin(str, cmds, env);
             if (built_in == 0)
                 printf("%s\n", str);
             if (str)
                 free(str);
+            if (cmds)
+                ft_strdel(cmds);
         }
     
     }

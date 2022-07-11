@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = gcc
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Wextra
 HEADER = includes
 SRC = src
 OBJ = objects
