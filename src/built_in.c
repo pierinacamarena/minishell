@@ -58,8 +58,10 @@ int ft_echo(char **args)
 
 int ft_pwd(void)
 {
-    printf("%s\n", getenv("PWD"));
+    printf("%s\n", getcwd(NULL, 0));
     return (0);
+    // printf("%s\n", getenv("PWD"));
+    // return (0);
 }
 
 int ft_env(char **env)

@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = minishell
-CC = gcc
+CC = gcc -g
 FLAGS = -Wall -Wextra
 HEADER = includes
 SRC = src

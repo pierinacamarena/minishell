@@ -15,6 +15,8 @@
 int len_cmds(char **cmds)
 {
     int len;
+
+    len = 0;
     while(cmds[len])
     {
         len++;
@@ -35,7 +37,7 @@ int ft_cd(char **cmds)
         printf("minishell: cd: too many arguments\n");
         return (-1);
     }
-    else if (len == 0)
+    else if (len == 1)
     {
         printf("still not handled :] \n");
         return (1);
@@ -44,7 +46,6 @@ int ft_cd(char **cmds)
     {
         env = getcwd(NULL, 0);
         chdir(cmds[1]);
-        printf("%s\n", env);
         return (0);
     }
 }
