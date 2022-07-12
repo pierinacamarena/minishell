@@ -137,6 +137,7 @@ t_env_list *ft_set_node(char *env)
 
     if (!env)
         return (NULL);
+	list = NULL;
 	node = malloc(sizeof(t_env));
     info = ft_split(env, '=');
     list->node->key = info[0];
