@@ -133,13 +133,18 @@ t_env_list *ft_set_node(char *env)
 {
     char        **info;
     t_env_list  *list;
-	t_env		*node;
+	t_env		*node_env;
 
     if (!env)
         return (NULL);
-	list = NULL;
-	node = malloc(sizeof(t_env));
     info = ft_split(env, '=');
+	list = malloc(sizeof(t_env_list));
+	if (!list)
+		return (NULL);
+	node_env = malloc(sizeof(t_env));
+	if (!node_env)
+		return (NULL);
+	list->node = node_env;
     list->node->key = info[0];
     list->node->content = info[1];
 	list->next = NULL;
@@ -156,9 +161,7 @@ void    ft_add_node(t_env_list **begin, t_env_list *aux)
 	{
 		temp = *begin;
 		while (temp->next)
-		{
 			temp = temp->next;
-		}
 		temp = aux;
 	}
 }
