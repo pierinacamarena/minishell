@@ -35,20 +35,25 @@ typedef struct s_env
 {
 	char			*content;
 	char			*key;
-	int				size;
-	struct s_env	*next;
 }				t_env;
+
+typedef struct s_env_list
+{
+	int					size;
+	t_env				*node;
+	struct s_env_list	*next;
+}				t_env_list;
 
 typedef struct s_shell
 {
-	char **cmds;
-	t_env *env;
+	char		**cmds;
+	t_env_list	*env;
 }				t_shell;
 
 /*built_ins*/
 int		ft_echo(char **args);
 int		ft_pwd(void);
-int		ft_env(char **env);
+int		ft_env(t_env_list *env);
 void    ft_exit(long long i, char **cmds);
 
 /* utils */
@@ -61,6 +66,7 @@ void	ft_bzero(void *str, size_t n);
 void	*ft_memset(void *str, int character, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 void	ft_free(char **str);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 /*gnl*/
 int     get_next_line(int fd, char **line);
@@ -78,8 +84,22 @@ int     ft_len(char const *s, char c, int i);
 char	**cmd_malloc(char *str, char **cmd, t_splitter *split);
 char	**cmd_split(const char *str);
 
+/*ft_split*/
+int			ft_wordcount(char const *s, char c);
+char	**ft_split(char const *s, char c);
+
+/*env*/
+t_env_list	*init_env(char **env);
+void		ft_add_node(t_env_list **begin, t_env_list *aux);
+t_env_list	*ft_set_node(char *env);
+void		ft_print_list(t_env_list *begin);
+
 /*cd*/
 int		ft_cd(char **cmds);
+
+/*env_for_execute*/
+char	**list_to_array(t_env_list *list);
+void    print_env_array(char **env);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2

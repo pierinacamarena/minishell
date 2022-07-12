@@ -1,0 +1,6 @@
+-Export: Function that will add elements to the env
+-Unset: Function that will remove elements from the env
+-list->char** (function that will take the list and put it into
+a double array to be sent to the execute)
+-CD:
+    -Manipulate the env list to change pwd and old pwd

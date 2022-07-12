@@ -20,7 +20,10 @@ SOURCES =	minishell.c \
 			ft_utils.c \
 			built_in.c \
 			basic_parsing.c \
-			cd.c
+			cd.c \
+			ft_split.c \
+			env.c \
+			env_for_execute.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))

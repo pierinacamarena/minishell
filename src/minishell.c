@@ -12,6 +12,11 @@
 
 #include "../includes/minishell.h"
 
+/*
+Function that prints the minishell prompt using the allowed builtin function
+called readline()
+*/
+
 char *ft_prompt(char const *str)
 {
     char    *prompt;
@@ -20,7 +25,11 @@ char *ft_prompt(char const *str)
     return (prompt);
 }
 
-int check_builtin(t_shell *shell, char **env)
+/*
+Function that calls the different built_ins
+*/
+
+int check_builtin(t_shell *shell)
 {
     if (ft_strcmp(shell->cmds[0], "echo") == 0)
     {
@@ -34,7 +43,7 @@ int check_builtin(t_shell *shell, char **env)
     }
     else if (ft_strcmp(shell->cmds[0], "env") == 0)
     {
-        ft_env(env);
+        ft_env(shell->env);
         return (1);
     }
     else if (ft_strcmp(shell->cmds[0], "exit") == 0)
@@ -54,11 +63,15 @@ int main(int ac, char **av, char **env)
     t_shell shell;
     char    *str;
     int     built_in;
+    char    **new_env;
+
 
     str = NULL;
-    
     if (ac == 1)
-    {    
+    {
+        if (!env)
+            return (2);
+        shell.env = init_env(env);
         while (1)
         {
             (void)av;
@@ -68,13 +81,12 @@ int main(int ac, char **av, char **env)
                 shell.cmds = cmd_split(str);
                 free(str);
             }
-            built_in = check_builtin(&shell, env);
+            built_in = check_builtin(&shell);
             if (built_in == 0)
-                printf("%s\n", str);
+                printf("%s\n", shell.cmds[0]);
             if (shell.cmds)
                 ft_free(shell.cmds);
         }
-    
     }
     return (1);
 }

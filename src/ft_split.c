@@ -10,40 +10,54 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static char	**helper(char const *s, char **splitstr, char c, int*j)
+#include "../includes/minishell.h"
+
+int	ft_wordcount(char const *s, char c)
 {
+	int	count;
 	int	i;
-	int	len;
 
 	i = 0;
-	len = 0;
-	while (s[i])
+	count = 0;
+	while (s[i] != '\0')
+	{
+		if ((i == 0 && s[i] != c) || (i != 0 && s[i] != c && s[i - 1] == c))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	int		j;
+    int     i;
+    int     len;
+	char	**splitstr;
+
+	if (!s)
+		return (NULL);
+	j = 0;
+    i = 0;
+    len = 0;
+	splitstr = (char **)malloc(sizeof(char *) * (ft_wordcount(s, c) + 1));
+	if (!splitstr)
+		return (NULL);
+    while (s[i])
 	{
 		while (s[i + len] && s[i + len] != c)
 			len++;
 		if (len)
-			splitstr[*j++] = ft_substr(s, i, len);
+		{
+            splitstr[j] = ft_substr(s, i, len);
+            j++;
+        }
 		if (len)
 			i += len;
 		else
 			i += 1;
 		len = 0;
 	}
-	return (splitstr);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	int		j;
-	char	**splitstr;
-
-	if (!s)
-		return (NULL);
-	j = 0;
-	splitstr = (char **)malloc(sizeof(char *) * (ft_wordcount(s, c) + 1));
-	if (!splitstr)
-		return (NULL);
-	splitstr = helper(s, splitstr, c, &j);
 	splitstr[j] = NULL;
 	return (splitstr);
 }

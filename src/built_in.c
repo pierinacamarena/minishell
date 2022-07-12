@@ -12,10 +12,6 @@
 
 #include "../includes/minishell.h"
 
-/* 
-Command that outputs the strings that are passed to it as arguments
-*/
-
 static int num_args(char **args)
 {
     int num;
@@ -60,21 +56,12 @@ int ft_pwd(void)
 {
     printf("%s\n", getcwd(NULL, 0));
     return (0);
-    // printf("%s\n", getenv("PWD"));
-    // return (0);
 }
 
-int ft_env(char **env)
+int ft_env(t_env_list *env)
 {
-    int i;
-
-    i = 0;
-    while(env[i] != NULL)
-    {
-        printf("%s\n", env[i]);
-        i++;
-    }
-    return (0);
+    ft_print_list(env);
+    return (1);
 }
 
 void    ft_exit(long long i, char **cmds)
