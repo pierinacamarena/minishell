@@ -1,0 +1,62 @@
+i is 1
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+XDG_SESSION_TYPE=x11
+SHLVL=3
+@@@@@@@@@@@@@@@@@@@@@
+i is 3
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+XDG_SESSION_TYPE=x11
+@@@@@@@@@@@@@@@@@@@@@
+i is 4
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+HOME=/mnt/nfs/homes/pcamaren
+@@@@@@@@@@@@@@@@@@@@@
+i is 5
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+HOME=/mnt/nfs/homes/pcamaren
+@@@@@@@@@@@@@@@@@@@@@
+i is 6
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+HOME=/mnt/nfs/homes/pcamaren
+@@@@@@@@@@@@@@@@@@@@@
+i is 7
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+HOME=/mnt/nfs/homes/pcamaren
+@@@@@@@@@@@@@@@@@@@@@
+i is 8
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+HOME=/mnt/nfs/homes/pcamaren
+@@@@@@@@@@@@@@@@@@@@@
+i is 9
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+HOME=/mnt/nfs/homes/pcamaren
+@@@@@@@@@@@@@@@@@@@@@
+##################
+GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+SSH_AGENT_PID=467951
+USER=pcamaren
+SHLVL=3
+HOME=/mnt/nfs/homes/pcamaren
