@@ -97,6 +97,12 @@ t_env_list	*init_env(char **env)
 }
 
 /*
+Function that makes a copy of the linked list
+*/
+
+
+
+/*
 Function that prints the list
 */
 void	ft_print_list(t_env_list *begin)

@@ -100,7 +100,7 @@ void    ft_print_env(char **env)
     i = 0;
     while (env[i])
     {
-        printf("%s\n", env[i]);
+        printf("%d  :%s\n", i, env[i]);
         i++;
     }
 }
@@ -111,37 +111,43 @@ int main (int ac, char **av, char **env)
     (void)av;
     int     sort;
     int     i;
+    int     j;
     int     size;
     char    **arr;
 
     i = 0;
     size = array_size(env);
-    arr = (char **)malloc(sizeof(char *) * 10 + 1);
+    arr = (char **)malloc(sizeof(char *) * size + 1);
     if (!arr)
         return (-1);
-    // printf("here\n");
-    while(i < 10)
+    while(i < size)
     {
-        // printf("moew\n");
         arr[i] = ft_strdup(env[i]);
         i++;
     }
     arr[i] = NULL;
     size = array_size(arr);
     ft_print_env(arr);
+    printf("@@@@@@@@@@@@\n");
+    i = 0;
+    j = 0;
     {
-        while (arr[i] && arr[i + 1] && i < 10)
+        while (not_sorted(arr) == 1 && j < 200)
         {
-            if (ft_strcmp(arr[i], arr[i + 1]) > 0)
+            i = 0;
+            while (arr[i] && arr[i + 1])
             {
-                printf("i is %d\n",i);
-                ft_swap(&arr[i], &arr[i + 1]);
+                if (ft_strcmp(arr[i], arr[i + 1]) > 0)
+                {
+                    ft_swap(&arr[i], &arr[i + 1]);
+                }
+                i++;
             }
-            i++;
+            j++;
         }
-        if (ft_strcmp(arr[size - 2], arr[size - 1]))
+        if (ft_strcmp(arr[size - 2], arr[size - 1]) > 0)
             ft_swap(&arr[size - 2], &arr[size - 1]);
     }
-    ft_print_env(env);
+    ft_print_env(arr);
     return (0);
 }

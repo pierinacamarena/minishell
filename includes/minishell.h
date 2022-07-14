@@ -48,6 +48,7 @@ typedef struct s_shell
 {
 	char		**cmds;
 	t_env_list	*env;
+	t_env_list	*exp;
 }				t_shell;
 
 /*built_ins*/
