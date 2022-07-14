@@ -18,28 +18,17 @@ char **env. It splits it at the "=" and assigns that to a node
 of the list and returns it.
 */
 
-t_env_list *ft_set_node(char *env)
+t_exp_list *ft_set_expo(char *env)
 {
-    char        **info;
-	char		*temp;
-    t_env_list  *list;
-	t_env		*node_env;
+    t_exp_list  *list;
+	// char		*content;
 
     if (!env)
-        return (NULL);
-    info = ft_split(env, '=');
-	temp = ft_strjoin(info[0], "=");
-	free(info[0]);
-	info[0] = temp;
-	list = malloc(sizeof(t_env_list));
+        {return (NULL);}
+	list = malloc(sizeof(t_exp_list));
 	if (!list)
-		return (NULL);
-	node_env = malloc(sizeof(t_env));
-	if (!node_env)
-		return (NULL);
-	list->node = node_env;
-    list->node->key = info[0];
-    list->node->content = info[1];
+		{return (NULL);}
+	list->content = ft_strdup(env);
 	list->next = NULL;
     return (list);
 }
@@ -49,9 +38,9 @@ Function that loops accross the list and adds the node aux
 at the end of the list.
 */
 
-void    ft_add_node(t_env_list **begin, t_env_list *aux)
+void    ft_add_expo(t_exp_list **begin, t_exp_list *aux)
 {
-	t_env_list *temp;
+	t_exp_list *temp;
 
 	if (*begin == NULL)
 		*begin = aux;
@@ -71,20 +60,20 @@ and including the "=". The second value is content, these values
 are stored in a struct
 */
 
-t_env_list	*init_env(char **env)
+t_exp_list	*init_exp(char **env)
 {
     int i;
-    t_env_list  *begin;
-    t_env_list  *aux;
-	t_env_list	*temp;
+    t_exp_list  *begin;
+    t_exp_list  *aux;
+	t_exp_list	*temp;
 
     begin = NULL;
 	i = 0;
 
     while (env[i])
     {
-        aux = ft_set_node(env[i]);
-		ft_add_node(&begin, aux);
+        aux = ft_set_expo(env[i]);
+		ft_add_expo(&begin, aux);
         i++;
     }
 	temp = begin;
@@ -97,34 +86,11 @@ t_env_list	*init_env(char **env)
 }
 
 /*
-// Function that makes a copy of the linked list
-// */
-// t_env_list	*exp_list(t_env_list *orig)
-// {
-// 	t_env_list	*export;
-// 	t_env		*exp_node;
-
-// 	if (orig = NULL)
-// 		return (NULL);
-// 	else
-// 	{
-// 		export = malloc(sizeof(t_env_list));
-// 		if (!export)
-// 			return (NULL);
-// 		exp_node = malloc(sizeof(t_env));
-// 		if (!exp_node)
-// 			return (NULL);
-// 		export->node = exp_node;
-// 	}
-	
-// }
-
-/*
 Function that prints the list
 */
-void	ft_print_list(t_env_list *begin)
+void	ft_print_export(t_exp_list *begin)
 {
-	t_env_list *temp;
+	t_exp_list *temp;
 
 	if (begin == NULL)
 		return ;
@@ -133,7 +99,7 @@ void	ft_print_list(t_env_list *begin)
 		temp = begin;
 		while (temp->next)
 		{
-			printf("%s%s\n", temp->node->key, temp->node->content);
+			printf("%s\n",temp->content);
 			temp = temp->next;
 		}
 	}

@@ -23,7 +23,8 @@ SOURCES =	minishell.c \
 			cd.c \
 			ft_split.c \
 			env.c \
-			env_for_execute.c
+			env_for_execute.c \
+			export_list.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))

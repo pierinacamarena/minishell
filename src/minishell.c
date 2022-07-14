@@ -61,17 +61,19 @@ int check_builtin(t_shell *shell)
 int main(int ac, char **av, char **env)
 {
     t_shell shell;
-    char    *str;
-    int     built_in;
-    char    **new_env;
+    // char    *str;
+    // int     built_in;
+    // char    **new_env;
 
 
-    str = NULL;
+    // str = NULL;
     if (ac == 1)
     {
         if (!env)
             return (2);
         shell.env = init_env(env);
+        shell.exp = init_exp(env);
+        ft_print_export(shell.exp);
         // while (1)
         // {
         //     (void)av;

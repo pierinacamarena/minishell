@@ -44,11 +44,18 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }				t_env_list;
 
+typedef struct	s_exp_list
+{
+	int					size;
+	char				*content;
+	struct s_exp_list	*next;
+}				t_exp_list;
+
 typedef struct s_shell
 {
 	char		**cmds;
 	t_env_list	*env;
-	t_env_list	*exp;
+	t_exp_list	*exp;
 }				t_shell;
 
 /*built_ins*/
@@ -101,6 +108,12 @@ int		ft_cd(char **cmds);
 /*env_for_execute*/
 char	**list_to_array(t_env_list *list);
 void    print_env_array(char **env);
+
+/*export_list */
+t_exp_list *ft_set_expo(char *env);
+void    ft_add_expo(t_exp_list **begin, t_exp_list *aux);
+t_exp_list	*init_exp(char **env);
+void	ft_print_export(t_exp_list *begin);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2
