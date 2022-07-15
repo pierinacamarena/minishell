@@ -61,32 +61,34 @@ int check_builtin(t_shell *shell)
 int main(int ac, char **av, char **env)
 {
     t_shell shell;
-    char    *str;
-    int     built_in;
-    char    **new_env;
+    // char    *str;
+    // int     built_in;
+    // char    **new_env;
 
 
-    str = NULL;
+    // str = NULL;
     if (ac == 1)
     {
         if (!env)
             return (2);
         shell.env = init_env(env);
-        while (1)
-        {
-            (void)av;
-            str = ft_prompt(PROMPT_NAME); 
-            if (str)
-            {
-                shell.cmds = cmd_split(str);
-                free(str);
-            }
-            built_in = check_builtin(&shell);
-            if (built_in == 0)
-                printf("%s\n", shell.cmds[0]);
-            if (shell.cmds)
-                ft_free(shell.cmds);
-        }
+        shell.exp = init_exp(env);
+        ft_print_export(shell.exp);
+        // while (1)
+        // {
+        //     (void)av;
+        //     str = ft_prompt(PROMPT_NAME); 
+        //     if (str)
+        //     {
+        //         shell.cmds = cmd_split(str);
+        //         free(str);
+        //     }
+        //     built_in = check_builtin(&shell);
+        //     if (built_in == 0)
+        //         printf("%s\n", shell.cmds[0]);
+        //     if (shell.cmds)
+        //         ft_free(shell.cmds);
+        // }
     }
     return (1);
 }
