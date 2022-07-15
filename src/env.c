@@ -113,5 +113,6 @@ void	ft_print_list(t_env_list *begin)
 			printf("%s%s\n", temp->node->key, temp->node->content);
 			temp = temp->next;
 		}
+		printf("%s%s\n", temp->node->key, temp->node->content);
 	}
 }
