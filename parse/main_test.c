@@ -1,42 +1,51 @@
-#include "parse.h"
+#include "scanner.h"
 
-void	print_table(t_token *symtable[])
+void	print_token(t_token token)
 {
-	for (int i = 0; i < HASHSIZE; i++)
-	{
-		if (symtable[i] == NULL)
-			printf("%d _______\n", i + 1);
-		else
-		{
-			printf("%d ", i + 1);
-			for (t_token *np = symtable[i]; np != NULL; np = np->next)
-				printf("%d %s->", np->tag, np->lexeme);
-			printf("\n");
-		}
-	}
+	if (token.type == LESS_TOKEN)
+		printf("%s\t", "LESS_TOKEN");
+	else if (token.type == LESS_LESS_TOKEN)
+		printf("%s\t", "LESS_LESS_TOKEN");
+	else if (token.type == MORE_TOKEN)
+		printf("%s\t", "MORE_TOKEN");
+	else if (token.type == MORE_MORE_TOKEN)
+		printf("%s\t", "MORE_MORE_TOKEN");
+	else if (token.type == PIPE_TOKEN)
+		printf("%s\t", "PIPE_TOKEN");
+	else if (token.type == OR_TOKEN)
+		printf("%s\t", "OR_TOKEN");
+	else if (token.type == AND_TOKEN)
+		printf("%s\t", "AND_TOKEN");
+	else if (token.type == WORD_TOKEN)
+		printf("%s\t", "WORD_TOKEN");
+	printf("'%.*s'\n", token.length, token.start);
 }
-
+	
 int	main(void)
 {
-	t_token	*symtable[HASHSIZE];
+	t_token	token;
+	t_scanner scanner;
 	char	*line;
 	FILE	*fstream;
 	size_t	n;
 	
-	for (int i = 0; i < HASHSIZE; i++)
-		symtable[i] = NULL;
 	fstream = fdopen(0, "r");
 	line = NULL;
 	n = 0;
 	while (getline(&line, &n, fstream) > 0)
 	{
 		line[strlen(line) - 1] = '\0';
-		get_token(symtable, line);
-		while (get_token(symtable, NULL) != NULL)
-			;
+		init_scanner(&scanner, line);
+		while (1)
+		{
+			token = scan_token(&scanner);
+			if (token.type == EOF_TOKEN)
+				break ;
+			print_token(token);
+		}
 		free(line);
 		line = NULL;
+		n = 0;
 	}
-	print_table(symtable);
 	return (0);
 }
