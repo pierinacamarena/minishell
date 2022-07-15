@@ -57,7 +57,6 @@ int check_builtin(t_shell *shell, char **env)
     }
     else if (ft_strcmp(shell->cmds[0], "export") == 0)
     {
-        // printf("here\n");
         ft_export(shell, env);
         return (1);
     }

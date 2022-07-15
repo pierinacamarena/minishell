@@ -21,7 +21,6 @@ of the list and returns it.
 t_exp_list *ft_set_expo(char *env)
 {
     t_exp_list  *list;
-	// char		*content;
 
     if (!env)
         {return (NULL);}
