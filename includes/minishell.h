@@ -54,6 +54,7 @@ typedef struct	s_exp_list
 typedef struct s_shell
 {
 	char		**cmds;
+	// char		**env_arr;
 	t_env_list	*env;
 	t_exp_list	*exp;
 }				t_shell;
@@ -109,11 +110,27 @@ int		ft_cd(char **cmds);
 char	**list_to_array(t_env_list *list);
 void    print_env_array(char **env);
 
+/*export_sort*/
+size_t  array_size(char **arr);
+void    ft_swap(char **a, char **b);
+int     not_sorted(char **env);
+void    print_double_array(char **str);
+char    **sorted_exp(char **env);
+
+
 /*export_list */
 t_exp_list *ft_set_expo(char *env);
 void    ft_add_expo(t_exp_list **begin, t_exp_list *aux);
 t_exp_list	*init_exp(char **env);
 void	ft_print_export(t_exp_list *begin);
+
+/*sort_linked_list*/
+void	bubble_sort(t_exp_list **first);
+void	swap_export(t_exp_list *prev, t_exp_list *less, t_exp_list *more, t_exp_list **first);
+
+
+/*export*/
+void ft_export(t_shell *shell, char **env);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2

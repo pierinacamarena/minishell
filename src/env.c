@@ -97,29 +97,6 @@ t_env_list	*init_env(char **env)
 }
 
 /*
-// Function that makes a copy of the linked list
-// */
-// t_env_list	*exp_list(t_env_list *orig)
-// {
-// 	t_env_list	*export;
-// 	t_env		*exp_node;
-
-// 	if (orig = NULL)
-// 		return (NULL);
-// 	else
-// 	{
-// 		export = malloc(sizeof(t_env_list));
-// 		if (!export)
-// 			return (NULL);
-// 		exp_node = malloc(sizeof(t_env));
-// 		if (!exp_node)
-// 			return (NULL);
-// 		export->node = exp_node;
-// 	}
-	
-// }
-
-/*
 Function that prints the list
 */
 void	ft_print_list(t_env_list *begin)
