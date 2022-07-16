@@ -63,6 +63,18 @@ int check_builtin(t_shell *shell, char **env)
     return (0);
 }
 
+void    set_env_exp(t_shell *shell, char **env)
+{
+    char **arr;
+
+    arr = sorted_exp(env);
+    if (!arr)
+        return ;   
+    shell->env = init_env(env);
+    shell->exp = init_exp(arr);
+    ft_free(arr);
+}
+
 int main(int ac, char **av, char **env)
 {
     t_shell shell;
@@ -76,7 +88,7 @@ int main(int ac, char **av, char **env)
     {
         if (!env)
             return (2);
-        shell.env = init_env(env);
+        set_env_exp(&shell, env);
         while (1)
         {
             (void)av;

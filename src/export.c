@@ -17,11 +17,9 @@ void    add_var_env(t_env_list **begin, char *var)
     t_env_list  *curr;
     t_env_list  *new;
 
-    printf("hereheere\n");
     new = ft_set_node(var);
     if (*begin == NULL)
     {
-        printf("NULLLLL\n");
         *begin = new;
         return ;
     }
@@ -46,7 +44,8 @@ void    add_var_exp(t_exp_list **begin, char *var)
         return ;
     }
     else
-    {    
+    {
+        printf("here\n");
         curr = *begin;
         while (curr->next != NULL)
             curr = curr->next;
@@ -56,19 +55,14 @@ void    add_var_exp(t_exp_list **begin, char *var)
 
 void    ft_export(t_shell *shell, char **env)
 {
-    char        **arr;
     int         i;
 
     if(!shell->cmds)
-        return ;
-    arr = sorted_exp(env);
-    shell->exp = init_exp(arr);
-    ft_free(arr);
+        return;
     if (array_size(shell->cmds) == 1)
         ft_print_export(shell->exp);
     else
     {
-        printf("here\n");
         i = 1;
         while (shell->cmds[i])
         {

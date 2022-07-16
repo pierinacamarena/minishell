@@ -13,8 +13,7 @@
 #include "../includes/minishell.h"
 
 /*
-Function that splits the content of the current array inside
-char **env. It splits it at the "=" and assigns that to a node
+Function that sets up the content of a node, assigns that to a node
 of the list and returns it.
 */
 
@@ -53,10 +52,8 @@ void    ft_add_expo(t_exp_list **begin, t_exp_list *aux)
 }
 
 /*
-Function that creates a linked list and allocates to each node
-two char * values. The first value is key has the content before 
-and including the "=". The second value is content, these values
-are stored in a struct
+Function that creates a linked list of the environment variables
+that will be used for the function export.
 */
 
 t_exp_list	*init_exp(char **env)
@@ -101,5 +98,6 @@ void	ft_print_export(t_exp_list *begin)
 			printf("%s\n",temp->content);
 			temp = temp->next;
 		}
+		printf("%s\n",temp->content);
 	}
 }
