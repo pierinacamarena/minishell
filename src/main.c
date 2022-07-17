@@ -10,28 +10,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+// #include "../includes/minishell.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <stddef.h>
 
-// int main(int ac, char **av, char **env)
-// {
-//     if (ac >= 2)
-//     {
-//         if (ft_strcmp(av[1], "echo") == 0)
-//             ft_echo(av);
-//         else if (ft_strcmp(av[1], "pwd") == 0)
-//             ft_pwd();
-//         else if (ft_strcmp(av[1], "env") == 0)
-//             ft_env(env);
-//         else
-//             {
-//                 printf("Run it like ./a.out echo [input]\n");
-//                 printf("Run it like ./a.out pwd\n");
-//             }
+char	*ft_strchr(char const *str, int c)
+{
+	while (*str != '\0' && *str != (char)c)
+	{
+		str++;
+		if (*str == (char)c)
+			return ((char *)str);
+	}
+	if (*str == (char)c)
+		return ((char *)str);
+	return (NULL);
+}
 
-//     }
-//     else
-//     {
-//         printf("run it like ./minishell echo [input]\n");
-//     }
-//     return (0);
-// }
+int main(int ac, char **av, char **env)
+{  
+    if (ac == 2)
+    {
+        if (ft_strchr(av[1], '='))
+        {
+            printf("invalid argument\n");
+            return (0);
+        }
+        else
+        {
+            printf("good job\n");
+            return (0);
+        }
+    }
+    else
+    {
+        printf("wrong number of arguments");
+        return (0);
+    }
+}

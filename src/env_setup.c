@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_setup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -38,9 +38,10 @@ t_env_list *ft_set_node(char *env)
 	if (!node_env)
 		return (NULL);
 	list->node = node_env;
-    list->node->key = info[0];
-    list->node->content = info[1];
+    list->node->key = ft_strdup(info[0]);
+    list->node->content = ft_strdup(info[1]);
 	list->next = NULL;
+	ft_free(info);
     return (list);
 }
 
@@ -61,6 +62,33 @@ void    ft_add_node(t_env_list **begin, t_env_list *aux)
 		while (temp->next)
 			temp = temp->next;
 		temp->next = aux;
+	}
+}
+
+/*
+Free a linked list
+*/
+
+void	ft_free_list(t_env_list **begin)
+{
+	t_env_list	*curr;
+	t_env_list	*aux;
+
+	if (*begin == NULL)
+		return ;
+	else
+	{
+		curr = *begin;
+		while (curr != NULL)
+		{
+			aux = curr;
+			curr = curr->next;
+			free(aux->node->key);
+			free(aux->node->content);
+			free(aux->node);
+			free(aux);
+		}
+		*begin = NULL;
 	}
 }
 

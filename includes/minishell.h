@@ -54,16 +54,15 @@ typedef struct	s_exp_list
 typedef struct s_shell
 {
 	char		**cmds;
-	// char		**env_arr;
 	t_env_list	*env;
-	t_exp_list	*exp;
+	t_env_list	*exp;
 }				t_shell;
 
 /*built_ins*/
 int		ft_echo(char **args);
 int		ft_pwd(void);
 int		ft_env(t_env_list *env);
-void    ft_exit(long long i, char **cmds);
+void    ft_exit(long long i, t_shell *shell);
 
 /* utils */
 int     ft_strcmp(const char *s1, const char *s2);
@@ -97,11 +96,12 @@ char	**cmd_split(const char *str);
 int			ft_wordcount(char const *s, char c);
 char	**ft_split(char const *s, char c);
 
-/*env*/
+/*env_setup*/
 t_env_list	*init_env(char **env);
 void		ft_add_node(t_env_list **begin, t_env_list *aux);
 t_env_list	*ft_set_node(char *env);
 void		ft_print_list(t_env_list *begin);
+void		ft_free_list(t_env_list **begin);
 
 /*cd*/
 int		ft_cd(char **cmds);
@@ -117,7 +117,6 @@ int     not_sorted(char **env);
 void    print_double_array(char **str);
 char    **sorted_exp(char **env);
 
-
 /*export_list */
 t_exp_list *ft_set_expo(char *env);
 void    ft_add_expo(t_exp_list **begin, t_exp_list *aux);
@@ -128,9 +127,11 @@ void	ft_print_export(t_exp_list *begin);
 void	bubble_sort(t_exp_list **first);
 void	swap_export(t_exp_list *prev, t_exp_list *less, t_exp_list *more, t_exp_list **first);
 
-
 /*export*/
-void ft_export(t_shell *shell, char **env);
+void ft_export(t_shell *shell);
+
+/*unset*/
+void     ft_unset(t_shell *shell);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2

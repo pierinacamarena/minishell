@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void    add_var_env(t_env_list **begin, char *var)
+void    add_var(t_env_list **begin, char *var)
 {
     t_env_list  *curr;
     t_env_list  *new;
@@ -32,42 +32,31 @@ void    add_var_env(t_env_list **begin, char *var)
     }
 }
 
-void    add_var_exp(t_exp_list **begin, char *var)
-{
-    t_exp_list  *curr;
-    t_exp_list  *new;
 
-    new = ft_set_expo(var);
-    if (*begin == NULL)
-    {
-        *begin = new;
-        return ;
-    }
-    else
-    {
-        printf("here\n");
-        curr = *begin;
-        while (curr->next != NULL)
-            curr = curr->next;
-        curr->next = new;
-    }
-}
-
-void    ft_export(t_shell *shell, char **env)
+void    ft_export(t_shell *shell)
 {
+
+    //add functionality when they put export var with no =
+    //and when they put export var with no = again
+    //so that it adds it as var=
+    //and export adds it ad var='' at the first time
+
+    //add that if the variable already exits it wont do anything
+    //add that if the variable exists but the new export has a different
+    //content
     int         i;
 
     if(!shell->cmds)
         return;
     if (array_size(shell->cmds) == 1)
-        ft_print_export(shell->exp);
+        ft_print_list(shell->exp);
     else
     {
         i = 1;
         while (shell->cmds[i])
         {
-            add_var_env(&shell->env, shell->cmds[i]);
-            add_var_exp(&shell->exp, shell->cmds[i]);
+            add_var(&shell->env, shell->cmds[i]);
+            add_var(&shell->exp, shell->cmds[i]);
             i++;
         }
     }

@@ -64,10 +64,12 @@ int ft_env(t_env_list *env)
     return (1);
 }
 
-void    ft_exit(long long i, char **cmds)
+void    ft_exit(long long i, t_shell *shell)
 {
     //free anything allocated once we are more advanced in the project :P
-    ft_free(cmds);
+    ft_free_list(&shell->env);
+    ft_free_list(&shell->exp);
+    ft_free(shell->cmds);
     if (i <= INT_MAX || i >= INT_MIN)
         exit(i);
 }

@@ -22,12 +22,13 @@ SOURCES =	minishell.c \
 			basic_parsing.c \
 			cd.c \
 			ft_split.c \
-			env.c \
+			env_setup.c \
 			env_for_execute.c \
 			export_list.c \
 			sort_linked_list.c \
 			export_sort.c \
-			export.c
+			export.c \
+			unset.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))
