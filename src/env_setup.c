@@ -39,7 +39,10 @@ t_env_list *ft_set_node(char *env)
 		return (NULL);
 	list->node = node_env;
     list->node->key = ft_strdup(info[0]);
-    list->node->content = ft_strdup(info[1]);
+	if (info[1])
+    	list->node->content = ft_strdup(info[1]);
+	else
+		list->node->content = NULL;
 	list->next = NULL;
 	ft_free(info);
     return (list);
@@ -101,26 +104,18 @@ are stored in a struct
 
 t_env_list	*init_env(char **env)
 {
-    int i;
     t_env_list  *begin;
     t_env_list  *aux;
-	t_env_list	*temp;
+	int			i;
 
-    begin = NULL;
 	i = 0;
-
+    begin = NULL;
     while (env[i])
     {
         aux = ft_set_node(env[i]);
 		ft_add_node(&begin, aux);
         i++;
     }
-	temp = begin;
-	while (temp->next)
-	{
-		temp->size = i;
-		temp = temp->next;
-	}
 	return (begin);
 }
 
@@ -136,11 +131,13 @@ void	ft_print_list(t_env_list *begin)
 	else
 	{
 		temp = begin;
-		while (temp->next)
+		while (temp != NULL)
 		{
-			printf("%s%s\n", temp->node->key, temp->node->content);
+			if (temp->node->content != NULL)
+				printf("%s%s\n", temp->node->key, temp->node->content);
+			else 
+				printf("%s\n", temp->node->key);
 			temp = temp->next;
 		}
-		printf("%s%s\n", temp->node->key, temp->node->content);
 	}
 }

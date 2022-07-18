@@ -28,7 +28,8 @@ SOURCES =	minishell.c \
 			sort_linked_list.c \
 			export_sort.c \
 			export.c \
-			unset.c
+			unset.c \
+			list_utils.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))

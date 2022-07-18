@@ -58,26 +58,18 @@ that will be used for the function export.
 
 t_exp_list	*init_exp(char **env)
 {
-    int i;
     t_exp_list  *begin;
     t_exp_list  *aux;
-	t_exp_list	*temp;
+	int			i;
 
-    begin = NULL;
 	i = 0;
-
+    begin = NULL;
     while (env[i])
     {
         aux = ft_set_expo(env[i]);
 		ft_add_expo(&begin, aux);
-        i++;
+		i++;
     }
-	temp = begin;
-	while (temp->next)
-	{
-		temp->size = i;
-		temp = temp->next;
-	}
 	return (begin);
 }
 

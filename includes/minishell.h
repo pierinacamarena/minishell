@@ -39,14 +39,12 @@ typedef struct s_env
 
 typedef struct s_env_list
 {
-	int					size;
 	t_env				*node;
 	struct s_env_list	*next;
 }				t_env_list;
 
 typedef struct	s_exp_list
 {
-	int					size;
 	char				*content;
 	struct s_exp_list	*next;
 }				t_exp_list;
@@ -56,6 +54,9 @@ typedef struct s_shell
 	char		**cmds;
 	t_env_list	*env;
 	t_env_list	*exp;
+	int			env_size;
+	int			exp_size;
+	t_exp_list	*empty_var_list;
 }				t_shell;
 
 /*built_ins*/
@@ -132,6 +133,12 @@ void ft_export(t_shell *shell);
 
 /*unset*/
 void     ft_unset(t_shell *shell);
+
+/*list_utils */
+void    find_replace(t_env_list **list, char *key, char *new_content);
+int		list_size(t_env_list *list);
+int     key_exists(t_env_list *list, char *var);
+int     same_value(t_env_list *list, char *var);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2
