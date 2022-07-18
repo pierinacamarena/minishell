@@ -32,20 +32,114 @@ void    add_var(t_env_list **begin, char *var)
     }
 }
 
+int     key_exists(t_shell *shell, char *var)
+{
+    char        **var_split;
+    t_env_list  *curr;
+    char        *temp;
+
+    if (!var)
+        return (-1);
+    var_split = ft_split(var, '=');
+	temp = ft_strjoin(var_split[0], "=");
+	free(var_split[0]);
+	var_split[0] = temp;
+
+    curr = shell->env;
+    while (curr->next != NULL)
+    {
+        if (ft_strcmp(curr->node->key, var_split[0]) == 0)
+        {
+            ft_free(var_split);
+            return (1);
+        }
+        curr = curr->next;
+    }
+    ft_free(var_split);
+    return (0);
+}
+
+int     same_value(t_shell *shell, char *var)
+{
+    char        **var_split;
+    t_env_list  *curr;
+
+    if (shell->env == NULL)
+        return (0);
+    if (!var)
+        return (-1);
+    var_split = ft_split(var, '=');
+    curr = shell->env;
+    while (curr->next != NULL)
+    {
+        if (ft_strcmp(curr->node->content, var_split[1]) == 0)
+        {
+            ft_free(var_split);
+            return (1);
+        }
+        curr = curr->next;
+    }
+    ft_free(var_split);
+    return (0);
+}
+
+void    export_check(t_shell *shell, char *var)
+{
+    char **split;
+
+    if (ft_strchr(var, '=') == 0)
+            {
+                if (key_exists(shell, var) == 0)
+                {
+                    add_var(&shell->env, var);
+                    add_var(&shell->exp, var);
+                    i++;
+                }
+                else if (key_exists(shell, var) == 1)
+                {
+                    if (same_value(shell, var) == 0)
+                    {
+                        char    *new;
+                        split = ft_split(var, '=');
+                        new = ft_strdup(split[1]);
+                        ft_free(split);
+                        //find node and replace
+                        //in both env and export
+                        free(new);
+                        i++;
+                    }
+                    else if (same_value(shell, var) == 1)
+                        return ;
+                }
+            }
+            else
+            {
+                if (repeat == 0)
+                {
+                    repeat++;
+                    //add to export like this var=''
+                    i++;
+                }
+                else if repeat == 1
+                {
+                    repeatt+
+                    //add to env like this var= 
+                    i++;
+                }
+                else
+                {
+                    //do nothing;
+                    i++;
+                }
+            }
+}
 
 void    ft_export(t_shell *shell)
 {
+    int     repeat;
+    int     i;
 
-    //add functionality when they put export var with no =
-    //and when they put export var with no = again
-    //so that it adds it as var=
-    //and export adds it ad var='' at the first time
-
-    //add that if the variable already exits it wont do anything
-    //add that if the variable exists but the new export has a different
-    //content
-    int         i;
-
+    repeat = 0;
     if(!shell->cmds)
         return;
     if (array_size(shell->cmds) == 1)
@@ -55,9 +149,7 @@ void    ft_export(t_shell *shell)
         i = 1;
         while (shell->cmds[i])
         {
-            add_var(&shell->env, shell->cmds[i]);
-            add_var(&shell->exp, shell->cmds[i]);
-            i++;
+            
         }
     }
 

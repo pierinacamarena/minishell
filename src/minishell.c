@@ -86,7 +86,6 @@ int main(int ac, char **av, char **env)
     char    *str;
     int     built_in;
 
-
     str = NULL;
     if (ac == 1)
     {
