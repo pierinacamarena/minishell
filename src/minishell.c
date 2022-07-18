@@ -85,34 +85,31 @@ void    set_env_exp(t_shell *shell, char **env)
 int main(int ac, char **av, char **env)
 {
     t_shell shell;
-	char	str[] = "cat=meowmeow";
-    // char    *str;
-    // int     built_in;
+    char    *str;
+    int     built_in;
 
-    // str = NULL;
+    str = NULL;
     if (ac == 1)
     {
         if (!env)
             return (2);
         set_env_exp(&shell, env);
-		ft_print_list(shell.env);
         (void)av;
-        // find_replace(&shell->exp, "cat", "doublemeow");
-        // while (1)
-        // {
-        //     (void)av;
-        //     str = ft_prompt(PROMPT_NAME); 
-        //     if (str)
-        //     {
-        //         shell.cmds = cmd_split(str);
-        //         free(str);
-        //     }
-        //     built_in = check_builtin(&shell);
-        //     if (built_in == 0)
-        //         printf("%s\n", shell.cmds[0]);
-        //     if (shell.cmds)
-        //         ft_free(shell.cmds);
-        // }
+        while (1)
+        {
+            (void)av;
+            str = ft_prompt(PROMPT_NAME); 
+            if (str)
+            {
+                shell.cmds = cmd_split(str);
+                free(str);
+            }
+            built_in = check_builtin(&shell);
+            if (built_in == 0)
+                printf("%s\n", shell.cmds[0]);
+            if (shell.cmds)
+                ft_free(shell.cmds);
+        }
     }
     return (1);
 }

@@ -34,21 +34,21 @@ void    add_var(t_env_list **begin, char *var)
 
 void    export_check(t_shell *shell, char *var)
 {
-    char	**split;
+    // char	**split;
 	char	*empty_var;
 
     if (ft_strchr(var, '=') != NULL)
     {
 		printf("inside condition where = exists\n");
-		if (key_exists(shell, var) == 0)
+		if (key_exists(shell->env, var) == 0)
 		{
 			add_var(&shell->env, var);
 			add_var(&shell->exp, var);
 			return ;
         }
-        else if (key_exists(shell, var) == 1)
+        else if (key_exists(shell->env, var) == 1)
 		{
-			if (same_value(shell, var) == 0)
+			if (same_value(shell->env, var) == 0)
 			{
 				printf("case when we change the content of an existing variable\n");
 				// split = ft_split(var, '=');
@@ -57,7 +57,7 @@ void    export_check(t_shell *shell, char *var)
 				// ft_free(split);
 				return ;
 			}
-			else if (same_value(shell, var) == 1)
+			else if (same_value(shell->env, var) == 1)
 			{
 				printf("case where the variable exits with the same content\n");
 				return ;
@@ -66,6 +66,7 @@ void    export_check(t_shell *shell, char *var)
 	}
 	else
 	{
+		empty_var = ft_strjoin(var, "=");
 		if (key_exists(shell->exp, empty_var))
 		{
 			printf("case where the variable exists on export\n");
