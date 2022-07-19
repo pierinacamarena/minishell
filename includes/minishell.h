@@ -52,11 +52,11 @@ typedef struct	s_exp_list
 typedef struct s_shell
 {
 	char		**cmds;
+	char		**new_env;
 	t_env_list	*env;
 	t_env_list	*exp;
 	int			env_size;
 	int			exp_size;
-	t_exp_list	*empty_var_list;
 }				t_shell;
 
 

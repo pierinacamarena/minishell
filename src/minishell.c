@@ -43,60 +43,6 @@ int     is_builtin(t_shell *shell)
         return (1);
     return (0);
 }
-/*
-Function that calls the different built_ins
-*/
-
-char  **check_builtin(t_shell *shell, int *result, char **environ)
-{
-    char **env_array;
-
-    set_env_exp(shell, environ);
-    if (ft_strcmp(shell->cmds[0], "echo") == 0)
-    {
-        ft_echo(shell->cmds);
-        *result = 1;
-        env_array = list_to_array(shell->env);
-    }
-    else if (ft_strcmp(shell->cmds[0], "pwd") == 0)
-    {
-        ft_pwd();
-        *result = 1;
-        env_array = list_to_array(shell->env);
-    }
-    else if (ft_strcmp(shell->cmds[0], "env") == 0)
-    {
-        ft_env(shell->env);
-        *result = 1;
-        env_array = list_to_array(shell->env);
-    }
-    else if (ft_strcmp(shell->cmds[0], "exit") == 0)
-    {
-        ft_exit(0, shell);
-        env_array = list_to_array(shell->env);
-    }
-    else if (ft_strcmp(shell->cmds[0], "cd") == 0)
-    {
-        ft_cd(shell->cmds);
-        *result = 1;
-        env_array = list_to_array(shell->env);
-    }
-    else if (ft_strcmp(shell->cmds[0], "export") == 0)
-    {
-        ft_export(shell);
-        *result = 1;
-        env_array = list_to_array(shell->env);
-    }
-    else if(ft_strcmp(shell->cmds[0], "unset") == 0)
-    {
-        ft_unset(shell);
-        *result = 1;
-        env_array = list_to_array(shell->env);
-    }
-    ft_free_list(&shell->env);
-    ft_free_list(&shell->exp);
-    return (env_array);
-}
 
 void    set_env_exp(t_shell *shell, char **env)
 {
@@ -111,22 +57,62 @@ void    set_env_exp(t_shell *shell, char **env)
 	shell->exp_size = list_size(shell->exp);
     ft_free(arr);
 }
+/*
+Function that calls the different built_ins
+*/
+
+void    builtin_exec(t_shell *shell, char **environ)
+{
+    set_env_exp(shell, environ);
+    if (ft_strcmp(shell->cmds[0], "echo") == 0)
+    {
+        ft_echo(shell->cmds);
+        shell->new_env = list_to_array(shell->env);
+    }
+    else if (ft_strcmp(shell->cmds[0], "pwd") == 0)
+    {
+        ft_pwd();
+        shell->new_env = list_to_array(shell->env);
+    }
+    else if (ft_strcmp(shell->cmds[0], "env") == 0)
+    {
+        ft_env(shell->env);
+        shell->new_env = list_to_array(shell->env);
+    }
+    else if (ft_strcmp(shell->cmds[0], "exit") == 0)
+    {
+        ft_exit(0, shell);
+        shell->new_env = list_to_array(shell->env);
+    }
+    else if (ft_strcmp(shell->cmds[0], "cd") == 0)
+    {
+        ft_cd(shell->cmds);
+        shell->new_env = list_to_array(shell->env);
+    }
+    else if (ft_strcmp(shell->cmds[0], "export") == 0)
+    {
+        ft_export(shell);
+        shell->new_env = list_to_array(shell->env);
+    }
+    else if(ft_strcmp(shell->cmds[0], "unset") == 0)
+    {
+        ft_unset(shell);
+        shell->new_env = list_to_array(shell->env);
+    }
+    ft_free_list(&shell->env);
+    ft_free_list(&shell->exp);
+}
+
 
 int main(int ac, char **av)
 {
     t_shell     shell;
     char        *str;
-    int         built_in;
     extern char **environ;
-    char        **new_env;
 
     str = NULL;
-    built_in = 0;
     if (ac == 1)
     {
-        if (!environ)
-            return (2);
-        
         (void)av;
         while (1)
         {
@@ -139,8 +125,8 @@ int main(int ac, char **av)
             }
             if (is_builtin(&shell) == 1)
             {
-                new_env = check_builtin(&shell, &built_in, environ);
-                environ = new_env;
+                builtin_exec(&shell, environ);
+                environ = shell.new_env;
             }
             else
                 printf("%s\n", shell.cmds[0]);

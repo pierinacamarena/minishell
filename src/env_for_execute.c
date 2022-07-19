@@ -30,7 +30,7 @@ char	**list_to_array(t_env_list *list)
     if (!env_exec)
         return (NULL);
     curr = list;
-    while (curr->next)
+    while (curr != NULL)
     {
         env_exec[i] = ft_strjoin(curr->node->key, curr->node->content);
         i++;
