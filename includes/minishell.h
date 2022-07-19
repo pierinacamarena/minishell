@@ -59,6 +59,7 @@ typedef struct s_shell
 	t_exp_list	*empty_var_list;
 }				t_shell;
 
+
 /*built_ins*/
 int		ft_echo(char **args);
 int		ft_pwd(void);
