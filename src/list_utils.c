@@ -23,7 +23,7 @@ void    find_replace(t_env_list **list, char *key, char *new_content)
     if (!new_content)
         return ;
     curr = *list;
-    while (curr->next != NULL)
+    while (curr != NULL)
     {
         if (ft_strcmp(curr->node->key, key) == 0)
         {
@@ -31,11 +31,6 @@ void    find_replace(t_env_list **list, char *key, char *new_content)
             curr->node->content = ft_strdup(new_content);
         }
         curr = curr->next;
-    }
-    if (ft_strcmp(curr->node->key, key) == 0)
-    {
-        free(curr->node->content);
-        curr->node->content = ft_strdup(new_content);
     }
 }
 

@@ -53,6 +53,8 @@ typedef struct s_shell
 {
 	char		**cmds;
 	char		**new_env;
+	int			export;
+	char		**new_exp;
 	t_env_list	*env;
 	t_env_list	*exp;
 	int			env_size;

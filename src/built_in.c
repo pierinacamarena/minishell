@@ -70,9 +70,9 @@ void    ft_exit(long long i, t_shell *shell)
     ft_free_list(&shell->env);
     ft_free_list(&shell->exp);
     if (shell->new_env)
-	{
-        ft_free(shell->new_env);
-	}
+        {ft_free(shell->new_env);}
+	if (shell->new_exp)
+		{ft_free(shell->new_exp);}
     ft_free(shell->cmds);
     if (i <= INT_MAX || i >= INT_MIN)
         exit(i);
