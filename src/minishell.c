@@ -81,8 +81,8 @@ void    builtin_exec(t_shell *shell, char **environ)
     }
     else if (ft_strcmp(shell->cmds[0], "exit") == 0)
     {
-        ft_exit(0, shell);
         shell->new_env = list_to_array(shell->env);
+        ft_exit(0, shell);
     }
     else if (ft_strcmp(shell->cmds[0], "cd") == 0)
     {
@@ -127,6 +127,7 @@ int main(int ac, char **av)
             {
                 builtin_exec(&shell, environ);
                 environ = shell.new_env;
+				ft_free(shell.new_env);
             }
             else
                 printf("%s\n", shell.cmds[0]);

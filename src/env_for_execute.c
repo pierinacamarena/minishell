@@ -26,7 +26,7 @@ char	**list_to_array(t_env_list *list)
     i = 0;
     if (list == NULL)
         return (NULL);
-    env_exec = (char **)malloc(sizeof(char *) * list_size(list) + 1);
+    env_exec = (char **)malloc(sizeof(char *) * (list_size(list) + 1));
     if (!env_exec)
         return (NULL);
     curr = list;

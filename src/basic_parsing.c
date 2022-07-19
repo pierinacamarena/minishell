@@ -103,7 +103,7 @@ char	**cmd_malloc(char *str, char **cmd, t_splitter *split)
 	split->j = 0;
 	if (!str)
 		return (NULL);
-	while (str[split->i] && split->j < split->len)
+	while (str[split->i] != '\0' && split->j < split->len)
 	{
 		split->count = 0;
 		if (str[split->i] != ' ')
@@ -113,7 +113,9 @@ char	**cmd_malloc(char *str, char **cmd, t_splitter *split)
 			else if (str[split->i] == 34) //double quote
 				double_quota(str, cmd, split);
 			else
+			{
 				space_case(str, cmd, split);
+			}
 		}
 		cmd[split->j][split->count] = '\0';
 		split->i++;

@@ -72,7 +72,7 @@ char    **sorted_exp(char **env)
 
     i = 0;
     size = array_size(env);
-    arr = (char **)malloc(sizeof(char *) * size + 1);
+    arr = (char **)malloc(sizeof(char *) * (size + 1));
     if (!arr)
         return (NULL);
     while (i < size)
@@ -80,7 +80,7 @@ char    **sorted_exp(char **env)
         arr[i] = ft_strdup(env[i]);
         i++;
     }
-    arr[i] = NULL;
+    arr[size] = NULL;
     while (not_sorted(arr) == 1)
     {
         i = 0;
