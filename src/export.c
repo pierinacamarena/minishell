@@ -67,9 +67,12 @@ void    export_check(t_shell *shell, char *var)
 		if (key_exists(shell->exp, empty_var))
 		{
 			printf("case where the variable exists on export\n");
-			// empty_var = ft_strjoin(var, "=");
-			// ft_add_node(&shell->env, empty_var);
-			// free(empty_var);
+			empty_var = ft_strjoin(var, "=");
+			// printf("reaches here\n");
+			aux = ft_set_node(empty_var);
+			ft_add_node(&shell->env, aux);
+			// ft_print_list(shell->env);
+			free(empty_var);
 		}
 		else
 		{

@@ -111,7 +111,7 @@ void		ft_free_list(t_env_list **begin);
 int		ft_cd(char **cmds);
 
 /*env_for_execute*/
-char	**list_to_array(t_env_list *list);
+char	**list_to_array(t_env_list *list, int temp);
 void    print_env_array(char **env);
 
 /*export_sort*/
