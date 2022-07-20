@@ -78,39 +78,10 @@ void    builtin_exec(t_shell *shell)
         ft_unset(shell);
 }
 
-// void	dummy_builtin(t_shell *shell, char **environ, int loop_check)
-// {
-// 	if (ft_strcmp(shell->cmds[0], "export") == 0)
-//     {
-//         ft_export(shell);
-// 		// ft_print_list(shell->env);
-// 		// printf("list size before function is %d\n", list_size(shell->env));
-// 		if (ft_strcmp(shell->cmds[1], "cat") == 0 && loop_check == 2)
-// 			ft_print_list(shell->env);
-//         shell->new_env = list_to_array(shell->env, 0);
-// 		if (ft_strcmp(shell->cmds[1], "cat") == 0 && loop_check == 2)
-// 		{
-// 			printf("###################################################\n");
-// 			print_env_array(shell->new_env);
-// 			printf("###################################################\n");
-// 		}
-// 		shell->new_exp = list_to_array(shell->exp, 1);
-//     }
-// 	else if (ft_strcmp(shell->cmds[0], "env") == 0)
-// 	{
-// 		ft_env(shell->env);
-// 		shell->new_env = list_to_array(shell->env, 2);
-// 		shell->new_exp = list_to_array(shell->exp, 3);
-// 	}
-// 	else
-// 		printf("not the right built in\n");
-// }
-
 int main(int ac, char **av, char **env)
 {
     t_shell     shell;
     char        *str;
-    // extern char **environ;
 
     str = NULL;
     if (ac == 1)
