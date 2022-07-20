@@ -12,6 +12,10 @@
 
 #include "../includes/minishell.h"
 
+/*
+Function that removes the node that contains the key we are looking for
+*/
+
 void	ft_remove_var(t_env_list **begin, char *value)
 {
 	t_env_list	*to_remove;
@@ -76,7 +80,6 @@ void     ft_unset(t_shell *shell)
 			{
 				ft_remove_var(&shell->env, shell->cmds[i]);
 				ft_remove_var(&shell->exp, shell->cmds[i]);
-				// ft_print_list(shell->env);
 				i++;
 			}
 		}
