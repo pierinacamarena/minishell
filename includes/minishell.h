@@ -53,7 +53,7 @@ typedef struct s_shell
 {
 	char		**cmds;
 	char		**new_env;
-	int			export;
+	int			expt;
 	char		**new_exp;
 	t_env_list	*env;
 	t_env_list	*exp;
@@ -111,7 +111,7 @@ void		ft_free_list(t_env_list **begin);
 int		ft_cd(char **cmds);
 
 /*env_for_execute*/
-char	**list_to_array(t_env_list *list, int temp);
+char	**list_to_array(t_env_list *list);
 void    print_env_array(char **env);
 
 /*export_sort*/

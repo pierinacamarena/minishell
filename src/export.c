@@ -66,13 +66,15 @@ void    export_check(t_shell *shell, char *var)
 		empty_var = ft_strjoin(var, "=");
 		if (key_exists(shell->exp, empty_var))
 		{
-			printf("case where the variable exists on export\n");
-			empty_var = ft_strjoin(var, "=");
-			// printf("reaches here\n");
-			aux = ft_set_node(empty_var);
-			ft_add_node(&shell->env, aux);
-			// ft_print_list(shell->env);
-			free(empty_var);
+			if (key_exists(shell->env, empty_var))
+				return;
+			else
+			{
+				empty_var = ft_strjoin(var, "=");
+				aux = ft_set_node(empty_var);
+				ft_add_node(&shell->env, aux);
+				free(empty_var);
+			}
 		}
 		else
 		{
@@ -100,8 +102,6 @@ void    ft_export(t_shell *shell)
         while (shell->cmds[i])
         {
 			export_check(shell, shell->cmds[i]);
-            // add_var(&shell->env, shell->cmds[i]);
-            // add_var(&shell->exp, shell->cmds[i]);
             i++;
         }
     }

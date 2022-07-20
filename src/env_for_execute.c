@@ -17,7 +17,7 @@ Function that takes the list with the content of env back to a char ** to be
 used for the execve function
 */
 
-char	**list_to_array(t_env_list *list, int temp)
+char	**list_to_array(t_env_list *list)
 {
 	char	    **env_exec;
     t_env_list  *curr;
@@ -27,8 +27,8 @@ char	**list_to_array(t_env_list *list, int temp)
     if (list == NULL)
         return (NULL);
     env_exec = (char **)malloc(sizeof(char *) * (list_size(list) + 1));
-	if (temp == 0)
-		printf("list size inside function %d\n", list_size(list));
+	// if (temp == 0)
+	// 	printf("list size inside function %d\n", list_size(list));
     if (!env_exec)
         return (NULL);
     curr = list;
@@ -38,8 +38,8 @@ char	**list_to_array(t_env_list *list, int temp)
         curr = curr->next;
         i++;
     }
-	if (temp == 0)
-		printf("%s\n", env_exec[list_size(list) - 2]);
+	// if (temp == 0)
+	// 	printf("%s\n", env_exec[list_size(list) - 2]);
     env_exec[i] = NULL;
     return (env_exec);
 }
