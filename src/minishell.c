@@ -71,7 +71,7 @@ void    builtin_exec(t_shell *shell)
     else if (ft_strcmp(shell->cmds[0], "exit") == 0)
         ft_exit(0, shell);
     else if (ft_strcmp(shell->cmds[0], "cd") == 0)
-        ft_cd(shell->cmds);
+        ft_cd(shell);
     else if (ft_strcmp(shell->cmds[0], "export") == 0)
         ft_export(shell);
     else if(ft_strcmp(shell->cmds[0], "unset") == 0)

@@ -108,7 +108,7 @@ void		ft_print_list(t_env_list *begin);
 void		ft_free_list(t_env_list **begin);
 
 /*cd*/
-int		ft_cd(char **cmds);
+int		ft_cd(t_shell *shell);
 
 /*env_for_execute*/
 char	**list_to_array(t_env_list *list);
