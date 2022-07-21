@@ -29,7 +29,6 @@ int ft_cd(t_shell *shell)
     int     len;
     char    *SAVED_OLDPWD;
 	char	*NEW_PWD;
-	// char	*home;
 
     if (!shell->cmds)
         return (-1);
@@ -42,9 +41,7 @@ int ft_cd(t_shell *shell)
     else if (len == 1)
     {
 		SAVED_OLDPWD = getcwd(NULL, 0);
-		// home = getenv("HOME");
-		chdir(getenv("HOME"));
-		// free(home);
+		chdir(ft_getenv(shell->env, "HOME"));
 		NEW_PWD = getcwd(NULL, 0);
         find_replace(&shell->env, "OLDPWD=", SAVED_OLDPWD);
 		find_replace(&shell->env, "PWD=", NEW_PWD);
@@ -59,9 +56,7 @@ int ft_cd(t_shell *shell)
         if (ft_strcmp(shell->cmds[1], "~") == 0)
         {
             SAVED_OLDPWD = getcwd(NULL, 0);
-			// home = getenv("HOME");
-			chdir(getenv("HOME"));
-			// free(home);
+			chdir(ft_getenv(shell->env, "HOME"));
 		    NEW_PWD = getcwd(NULL, 0);
             find_replace(&shell->env, "OLDPWD=", SAVED_OLDPWD);
 		    find_replace(&shell->env, "PWD=", NEW_PWD);
