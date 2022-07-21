@@ -77,6 +77,13 @@ int     key_exists(t_env_list *list, char *var)
     return (0);
 }
 
+// char    *ft_getenv(t_shell *shell, char *key)
+// {
+//     char    *value;
+
+
+// }
+
 int     same_value(t_env_list *list, char *var)
 {
     char        **var_split;

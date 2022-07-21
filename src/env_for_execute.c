@@ -27,8 +27,6 @@ char	**list_to_array(t_env_list *list)
     if (list == NULL)
         return (NULL);
     env_exec = (char **)malloc(sizeof(char *) * (list_size(list) + 1));
-	// if (temp == 0)
-	// 	printf("list size inside function %d\n", list_size(list));
     if (!env_exec)
         return (NULL);
     curr = list;
@@ -38,8 +36,6 @@ char	**list_to_array(t_env_list *list)
         curr = curr->next;
         i++;
     }
-	// if (temp == 0)
-	// 	printf("%s\n", env_exec[list_size(list) - 2]);
     env_exec[i] = NULL;
     return (env_exec);
 }

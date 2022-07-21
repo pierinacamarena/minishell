@@ -40,29 +40,40 @@ int ft_cd(t_shell *shell)
     }
     else if (len == 1)
     {
-        printf("still not handled :] \n");
-		//should take me to home
+        SAVED_OLDPWD = getcwd(NULL, 0);
+        chdir(getenv("HOME"));
+		NEW_PWD = getcwd(NULL, 0);
+        find_replace(&shell->env, "OLDPWD=", SAVED_OLDPWD);
+		find_replace(&shell->env, "PWD=", NEW_PWD);
+		find_replace(&shell->exp, "OLDPWD=", SAVED_OLDPWD);
+		find_replace(&shell->exp, "PWD=", NEW_PWD);
         return (1);
     }
     else
     {
-        // env = getcwd(NULL, 0);
+        if (ft_strcmp(shell->cmds[1], "~") == 0)
+        {
+            SAVED_OLDPWD = getcwd(NULL, 0);
+            chdir(getenv("HOME"));
+		    NEW_PWD = getcwd(NULL, 0);
+            find_replace(&shell->env, "OLDPWD=", SAVED_OLDPWD);
+		    find_replace(&shell->env, "PWD=", NEW_PWD);
+		    find_replace(&shell->exp, "OLDPWD=", SAVED_OLDPWD);
+		    find_replace(&shell->exp, "PWD=", NEW_PWD);
+            return (1);
+        }
+        else
+        {
 		//search if the directory exists
 		//if it exists 
-			//save the current pwd as SAVED_OLDPWD = currentpwd
 			SAVED_OLDPWD = getcwd(NULL, 0);
         	chdir(shell->cmds[1]);
 			NEW_PWD = getcwd(NULL, 0);
-			//funcion que cambia el content
 			find_replace(&shell->env, "OLDPWD=", SAVED_OLDPWD);
 			find_replace(&shell->env, "PWD=", NEW_PWD);
 			find_replace(&shell->exp, "OLDPWD=", SAVED_OLDPWD);
 			find_replace(&shell->exp, "PWD=", NEW_PWD);
-			// printf("SAVED_OLDPWD is: %s\n", SAVED_OLDPWD);
-			// printf("NEW_PWD is: %s\n", NEW_PWD);
-			//NEW_PWD = pwd  (after the chdir)
-			//PWD = NEW_PWD
-			//replace OLDPWD = SAVED_OLDPWD
-        return (0);
+            return (0);
+        }
     }
 }
