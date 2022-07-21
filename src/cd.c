@@ -47,6 +47,8 @@ int ft_cd(t_shell *shell)
 		find_replace(&shell->env, "PWD=", NEW_PWD);
 		find_replace(&shell->exp, "OLDPWD=", SAVED_OLDPWD);
 		find_replace(&shell->exp, "PWD=", NEW_PWD);
+        free(SAVED_OLDPWD);
+        free(NEW_PWD);
         return (1);
     }
     else
@@ -60,23 +62,26 @@ int ft_cd(t_shell *shell)
 		    find_replace(&shell->env, "PWD=", NEW_PWD);
 		    find_replace(&shell->exp, "OLDPWD=", SAVED_OLDPWD);
 		    find_replace(&shell->exp, "PWD=", NEW_PWD);
+            free(SAVED_OLDPWD);
+            free(NEW_PWD);
             return (1);
         }
         else
         {
-		//search if the directory exists
-		//if it exists 
 			SAVED_OLDPWD = getcwd(NULL, 0);
-        	chdir(shell->cmds[1]);
+        	if (chdir(shell->cmds[1]) == -1)
+            {
+                free(SAVED_OLDPWD);
+                printf("minishell: cd: %s: No such file or directory\n", shell->cmds[1]);
+            }
 			NEW_PWD = getcwd(NULL, 0);
 			find_replace(&shell->env, "OLDPWD=", SAVED_OLDPWD);
 			find_replace(&shell->env, "PWD=", NEW_PWD);
 			find_replace(&shell->exp, "OLDPWD=", SAVED_OLDPWD);
 			find_replace(&shell->exp, "PWD=", NEW_PWD);
+            free(SAVED_OLDPWD);
+            free(NEW_PWD);
             return (0);
         }
     }
 }
-/*
-/home/pierina/minishell_cclaude/srcs
-*/
