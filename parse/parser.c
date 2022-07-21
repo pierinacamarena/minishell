@@ -1,70 +1,71 @@
-#include "scanner.h"
 #include "parser.h"
-
-char	*val_stack[1000];
-char	**pos = val_stack;
-
-void	push(const char *lexeme, int len)
-{
-	if (pos - val_stack < 1000)
-		*pos++ = strndup(lexeme, len);
-}
-
-char	*pop(void)
-{
-	if (pos >= val_stack)
-		return (*--pos);
-}
 
 static void	match(int type, t_token *current, t_scanner *scanner)
 {
 	if (current->type != type)
 	{
+		//add panic mode
 		fprintf(stderr, "syntax error near unexpected token '%.*s'\n",
 		current->length, current->start);
 		exit(EXIT_FAILURE);
 	}
-	push(current->start, current->length);
 	*current = scan_token(scanner);
 }
 
-static void	command_elem(t_token *current, t_scanner *scanner)
+static void	command_elem(t_token *current, t_scanner *scanner, t_elem **elem_list)
 {
+	t_token	previous;
+	int		type;
+
 	if (current->type == LESS_TOKEN)
+	{
 		match(LESS_TOKEN, current, scanner);
+		type = READ_FILE;
+	}
 	else if (current->type == LESS_LESS_TOKEN)
+	{
 		match(LESS_LESS_TOKEN, current, scanner);
+		type = HERE_DOC;
+	}
 	else if (current->type == MORE_TOKEN)
+	{
 		match(MORE_TOKEN, current, scanner);
+		type = WRITE_FILE;
+	}
 	else if (current->type == MORE_MORE_TOKEN)
+	{
 		match(MORE_MORE_TOKEN, current, scanner);
+		type = APPEND_FILE;
+	}
+	else
+		type = SIMPLE_WORD;
+	previous = *current;
 	match(WORD_TOKEN, current, scanner);
+	*elem_list = new_elem(*elem_list, previous, type);
 }
 
-static void	command(t_token *current, t_scanner *scanner)
+static void	command(t_token *current, t_scanner *scanner, t_elem **elem_list)
 {
-	char	*lexeme;
-
-	command_elem(current, scanner);
-	lexeme = pop();
-	printf("%s ", lexeme);
-	free(lexeme);
+	command_elem(current, scanner, elem_list);
 	if (current->type != PIPE_TOKEN \
 		&& current->type != OR_TOKEN \
 		&& current->type != AND_TOKEN \
 		&& current->type != EOF_TOKEN)
-		command(current, scanner);
+		command(current, scanner, elem_list);
 }
 
 static void	pipeline(t_token *current, t_scanner *scanner)
 {
-	command(current, scanner);
-	printf("\n");
+	t_elem	*elem_list;
+
+	elem_list = NULL;
+	command(current, scanner, &elem_list);
+	print_elem_list(elem_list);	
 	if (current->type == PIPE_TOKEN)
 	{
 		match(PIPE_TOKEN, current, scanner);
 		pipeline(current, scanner);
-	}	
+	}
 }
 
 static void	list(t_token *current, t_scanner *scanner)
@@ -86,7 +87,7 @@ static void	list(t_token *current, t_scanner *scanner)
 
 int	parse(t_scanner *scanner)
 {
-	t_token	current;
+	t_token		current;
 
 	current = scan_token(scanner);
 	list(&current, scanner);

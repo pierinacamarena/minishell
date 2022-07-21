@@ -1,8 +1,8 @@
 #include "scanner.h"
 
-int	is_meta(int c)
+static int	is_meta(int c)
 {
-	if (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t')
+	if (c == '<' || c == '>' || c == '|')
 		return (1);
 	return (0);
 }
@@ -29,7 +29,7 @@ void	init_scanner(t_scanner *scanner, const char *line)
 	scanner->current = line;
 }
 
-t_token	make_token(int type, t_scanner scanner)
+static t_token	make_token(int type, t_scanner scanner)
 {
 	t_token	token;
 
@@ -39,7 +39,7 @@ t_token	make_token(int type, t_scanner scanner)
 	return (token);
 }
 
-t_token	scan_word(t_scanner *scanner, int c)
+static t_token	scan_word(t_scanner *scanner, int c)
 {
 	int	state;
 
