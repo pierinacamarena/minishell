@@ -29,7 +29,8 @@ SOURCES =	minishell.c \
 			export_sort.c \
 			export.c \
 			unset.c \
-			list_utils.c
+			list_utils.c \
+			echo.c
 
 SRCS = $(addprefix $(SRC)/, $(SOURCES))
 OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))

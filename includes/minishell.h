@@ -63,7 +63,6 @@ typedef struct s_shell
 
 
 /*built_ins*/
-int		ft_echo(char **args);
 int		ft_pwd(void);
 int		ft_env(t_env_list *env);
 void    ft_exit(long long i, t_shell *shell);
@@ -142,6 +141,9 @@ void    find_replace(t_env_list **list, char *key, char *new_content);
 int		list_size(t_env_list *list);
 int     key_exists(t_env_list *list, char *var);
 int     same_value(t_env_list *list, char *var);
+
+/*echo*/
+int		ft_echo(char **args);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2

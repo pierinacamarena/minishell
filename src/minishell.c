@@ -87,7 +87,7 @@ int main(int ac, char **av, char **env)
     if (ac == 1)
     {
         (void)av;
-		set_env_exp(&shell, env);
+        set_env_exp(&shell, env);
         while (1)
         {
             (void)av;

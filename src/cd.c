@@ -77,3 +77,6 @@ int ft_cd(t_shell *shell)
         }
     }
 }
+/*
+/home/pierina/minishell_cclaude/srcs
+*/
