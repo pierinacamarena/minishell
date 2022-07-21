@@ -89,9 +89,13 @@ char    *ft_getenv(t_env_list *begin, char *key)
 	while (curr != NULL)
 	{
 		if (ft_strcmp(curr->node->key, value) == 0)
+		{
+			free(value);
 			return (curr->node->content);
+		}
 		curr = curr->next;
 	}
+	free(value);
 	return (NULL);
 }
 

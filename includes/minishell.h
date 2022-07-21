@@ -141,6 +141,7 @@ void    find_replace(t_env_list **list, char *key, char *new_content);
 int		list_size(t_env_list *list);
 int     key_exists(t_env_list *list, char *var);
 int     same_value(t_env_list *list, char *var);
+char    *ft_getenv(t_env_list *begin, char *key);
 
 /*echo*/
 int		ft_echo(char **args);
