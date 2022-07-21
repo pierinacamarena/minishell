@@ -77,12 +77,23 @@ int     key_exists(t_env_list *list, char *var)
     return (0);
 }
 
-// char    *ft_getenv(t_shell *shell, char *key)
-// {
-//     char    *value;
+char    *ft_getenv(t_env_list *begin, char *key)
+{
+    char		*value;
+	t_env_list	*curr;
 
-
-// }
+	if (begin == NULL)
+		return (NULL);
+	curr = begin;
+	value = ft_strjoin(key, "=");
+	while (curr != NULL)
+	{
+		if (ft_strcmp(curr->node->key, value) == 0)
+			return (curr->node->content);
+		curr = curr->next;
+	}
+	return (NULL);
+}
 
 int     same_value(t_env_list *list, char *var)
 {
