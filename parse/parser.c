@@ -14,9 +14,9 @@ static void	match(int type, t_token *current, t_scanner *scanner)
 
 static void	command_elem(t_token *current, t_scanner *scanner, t_elem **elem_list)
 {
-	t_token	previous;
 	int		type;
 
+	type = SIMPLE_WORD;
 	if (current->type == LESS_TOKEN)
 	{
 		match(LESS_TOKEN, current, scanner);
@@ -37,11 +37,8 @@ static void	command_elem(t_token *current, t_scanner *scanner, t_elem **elem_lis
 		match(MORE_MORE_TOKEN, current, scanner);
 		type = APPEND_FILE;
 	}
-	else
-		type = SIMPLE_WORD;
-	previous = *current;
+	*elem_list = new_elem(*elem_list, *current, type);
 	match(WORD_TOKEN, current, scanner);
-	*elem_list = new_elem(*elem_list, previous, type);
 }
 
 static void	command(t_token *current, t_scanner *scanner, t_elem **elem_list)
@@ -54,34 +51,49 @@ static void	command(t_token *current, t_scanner *scanner, t_elem **elem_list)
 		command(current, scanner, elem_list);
 }
 
-static void	pipeline(t_token *current, t_scanner *scanner)
+static t_pipeline	*pipeline(t_pipeline *commands_list, t_token *current, t_scanner *scanner)
 {
 	t_elem	*elem_list;
+	t_elem	*words_list;
+	t_elem	*tmp;
 
 	elem_list = NULL;
 	command(current, scanner, &elem_list);
-	print_elem_list(elem_list);	
+	words_list = NULL;
+	while (elem_list != NULL)
+	{
+		words_list = new_words_list(words_list, elem_list);
+		tmp = elem_list;
+		elem_list = elem_list->next;
+		free_elem(tmp);
+	}
+	commands_list = new_command(commands_list, words_list);
 	if (current->type == PIPE_TOKEN)
 	{
 		match(PIPE_TOKEN, current, scanner);
-		pipeline(current, scanner);
+		commands_list->next = pipeline(commands_list->next, current, scanner);
 	}
+	return (commands_list);
 }
 
 static void	list(t_token *current, t_scanner *scanner)
 {
+	t_pipeline	*commands_list;
+
 	if (current->type == EOF_TOKEN)
 		return ;
-	pipeline(current, scanner);
+	commands_list = NULL;
+	commands_list = pipeline(commands_list, current, scanner);
+	print_commands_list(commands_list);
 	if (current->type == OR_TOKEN)
 	{
 		match(OR_TOKEN, current, scanner);
-		pipeline(current, scanner);
+		list(current, scanner);
 	}
 	else if (current->type == AND_TOKEN)
 	{
 		match(AND_TOKEN, current, scanner);
-		pipeline(current, scanner);
+		list(current, scanner);
 	}
 }
 

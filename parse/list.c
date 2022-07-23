@@ -9,6 +9,12 @@ void	append_elem_list(t_elem *head, t_elem *new_elem)
 	head->next = new_elem;
 }
 
+void	free_elem(t_elem *elem)
+{
+	free(elem->words);
+	free(elem);
+}
+
 void	print_elem_list(t_elem *head)
 {
 	char	*s;
@@ -31,6 +37,16 @@ void	print_elem_list(t_elem *head)
 			fprintf(stderr, "unrecognized type\n");
 		printf("%s\t%s\n", s, head->words);
 		free(s);
+		head = head->next;
+	}
+}
+
+void	print_commands_list(t_pipeline *head)
+{
+	while (head != NULL)
+	{
+		printf("|| COMMAND ||\n");
+		print_elem_list(head->command);
 		head = head->next;
 	}
 }

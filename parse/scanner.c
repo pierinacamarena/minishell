@@ -2,7 +2,7 @@
 
 static int	is_meta(int c)
 {
-	if (c == '<' || c == '>' || c == '|')
+	if (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t')
 		return (1);
 	return (0);
 }
@@ -21,7 +21,6 @@ int	advance(t_scanner *scanner)
 	scanner->current++;
 	return (c);
 }
-
 
 void	init_scanner(t_scanner *scanner, const char *line)
 {
@@ -43,12 +42,11 @@ static t_token	scan_word(t_scanner *scanner, int c)
 {
 	int	state;
 
+	state = WORD_STATE;
 	if (c == '"')
 		state = DOUBLE_QUOTE_STATE;
 	else if (c == '\'')
 		state = QUOTE_STATE;
-	else
-		state = WORD_STATE;
 	while (*scanner->current != '\0')
 	{
 		if (state == WORD_STATE)
@@ -60,23 +58,38 @@ static t_token	scan_word(t_scanner *scanner, int c)
 			else if (*scanner->current == '"')
 				state = DOUBLE_QUOTE_STATE;
 		}
-		else if (state == QUOTE_STATE)
-		{
-			if (*scanner->current == '\'')
-				state = WORD_STATE;
-		}	
-		else if (state == DOUBLE_QUOTE_STATE)
-		{
-			if (*scanner->current == '"')
-				state = WORD_STATE;
-		}
+		else if (state == QUOTE_STATE && *scanner->current == '\'')
+			state = WORD_STATE;
+		if (state == DOUBLE_QUOTE_STATE && *scanner->current == '"')
+			state = WORD_STATE;
 		scanner->current++;
 	}
 	return (make_token(WORD_TOKEN, *scanner));
 }
 
+static int	get_token_type(int c, t_scanner *scanner)
+{
+	if (c == '<' && *scanner->current == '<')
+		return (LESS_LESS_TOKEN);
+	else if (c == '>' && *scanner->current == '>')
+		return (MORE_MORE_TOKEN);
+	else if (c == '|' && *scanner->current == '|')
+		return (OR_TOKEN);
+	else if (c == '&' && *scanner->current == '&')
+		return (AND_TOKEN);
+	else if (c == '<')
+		return (LESS_TOKEN);
+	else if (c == '>')
+		return (MORE_TOKEN);
+	else if (c == '|')
+		return (PIPE_TOKEN);
+	else
+		return (WORD_TOKEN);
+}
+
 t_token	scan_token(t_scanner *scanner)
 {
+	int	type;
 	int	c;
 
 	skip_blanks(scanner);
@@ -84,32 +97,15 @@ t_token	scan_token(t_scanner *scanner)
 		return (make_token(EOF_TOKEN, *scanner));
 	scanner->start = scanner->current;
 	c = advance(scanner);
-	if (c == '<' && *scanner->current == '<')
-	{
-		advance(scanner);
-		return (make_token(LESS_LESS_TOKEN, *scanner));
-	}
-	else if (c == '>' && *scanner->current == '>')
-	{
-		advance(scanner);
-		return (make_token(MORE_MORE_TOKEN, *scanner));
-	}
-	else if (c == '|' && *scanner->current == '|')
-	{
-		advance(scanner);
-		return (make_token(OR_TOKEN, *scanner));
-	}
-	else if (c == '&' && *scanner->current == '&')
-	{
-		advance(scanner);
-		return (make_token(AND_TOKEN, *scanner));
-	}
-	else if (c == '<')
-		return (make_token(LESS_TOKEN, *scanner));
-	else if (c == '>')
-		return (make_token(MORE_TOKEN, *scanner));
-	else if (c == '|')
-		return (make_token(PIPE_TOKEN, *scanner));
+	type = get_token_type(c, scanner);
+	if (type == WORD_TOKEN)
+		return (scan_word(scanner, c));	
+	else if (type == LESS_TOKEN || type == MORE_TOKEN \
+		|| type == PIPE_TOKEN)
+		return (make_token(type, *scanner));
 	else
-		return (scan_word(scanner, c));
+	{
+		advance(scanner);
+		return (make_token(type, *scanner));
+	}
 }

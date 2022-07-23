@@ -18,9 +18,9 @@ typedef struct s_elem {
 	struct s_elem	*next;
 }	t_elem;
 
-typedef struct s_command_elem {
-	int		type;
-	char	**split_words;
-}	t_command_elem;
+typedef struct s_pipeline {
+	t_elem				*command;
+	struct s_pipeline	*next;
+}	t_pipeline;
 
 #endif

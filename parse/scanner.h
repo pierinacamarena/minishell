@@ -8,5 +8,6 @@
 void	init_scanner(t_scanner *scanner, const char *line);
 t_token	scan_token(t_scanner *scanner);
 int		advance(t_scanner *scanner);
+void	skip_blanks(t_scanner *scanner);
 
 #endif

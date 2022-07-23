@@ -1,3 +1,6 @@
+#include "definitions.h"
+#include "struct.h"
+#include "include.h"
 #include "scanner.h"
 #include "parser.h"
 
