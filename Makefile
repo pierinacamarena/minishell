@@ -10,48 +10,45 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
-CC = gcc -g
-FLAGS = -Wall -Wextra
-HEADER = includes
-SRC = src
-OBJ = objects
-SOURCES =	minishell.c \
-			ft_utils.c \
-			built_in.c \
-			basic_parsing.c \
-			cd.c \
-			ft_split.c \
-			env_setup.c \
-			env_for_execute.c \
-			export_list.c \
-			sort_linked_list.c \
-			export_sort.c \
-			export.c \
-			unset.c \
-			list_utils.c \
-			echo.c
 
-SRCS = $(addprefix $(SRC)/, $(SOURCES))
-OBJS = $(addprefix $(OBJ)/, $(SOURCES:.c=.o))
+SRCS	=	./src/minishell.c\
+			./src/basic_parsing.c\
+			./src/builtins/built_in.c\
+			./src/builtins/cd.c\
+			./src/builtins/echo.c\
+			./src/builtins/export.c\
+			./src/builtins/unset.c\
+			./src/env/env_for_execute.c\
+			./src/env/env_setup.c\
+			./src/env/export_list.c\
+			./src/env/export_sort.c\
+			./src/env/list_utils.c\
+			./src/utils/ft_split.c\
+			./src/utils/ft_utils.c
 
-all: $(OBJ) $(NAME)
+OBJS	=	${SRCS:.c=.o}
 
-$(OBJ):
-	mkdir -p $(OBJ)
+CC		=	cc
 
-$(NAME): $(OBJS)
-	$(CC) $(FLAGS) $(THREADS) -o $(NAME) $(OBJS) -g -lreadline
+CFLAGS	=	-Wall -Werror -Wextra -g3
 
-$(OBJ)/%.o: $(SRC)/%.c
-	$(CC) $(FLAGS) $(THREADS) -o $@ -c $^ -I$(HEADER)
+NAME	=	minishell
 
-clean:
-	rm -rf $(OBJ)
+.c		:	.o
+		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-fclean: clean
-	rm -rf $(NAME)
+${NAME}	:	${OBJS}
+		${CC} ${CFLAGS} ${OBJS} -lreadline -o ${NAME}
 
-re: fclean all
+all		:	${NAME}
 
-.PHONY: all fclean clean re
+clean	:
+			rm -rf ${OBJS}
+
+fclean	:	clean
+			rm -rf ${NAME}
+			$(MAKE) -C . clean
+
+re	:	fclean all
+
+.PHONY	:	all clean fclean re
