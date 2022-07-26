@@ -15,6 +15,8 @@
 /*
 have an int that tracks the number of pipes that are present
 
+
+int	end[2]
 go over the command linked list
 while (list)
 {
@@ -30,5 +32,26 @@ while (list)
 {
 	waitpid(id of current node, )
 	list = list->next;
+}
+
+
+pid_t run_pipe(int *end)
+{
+	pid_t pid;
+
+	pipe(end);
+	pid = fork();
+
+	if (pid < 0)
+		exit(1);
+	if (pid == 0)
+	{
+		if (i am not )
+	}
+	else
+	{
+		close(end[1]);
+	}
+
 }
 */
