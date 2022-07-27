@@ -22,6 +22,8 @@
 #include <readline/history.h>
 #include <stddef.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define PROMPT_NAME "minishell% "
 
@@ -79,6 +81,7 @@ void	*ft_memset(void *str, int character, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 void	ft_free(char **str);
 char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 /*gnl*/
 int     get_next_line(int fd, char **line);
@@ -143,9 +146,17 @@ int		list_size(t_env_list *list);
 int     key_exists(t_env_list *list, char *var);
 int     same_value(t_env_list *list, char *var);
 char    *ft_getenv(t_env_list *begin, char *key);
+char	*ft_str3join(char const *s1, char const *s2, char const *s3);
 
 /*echo*/
 int		ft_echo(char **args);
+
+/*execute*/
+void	exec(t_shell *shell);
+
+/*ft_path*/
+char	*ft_path(char *arg, char **env);
+char	*cmd_tester(char **path_split, char *arg);
 
 /*signal*/
 void	sighandler(int signum);

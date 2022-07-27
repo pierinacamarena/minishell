@@ -25,7 +25,9 @@ SRCS	=	./src/minishell.c\
 			./src/env/export_sort.c\
 			./src/env/list_utils.c\
 			./src/utils/ft_split.c\
-			./src/utils/ft_utils.c
+			./src/utils/ft_utils.c\
+			./src/exec/ft_path.c\
+			./src/exec/execute.c\
 
 OBJS	=	${SRCS:.c=.o}
 

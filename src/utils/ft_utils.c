@@ -155,3 +155,38 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str[++i] = 0;
 	return (str);
 }
+
+char	*ft_str3join(char const *s1, char const *s2, char const *s3)
+{
+	int		size;
+	int		i;
+	char	*str;
+
+	if (s1 == 0 || s2 == 0 || s3 == 0)
+		return (0);
+	size = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
+	str = (char *)malloc((size + 1) * sizeof(*str));
+	i = -1;
+	while (*s1)
+		str[++i] = *s1++;
+	while (*s2)
+		str[++i] = *s2++;
+	while (*s3)
+		str[++i] = *s3++;
+	str[++i] = 0;
+	return (str);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	unsigned int	i;
+
+	i = 0;
+	while ((s1[i] || s2[i]) && i < n)
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
+}

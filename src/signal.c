@@ -23,9 +23,3 @@ void	sighandler(int signum)
 	env = NULL;
 	(void)signum;
 }
-
-// void	sighandler2(int signum)
-// {
-// 	(void)signum;
-// 	write(1, " \b\b \b\b \b", 8);
-// }

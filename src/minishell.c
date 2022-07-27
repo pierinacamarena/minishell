@@ -89,11 +89,11 @@ int main(int ac, char **av, char **env)
     {
         (void)av;
         set_env_exp(&shell, env);
-		signal(SIGINT, sighandler);
 		// signal(SIGQUIT, sighandler2);
         while (1)
         {
             (void)av;
+			signal(SIGINT, sighandler);
             str = ft_prompt(PROMPT_NAME); 
             if (str && *str)
             {
@@ -105,7 +105,7 @@ int main(int ac, char **av, char **env)
             else
             {
 				if (shell.cmds)
-					printf("%s\n", shell.cmds[0]);
+					exec(&shell);
 			}
             if (shell.cmds)
                 ft_free(shell.cmds);

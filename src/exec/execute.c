@@ -10,9 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minishell.h"
+
 void	exec(t_shell *shell)
 {
-	
+	pid_t	pid;
+	char	**env_exec;
+	char	*path;
+	int		status;
+
+	pid = fork();
+	if (pid < 0)
+		return;
+	else if (pid == 0) //child process
+	{
+		//ya tengo el command **
+		env_exec = list_to_array(shell->env);
+		path = ft_path(shell->cmds[0], env_exec);
+		if (path == NULL)
+		{
+			printf("%s: command not found\n", shell->cmds[0]);
+			free(path);
+			ft_free(env_exec);
+			ft_free(shell->cmds);
+			ft_free_list(&shell->env);
+			ft_free_list(&shell->exp);
+			exit(127);
+		}
+		if (execve(path, shell->cmds, env_exec) == -1)
+		{
+			printf("%s: command not found\n", shell->cmds[0]);
+			free(path);
+			ft_free(env_exec);
+			ft_free(shell->cmds);
+			ft_free_list(&shell->env);
+			ft_free_list(&shell->exp);
+		}
+	}
+	waitpid(pid, &status, WUNTRACED | WCONTINUED);
 }
 
 //create a new process for each command
