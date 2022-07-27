@@ -89,10 +89,10 @@ int main(int ac, char **av, char **env)
     {
         (void)av;
         set_env_exp(&shell, env);
-		// signal(SIGQUIT, sighandler2);
         while (1)
         {
             (void)av;
+			shell.cmds = 0;
 			signal(SIGINT, sighandler);
             str = ft_prompt(PROMPT_NAME); 
             if (str && *str)
@@ -101,14 +101,14 @@ int main(int ac, char **av, char **env)
                 free(str);
             }
             if (shell.cmds && is_builtin(&shell) == 1)
-                builtin_exec(&shell);
+				builtin_exec(&shell);
             else
             {
 				if (shell.cmds)
 					exec(&shell);
 			}
             if (shell.cmds)
-                ft_free(shell.cmds);
+				ft_free(shell.cmds);
         }
     }
     return (1);

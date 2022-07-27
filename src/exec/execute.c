@@ -22,9 +22,8 @@ void	exec(t_shell *shell)
 	pid = fork();
 	if (pid < 0)
 		return;
-	else if (pid == 0) //child process
+	else if (pid == 0)
 	{
-		//ya tengo el command **
 		env_exec = list_to_array(shell->env);
 		path = ft_path(shell->cmds[0], env_exec);
 		if (path == NULL)
@@ -45,6 +44,7 @@ void	exec(t_shell *shell)
 			ft_free(shell->cmds);
 			ft_free_list(&shell->env);
 			ft_free_list(&shell->exp);
+			exit(127);
 		}
 	}
 	waitpid(pid, &status, WUNTRACED | WCONTINUED);
