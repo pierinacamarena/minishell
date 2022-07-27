@@ -73,6 +73,7 @@ int ft_cd(t_shell *shell)
             {
                 free(SAVED_OLDPWD);
                 printf("minishell: cd: %s: No such file or directory\n", shell->cmds[1]);
+				return (-1);
             }
 			NEW_PWD = getcwd(NULL, 0);
 			find_replace(&shell->env, "OLDPWD=", SAVED_OLDPWD);
