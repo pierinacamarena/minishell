@@ -21,6 +21,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stddef.h>
+#include <signal.h>
 
 #define PROMPT_NAME "minishell% "
 
@@ -145,6 +146,10 @@ char    *ft_getenv(t_env_list *begin, char *key);
 
 /*echo*/
 int		ft_echo(char **args);
+
+/*signal*/
+void	sighandler(int signum);
+void	sighandler2(int signum);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2

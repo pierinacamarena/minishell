@@ -54,6 +54,7 @@ void    set_env_exp(t_shell *shell, char **env)
 	shell->env_size = list_size(shell->env);
     shell->exp = init_env(arr);
 	shell->exp_size = list_size(shell->exp);
+	shell->cmds = 0;
     ft_free(arr);
 }
 
@@ -88,19 +89,24 @@ int main(int ac, char **av, char **env)
     {
         (void)av;
         set_env_exp(&shell, env);
+		signal(SIGINT, sighandler);
+		// signal(SIGQUIT, sighandler2);
         while (1)
         {
             (void)av;
             str = ft_prompt(PROMPT_NAME); 
-            if (str)
+            if (str && *str)
             {
                 shell.cmds = cmd_split(str);
                 free(str);
             }
-            if (is_builtin(&shell) == 1)
+            if (shell.cmds && is_builtin(&shell) == 1)
                 builtin_exec(&shell);
             else
-                printf("%s\n", shell.cmds[0]);
+            {
+				if (shell.cmds)
+					printf("%s\n", shell.cmds[0]);
+			}
             if (shell.cmds)
                 ft_free(shell.cmds);
         }

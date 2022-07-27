@@ -10,8 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//create a new process for each command
+void	exec(t_shell *shell)
+{
+	
+}
 
+//create a new process for each command
 /*
 have an int that tracks the number of pipes that are present
 

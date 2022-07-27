@@ -13,6 +13,7 @@
 
 SRCS	=	./src/minishell.c\
 			./src/basic_parsing.c\
+			./src/signal.c\
 			./src/builtins/built_in.c\
 			./src/builtins/cd.c\
 			./src/builtins/echo.c\
