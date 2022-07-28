@@ -68,6 +68,10 @@ typedef struct	s_list
 	char			**args;
 	int				length;
 	int				type;
+	int				has_redir;
+	int				redir_qty;
+	int				start_redir;
+	int				double_redir;
 	int				pipes[2];
 	struct s_list	*previous;
 	struct s_list	*next;
@@ -180,13 +184,14 @@ void	sighandler(int signum);
 void	sighandler2(int signum);
 
 /*parse*/
-int parse_arg(t_list **cmds, char *arg);
-int list_push(t_list **list, char *arg);
-int list_clear(t_list **cmds);
-int list_rewind(t_list **list);
-int add_arg(t_list *cmd, char *arg);
-int exit_fatal(void);
-int show_error(char const *str);
+int		parse_arg(t_list **cmds, char *arg);
+int		list_push(t_list **list, char *arg);
+int		list_clear(t_list **cmds);
+int		list_rewind(t_list **list);
+int		add_arg(t_list *cmd, char *arg);
+int		exit_fatal(void);
+int		show_error(char const *str);
+void	print_parse_list(t_list *cmds);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2

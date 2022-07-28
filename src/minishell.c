@@ -102,20 +102,25 @@ int main(int ac, char **av, char **env)
                 free(str);
             }
 			i = 0;
-			while(shell.cmds[i])
+			if (shell.cmds)
 			{
-				printf("here\n");
-				parse_arg(&cmd_parse, shell.cmds[i]);
-				i++;
+				while(shell.cmds[i])
+				{
+					// printf("here\n");
+					parse_arg(&cmd_parse, shell.cmds[i]);
+					i++;
+				}
 			}
-            if (shell.cmds && is_builtin(&shell) == 1)
-				builtin_exec(&shell);
-            else
-            {
-				if (shell.cmds)
-					exec(&shell);
-			}
-			// list_clear(&cmd_parse);
+			list_rewind(&cmd_parse);
+			print_parse_list(cmd_parse);
+            // if (shell.cmds && is_builtin(&shell) == 1)
+			// 	builtin_exec(&shell);
+            // else
+            // {
+			// 	if (shell.cmds)
+			// 		exec(&shell);
+			// }
+			list_clear(&cmd_parse);
             if (shell.cmds)
 				ft_free(shell.cmds);
         }
