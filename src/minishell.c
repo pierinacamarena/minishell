@@ -51,9 +51,7 @@ void    set_env_exp(t_shell *shell, char **env)
     if (!arr)
         return ;   
     shell->env = init_env(env);
-	shell->env_size = list_size(shell->env);
     shell->exp = init_env(arr);
-	shell->exp_size = list_size(shell->exp);
 	shell->cmds = 0;
     ft_free(arr);
 }
@@ -82,9 +80,12 @@ void    builtin_exec(t_shell *shell)
 int main(int ac, char **av, char **env)
 {
     t_shell     shell;
+	t_list		*cmd_parse;
     char        *str;
+	int			i;
 
     str = NULL;
+	cmd_parse = NULL;
     if (ac == 1)
     {
         (void)av;
@@ -100,6 +101,13 @@ int main(int ac, char **av, char **env)
                 shell.cmds = cmd_split(str);
                 free(str);
             }
+			i = 0;
+			while(shell.cmds[i])
+			{
+				printf("here\n");
+				parse_arg(&cmd_parse, shell.cmds[i]);
+				i++;
+			}
             if (shell.cmds && is_builtin(&shell) == 1)
 				builtin_exec(&shell);
             else
@@ -107,6 +115,7 @@ int main(int ac, char **av, char **env)
 				if (shell.cmds)
 					exec(&shell);
 			}
+			// list_clear(&cmd_parse);
             if (shell.cmds)
 				ft_free(shell.cmds);
         }

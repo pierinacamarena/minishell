@@ -27,6 +27,17 @@
 
 #define PROMPT_NAME "minishell% "
 
+#define SIDE_OUT	0
+#define SIDE_IN		1
+
+#define STDIN		0
+#define STDOUT		1
+#define STDERR		2
+
+#define TYPE_END	0
+#define TYPE_PIPE	1
+#define TYPE_BREAK	2
+
 typedef struct s_splitter {
 	int		len;
 	int		i;
@@ -52,16 +63,22 @@ typedef struct	s_exp_list
 	struct s_exp_list	*next;
 }				t_exp_list;
 
+typedef struct	s_list
+{
+	char			**args;
+	int				length;
+	int				type;
+	int				pipes[2];
+	struct s_list	*previous;
+	struct s_list	*next;
+}				t_list;
+
+
 typedef struct s_shell
 {
 	char		**cmds;
-	char		**new_env;
-	int			expt;
-	char		**new_exp;
 	t_env_list	*env;
 	t_env_list	*exp;
-	int			env_size;
-	int			exp_size;
 }				t_shell;
 
 
@@ -161,6 +178,15 @@ char	*cmd_tester(char **path_split, char *arg);
 /*signal*/
 void	sighandler(int signum);
 void	sighandler2(int signum);
+
+/*parse*/
+int parse_arg(t_list **cmds, char *arg);
+int list_push(t_list **list, char *arg);
+int list_clear(t_list **cmds);
+int list_rewind(t_list **list);
+int add_arg(t_list *cmd, char *arg);
+int exit_fatal(void);
+int show_error(char const *str);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2
