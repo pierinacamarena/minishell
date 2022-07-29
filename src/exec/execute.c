@@ -28,7 +28,9 @@ void	exec(t_shell *shell)
 		path = ft_path(shell->cmds[0], env_exec);
 		if (path == NULL)
 		{
-			printf("%s: command not found\n", shell->cmds[0]);
+			ft_putstr_fd(shell->cmds[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			// printf("%s: command not found\n", shell->cmds[0]);
 			free(path);
 			ft_free(env_exec);
 			ft_free(shell->cmds);
@@ -38,7 +40,9 @@ void	exec(t_shell *shell)
 		}
 		if (execve(path, shell->cmds, env_exec) == -1)
 		{
-			printf("%s: command not found\n", shell->cmds[0]);
+			ft_putstr_fd(shell->cmds[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			// printf("%s: command not found\n", shell->cmds[0]);
 			free(path);
 			ft_free(env_exec);
 			ft_free(shell->cmds);

@@ -35,7 +35,8 @@ int ft_cd(t_shell *shell)
     len = len_cmds(shell->cmds);
     if (len > 2)
     {
-        printf("minishell: cd: too many arguments\n");
+        write_error("minishell: cd: too many arguments");
+		// printf("minishell: cd: too many arguments\n");
         return (-1);
     }
     else if (len == 1)
@@ -72,7 +73,10 @@ int ft_cd(t_shell *shell)
         	if (chdir(shell->cmds[1]) == -1)
             {
                 free(SAVED_OLDPWD);
-                printf("minishell: cd: %s: No such file or directory\n", shell->cmds[1]);
+				ft_putstr_fd("minishell: cd: ", 2);
+				ft_putstr_fd(shell->cmds[1], 2);
+				ft_putstr_fd(": No such file or directory\n", 2);
+                // printf("minishell: cd: %s: No such file or directory\n", shell->cmds[1]);
 				return (-1);
             }
 			NEW_PWD = getcwd(NULL, 0);

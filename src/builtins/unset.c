@@ -25,12 +25,10 @@ void	ft_remove_var(t_env_list **begin, char *value)
 	new_val = ft_strjoin(value, "=");
 	if (*begin == NULL)
 	{
-		printf("NULL\n");
 		return ;
 	}
 	else if (ft_strcmp((*begin)->node->key, new_val) == 0)
 	{
-		printf("begin\n");
 		to_remove = *begin;
 		*begin = (*begin)->next;
 		free(to_remove->node->key);
@@ -63,7 +61,7 @@ void     ft_unset(t_shell *shell)
 
     if (array_size(shell->cmds) == 1)
     {
-        printf("unset: not enough arguments\n");
+		write_error("unset: not enough arguments");
         return ;
     }
     else
@@ -73,7 +71,10 @@ void     ft_unset(t_shell *shell)
 		{
 			if (ft_strchr(shell->cmds[i], '='))
 			{
-				printf("unset: %s: invalid parameter name\n", shell->cmds[i]);
+				ft_putstr_fd("unset: ", 2);
+				ft_putstr_fd(shell->cmds[i], 2);
+				ft_putstr_fd(": invalid parameter name\n", 2);
+				// printf("unset: %s: invalid parameter name\n", shell->cmds[i]);
 				i++;
 			}
 			if (shell->cmds[i])

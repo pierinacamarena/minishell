@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/06 18:43:15 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/07/29 23:19:25 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct	s_list
 	int				has_redir;
 	int				redir_qty;
 	int				start_redir;
-	int				double_redir;
+	int				here_doc;
 	int				pipes[2];
 	struct s_list	*previous;
 	struct s_list	*next;
@@ -103,6 +103,10 @@ void	*ft_calloc(size_t count, size_t size);
 void	ft_free(char **str);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void	write_error(char *str);
+void    ft_putchar_fd(char c, int fd);
+void    ft_putstr_fd(char *s, int fd);
+void    ft_putendl_fd(char *s, int fd);
 
 /*gnl*/
 int     get_next_line(int fd, char **line);

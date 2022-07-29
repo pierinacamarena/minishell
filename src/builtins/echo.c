@@ -51,11 +51,13 @@ int ft_echo(char **args)
     i = 1;
     is_n = 0;
     len = num_args(args);
-    // still need to handle the case of echo -nnnnnnn -n -n -n -n abc
-    // still need to handle the case of echo ${numbers}
+	if (len == 1)
+	{
+		printf("\n");
+		return (0);
+	}
     if (len > 1)
     {
-        //while ((ft_strcmp(args[i], "-n") == 0) && args[1])
         while ((ft_isn(args[i]) == 1) && args[1])
         {
             is_n = 1;
