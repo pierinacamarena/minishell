@@ -1,19 +1,10 @@
-#ifndef DEFINITIONS_H
-#define DEFINITIONS_H
+#ifndef LEXER_H
+#define LEXER_H
 
-/*	file type definitions */
+#include "scanner.h"
+#include "utils.h"
 
-#define READ_FILE 256
-#define WRITE_FILE 257
-#define HERE_DOC 258
-#define APPEND_FILE 259
-#define SIMPLE_WORD 260
-
-/*	size of the buffer in expand_parameters */
-
-#define BUFSIZE 4096
-
-/*	token type definitions */
+/*	token type defs	*/
 
 #define WORD_TOKEN 256
 #define MORE_TOKEN 257
@@ -30,5 +21,17 @@
 #define QUOTE_STATE 265
 #define DOUBLE_QUOTE_STATE 266
 #define WORD_STATE 267
+
+/*	struct defs		*/
+
+typedef struct s_token {
+	int			type;
+	const char	*start;
+	int			length;
+}	t_token;
+
+/*	function declarations	*/
+
+t_token	scan_token(t_scanner *scanner);
 
 #endif

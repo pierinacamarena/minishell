@@ -1,8 +1,8 @@
 NAME = parser
 
-OBJS = main_test.o scanner.o parser.o expand.o list.o str_ops.o
+OBJS = main_test.o scanner.o parser.o expand.o list.o str_ops.o buffer.o utils.o lexer.o
 
-HEADS = definitions.h include.h struct.h
+HEADS = common_defs.h include.h
 
 CC = cc
 

@@ -15,6 +15,15 @@ void	free_elem(t_elem *elem)
 	free(elem);
 }
 
+void	free_elem_list(t_elem *elem)
+{
+	if (elem != NULL)
+	{
+		free_elem_list(elem->next);
+		free_elem(elem);
+	}
+}
+
 void	print_elem_list(t_elem *head)
 {
 	char	*s;
