@@ -6,8 +6,10 @@
 
 #include "string_ops.h"
 #include "common_defs.h"
+#include "utils.h"
 
-void	append_elem_list(t_elem *head, t_elem *new_elem);
+t_elem	*add_elem_to_list(t_elem *head, t_elem *new_elem);
+t_elem	*copy_elem(t_elem *src);
 void	print_elem_list(t_elem *head);
 void	print_commands_list(t_pipeline *commands_list);
 void	free_elem(t_elem *elem);

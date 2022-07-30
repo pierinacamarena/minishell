@@ -1,8 +1,5 @@
 #include "parser.h"
-
-static void	match(int type, t_token *current, t_scanner *scanner, int *panic)
-{
-	if (current->type != type && *panic != PANIC_MODE)
+static void	match(int type, t_token *current, t_scanner *scanner, int *panic) { if (current->type != type && *panic != PANIC_MODE)
 	{
 		printf("syntax error near unexpected token '%.*s'\n", \
 		current->length, current->start);
@@ -67,6 +64,7 @@ static t_pipeline	*pipeline(t_pipeline *commands_list, t_token *current, t_scann
 		free_elem(tmp);
 	}
 	commands_list = new_command(commands_list, words_list);
+	free_elem_list(words_list);
 	if (current->type == PIPE_TOKEN)
 	{
 		match(PIPE_TOKEN, current, scanner, panic);

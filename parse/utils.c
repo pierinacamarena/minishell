@@ -35,3 +35,13 @@ int	update_state(int state, int c)
 	}
 	return (state);
 }
+
+void	free_double_ptr(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i] != NULL)
+		free(ptr[i++]);
+	free(ptr);
+}
