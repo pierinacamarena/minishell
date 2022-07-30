@@ -12,6 +12,29 @@
 
 #include "../../includes/minishell.h"
 
+void    ft_putchar_fd(char c, int fd)
+{
+        write(fd, &c, 1);
+}
+
+void    ft_putstr_fd(char *s, int fd)
+{
+    if (s)
+	{
+        while (*s)
+            write(fd, s++, 1);
+    }
+}
+
+void    ft_putendl_fd(char *s, int fd)
+{
+    if (s)
+    {
+        ft_putstr_fd(s, fd);
+        ft_putchar_fd('\n', fd);
+    }
+}
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	const unsigned char	*p1;
@@ -189,4 +212,9 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (0);
+}
+
+void	write_error(char *str)
+{
+	ft_putendl_fd(str, 2);
 }
