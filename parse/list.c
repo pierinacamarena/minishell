@@ -24,6 +24,16 @@ void	free_elem_list(t_elem *elem)
 	}
 }
 
+void	free_commands_list(t_pipeline *commands_list)
+{
+	if (commands_list != NULL)
+	{
+		free_commands_list(commands_list->next);
+		free_elem_list(commands_list->command);
+		free(commands_list);
+	}
+}
+
 void	print_elem_list(t_elem *head)
 {
 	char	*s;
@@ -33,15 +43,15 @@ void	print_elem_list(t_elem *head)
 	{
 		type = head->type;
 		if (type == READ_FILE)
-			s = strdup("READ_FILE");
+			s = ft_strdup("READ_FILE");
 		else if (type == WRITE_FILE)
-			s = strdup("WRITE_FILE");
+			s = ft_strdup("WRITE_FILE");
 		else if (type == HERE_DOC)
-			s = strdup("HERE_DOC");
+			s = ft_strdup("HERE_DOC");
 		else if (type == APPEND_FILE)
-			s = strdup("APPEND_FILE");
+			s = ft_strdup("APPEND_FILE");
 		else if (type == SIMPLE_WORD)
-			s = strdup("SIMPLE_WORD");
+			s = ft_strdup("SIMPLE_WORD");
 		else
 			fprintf(stderr, "unrecognized type\n");
 		printf("%s\t%s\n", s, head->words);

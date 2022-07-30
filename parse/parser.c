@@ -84,6 +84,7 @@ static void	list(t_token *current, t_scanner *scanner, int *panic)
 	commands_list = NULL;
 	commands_list = pipeline(commands_list, current, scanner, panic);
 	print_commands_list(commands_list);
+	free_commands_list(commands_list);
 	if (current->type == OR_TOKEN)
 	{
 		match(OR_TOKEN, current, scanner, panic);

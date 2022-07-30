@@ -13,9 +13,11 @@ typedef struct s_buffer {
 }	t_buffer;
 
 void	init_buffer(t_buffer *buffer);
+int		flush(t_buffer *buffer);
 int		add_char_to_buffer(t_buffer *buffer, int c);
 int		add_str_to_buffer(t_buffer *buffer, char *str);
 char	*collect(t_buffer *buffer);
 void	clear_buffer(t_buffer *buffer);
+char	*collect_and_clear(t_buffer *buffer);
 
 #endif

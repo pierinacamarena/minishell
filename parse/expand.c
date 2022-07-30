@@ -1,91 +1,65 @@
 #include "expand.h"
+#include <stdio.h>
 
 /*	BAD CASES:
 	
 	< $TEST cmd (where $TEST="arg1 arg2") --> ambiguous redirect
 */
 
-static char	*expand_env_var(char *beg, int len)
+static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state)
 {
-	char	*expanded;
+	int		param_len;
 	char	*tmp;
 
-	if (*beg == '$')
-	{
-		beg++;
-		len--;
-	}
-	if (len == 0)
-		return (strdup("$"));	
-	tmp = strndup(beg, len);
-	if (tmp == NULL)
-		return (NULL);
-	if (getenv(tmp) == NULL)
-		return (strdup(""));
+	param_len = (int)(scanner.current - scanner.start);
+	if (state == WORD_STATE && \
+(*scanner.start == '\0' || *scanner.start == '$'))
+		add_char_to_buffer(buffer, '$');
+	else if (state == DOUBLE_QUOTE_STATE && \
+(*scanner.start == '"' || *scanner.start == '\'' || *scanner.start == '$'))
+		add_char_to_buffer(buffer, '$');
 	else
-		expanded = strdup(getenv(tmp));
-	return (expanded);
-}
-
-static char	*replace(char *beg, char *current, char *var_end)
-{
-	char	*left;
-	char	*mid;
-	char	*right;
-
-	left = strndup(beg, current - beg);
-	if (left == NULL)
-		return (NULL);
-	mid = expand_env_var(current, var_end - current);
-	if (mid == NULL)
-		return (NULL);
-	right = strdup(var_end);
-	if (right == NULL)
-		return (NULL);
-	free(beg);
-	left = append_str(left, mid);
-	free(mid);
-	left = append_str(left, right);
-	free(right);
-	return (left);
+	{
+		tmp = ft_strndup(scanner.start, param_len);
+		if (tmp == NULL)
+			return ;
+		if (getenv(tmp) != NULL)
+			add_str_to_buffer(buffer, getenv(tmp));
+		free(tmp);
+	}
 }
 
 char	*expand_parameters(t_token token)
 {
-	char	*beg;
-	char	*current;
-	char	*var_end;
-	int		state;
-	int		offset;
+	t_scanner	scanner;
+	t_buffer	buffer;
+	int			c;
+	int			state;
 
-	beg = strndup(token.start, token.length);
-	if (beg == NULL)
-		return (NULL);
-	current = beg;
+	init_scanner(&scanner, token.start);
+	init_buffer(&buffer);
 	state = WORD_STATE;
-	while (*current != '\0')
+	while (token.length-- > 0)
 	{
-		state = update_state(state, *current);
-		if (*current == '$' && state != QUOTE_STATE)
+		c = advance(&scanner);
+		state = update_state(state, c);
+		if (state != QUOTE_STATE && c == '$')
 		{
-			var_end = current + 1;
-			while (*var_end != '"' && *var_end != '\'' \
-				&& *var_end != '$' && *var_end != '\0')
-				var_end++;
-			offset = (int)(var_end - beg);
-			beg = replace(beg, current, var_end);
-			current = beg + offset;
+			scanner.start = scanner.current;
+			while (peek(scanner) != '\0' && peek(scanner) != '"' \
+&& peek(scanner) != '\'' && peek(scanner) != '$' && token.length-- > 0)
+				c = advance(&scanner);
+			add_expanded_param(scanner, &buffer, state);
 		}
 		else
-			current++;
+			add_char_to_buffer(&buffer, c);
 	}
-	return (beg);
+	return (collect_and_clear(&buffer));
 }
 
 static char	*getword(t_scanner *scanner)
 {
 	t_buffer	buffer;
-	char		*ret;
 	int			state;
 	int			c;
 
@@ -98,37 +72,17 @@ static char	*getword(t_scanner *scanner)
 	c = advance(scanner);
 	while (c != '\0')	
 	{
-		if (state == WORD_STATE)
-		{
-			if (c == '"')
-				state = DOUBLE_QUOTE_STATE;
-			else if (c == '\'')
-				state = QUOTE_STATE;
-			else if (isblank(c))
-				break ;
-			else
-				add_char_to_buffer(&buffer, c);
-		}
-		else if (state == QUOTE_STATE)
-		{
-			if (c == '\'')
-				state = WORD_STATE;
-			else
-				add_char_to_buffer(&buffer, c);
-		}
-		else if (state == DOUBLE_QUOTE_STATE)
-		{
-			if (c == '"')
-				state = WORD_STATE;
-			else
-				add_char_to_buffer(&buffer, c);
-		}
+		state = update_state(state, c);
+		if (state == WORD_STATE && ft_isblank(c))
+			break ;
+		else if ((state == WORD_STATE && c != '"' && c != '\'') \
+|| (state == QUOTE_STATE && c != '\'') \
+|| (state == DOUBLE_QUOTE_STATE && c != '"'))
+			add_char_to_buffer(&buffer, c);
 		c = advance(scanner);
 	}
 	scanner->current--;
-	ret = collect(&buffer);
-	clear_buffer(&buffer);
-	return (ret);
+	return (collect_and_clear(&buffer));
 }
 		
 static t_elem	*new_word(t_elem *words_list, char *word, int type)
@@ -147,7 +101,7 @@ static t_elem	*new_word(t_elem *words_list, char *word, int type)
 	return (words_list);
 }
 
-static t_elem	*split_words(t_elem *elem)
+t_elem	*split_words(t_elem *elem)
 {
 	t_elem		*words_list;
 	t_scanner	scanner;
@@ -162,47 +116,4 @@ static t_elem	*split_words(t_elem *elem)
 		word = getword(&scanner);
 	}
 	return (words_list);
-}
-
-t_elem	*new_words_list(t_elem *words_list, t_elem *elem)
-{
-	if (words_list == NULL)
-		words_list = split_words(elem);
-	else
-		words_list->next = new_words_list(words_list->next, elem);
-	return (words_list);
-}
-
-t_elem	*new_elem(t_elem *elem_list, t_token token, int type)
-{
-	if (elem_list == NULL)
-	{
-		elem_list = (t_elem *)malloc(sizeof(t_elem));
-		if (elem_list == NULL)
-			return (NULL);
-		elem_list->type = type;
-		if (type == HERE_DOC)
-			elem_list->words = strndup(token.start, token.length);
-		else
-			elem_list->words = expand_parameters(token);
-		elem_list->next = NULL;
-	}
-	else
-		elem_list->next = new_elem(elem_list->next, token, type);
-	return (elem_list);
-}
-
-t_pipeline	*new_command(t_pipeline *commands_list, t_elem *words_list)
-{
-	if (commands_list == NULL)
-	{
-		commands_list = (t_pipeline *)malloc(sizeof(t_pipeline));
-		if (commands_list == NULL)
-			return (NULL);
-		commands_list->command = words_list;
-		commands_list->next = NULL;
-	}
-	else
-		commands_list->next = new_command(commands_list->next, words_list);
-	return (commands_list);
 }
