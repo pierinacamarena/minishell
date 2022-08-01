@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/29 23:19:25 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 01:32:29 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,12 @@ typedef struct	s_list
 	char			**args;
 	int				length;
 	int				type;
-	int				has_redir;
-	int				redir_qty;
 	int				start_redir;
+	int				redir_qty;
+	int				right_redir;
+	int				left_redir;
 	int				here_doc;
+	int				here_doc_left;
 	int				pipes[2];
 	struct s_list	*previous;
 	struct s_list	*next;
@@ -85,11 +87,20 @@ typedef struct s_shell
 	t_env_list	*exp;
 }				t_shell;
 
+/*minishell*/
+void    builtin_exec(t_shell *shell);
+int     is_builtin(t_shell *shell);
 
 /*built_ins*/
 int		ft_pwd(void);
 int		ft_env(t_env_list *env);
 void    ft_exit(long long i, t_shell *shell);
+
+/*builtins_list*/
+void    ft_exit_list(long long i, t_shell *shell, t_list *data);
+void     ft_unset_list(t_shell *shell, t_list *data);
+void    ft_export_list(t_shell *shell, t_list *data);
+int		ft_cd_list(t_shell *shell, t_list *data);
 
 /* utils */
 int     ft_strcmp(const char *s1, const char *s2);
@@ -178,6 +189,7 @@ int		ft_echo(char **args);
 
 /*execute*/
 void	exec(t_shell *shell);
+void	exec_cmd(t_shell *shell);
 
 /*ft_path*/
 char	*ft_path(char *arg, char **env);
@@ -196,6 +208,12 @@ int		add_arg(t_list *cmd, char *arg);
 int		exit_fatal(void);
 int		show_error(char const *str);
 void	print_parse_list(t_list *cmds);
+
+/*redirec_parse*/
+int		set_redir(t_list *cmds);
+
+/*execute_list*/
+int	exec_list(t_list *data, t_shell *shell);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2
