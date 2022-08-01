@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "common_defs.h"
+#include "semantics.h"
 #include "scanner.h"
 #include "lexer.h"
 #include "expand.h"

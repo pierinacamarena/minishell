@@ -6,7 +6,7 @@ void	init_buffer(t_buffer *buffer)
 	buffer->collector = NULL;
 }
 
-static int	flush(t_buffer *buffer)
+int	flush(t_buffer *buffer)
 {
 	int	collector_size;
 
@@ -14,7 +14,8 @@ static int	flush(t_buffer *buffer)
 		collector_size = strlen(buffer->collector);
 	else
 		collector_size = 0;
-	buffer->collector = realloc(buffer->collector, collector_size + buffer->pos + 1);
+	buffer->collector = realloc(buffer->collector, \
+collector_size + buffer->pos + 1);
 	buffer->collector[collector_size] = '\0';
 	if (buffer->collector == NULL)
 		return (-1);
@@ -47,17 +48,4 @@ int	add_str_to_buffer(t_buffer *buffer, char *str)
 			return (-1);
 	}
 	return (0);
-}
-
-char	*collect(t_buffer *buffer)
-{
-	flush(buffer);
-	return (strdup(buffer->collector));
-}
-
-void	clear_buffer(t_buffer *buffer)
-{
-	buffer->pos = 0;
-	free(buffer->collector);
-	buffer->collector = NULL;
 }

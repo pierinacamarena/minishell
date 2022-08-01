@@ -26,7 +26,8 @@ typedef struct s_elem {
 }	t_elem;
 
 typedef struct s_pipeline {
-	t_elem				*command;
+	char				**command;
+	t_elem				*redirections;
 	struct s_pipeline	*next;
 }	t_pipeline;
 

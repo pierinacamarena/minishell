@@ -1,7 +1,7 @@
 #include "common_defs.h"
-#include "include.h"
 #include "scanner.h"
 #include "parser.h"
+#include "string_ops.h"
 
 void	print_token(t_token token)
 {
@@ -36,12 +36,14 @@ int	main(void)
 	n = 0;
 	while (getline(&line, &n, fstream) > 0)
 	{
-		line[strlen(line) - 1] = '\0';
+		line[ft_strlen(line) - 1] = '\0';
 		init_scanner(&scanner, line);
 		parse(&scanner);
 		free(line);
 		line = NULL;
 		n = 0;
 	}
+	free(line);
+	fclose(fstream);
 	return (0);
 }
