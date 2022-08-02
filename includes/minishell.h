@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 18:53:00 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 19:52:40 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,6 @@
 #include <sys/wait.h>
 
 #define PROMPT_NAME "minishell% "
-
-#define SIDE_OUT	0
-#define SIDE_IN		1
-
-#define STDIN		0
-#define STDOUT		1
-#define STDERR		2
-
-#define TYPE_END	0
-#define TYPE_PIPE	1
-#define TYPE_BREAK	2
 
 /*	file type definitions */
 
@@ -168,12 +157,9 @@ typedef struct s_shell
 void    builtin_exec(t_shell *shell);
 int     is_builtin(t_shell *shell);
 
-/*built_ins*/
+/*builtins_list*/
 int		ft_pwd(void);
 int		ft_env(t_env_list *env);
-void    ft_exit(long long i, t_shell *shell);
-
-/*builtins_list*/
 void    ft_exit_list(long long i, t_shell *shell, t_pipeline *data);
 void     ft_unset_list(t_shell *shell, t_pipeline *data);
 void    ft_export_list(t_shell *shell, t_pipeline *data);
@@ -196,22 +182,6 @@ void    ft_putchar_fd(char c, int fd);
 void    ft_putstr_fd(char *s, int fd);
 void    ft_putendl_fd(char *s, int fd);
 
-/*gnl*/
-int     get_next_line(int fd, char **line);
-char	*ft_eof(char *temp, char **line);
-char	*ft_strnjoin(char *s1, char *s2);
-size_t	ft_strlcpy(char *dst, char const *src, size_t size);
-
-/*basic_parsing*/
-void	single_quota(char *str, char **cmd, t_splitter *split);
-void	double_quota(char *str, char **cmd, t_splitter *split);
-void	space_case(char *str, char **cmd, t_splitter *split);
-void	word_count(const char *str, int *i, int *count);
-int     ft_count(const char *str);
-int     ft_len(char const *s, char c, int i);
-char	**cmd_malloc(char *str, char **cmd, t_splitter *split);
-char	**cmd_split(const char *str);
-
 /*ft_split*/
 int			ft_wordcount(char const *s, char c);
 char	**ft_split(char const *s, char c);
@@ -222,9 +192,6 @@ void		ft_add_node(t_env_list **begin, t_env_list *aux);
 t_env_list	*ft_set_node(char *env);
 void		ft_print_list(t_env_list *begin);
 void		ft_free_list(t_env_list **begin);
-
-/*cd*/
-int		ft_cd(t_shell *shell);
 
 /*env_for_execute*/
 char	**list_to_array(t_env_list *list);
@@ -237,22 +204,6 @@ int     not_sorted(char **env);
 void    print_double_array(char **str);
 char    **sorted_exp(char **env);
 
-/*export_list */
-t_exp_list *ft_set_expo(char *env);
-void    ft_add_expo(t_exp_list **begin, t_exp_list *aux);
-t_exp_list	*init_exp(char **env);
-void	ft_print_export(t_exp_list *begin);
-
-/*sort_linked_list*/
-void	bubble_sort(t_exp_list **first);
-void	swap_export(t_exp_list *prev, t_exp_list *less, t_exp_list *more, t_exp_list **first);
-
-/*export*/
-void ft_export(t_shell *shell);
-
-/*unset*/
-void     ft_unset(t_shell *shell);
-
 /*list_utils */
 void    find_replace(t_env_list **list, char *key, char *new_content);
 int		list_size(t_env_list *list);
@@ -264,10 +215,6 @@ char	*ft_str3join(char const *s1, char const *s2, char const *s3);
 /*echo*/
 int		ft_echo(char **args);
 
-/*execute*/
-void	exec(t_shell *shell);
-void	exec_cmd(t_shell *shell);
-
 /*ft_path*/
 char	*ft_path(char *arg, char **env);
 char	*cmd_tester(char **path_split, char *arg);
@@ -275,16 +222,6 @@ char	*cmd_tester(char **path_split, char *arg);
 /*signal*/
 void	sighandler(int signum);
 void	sighandler2(int signum);
-
-/*parse*/
-int		parse_arg(t_list **cmds, char *arg);
-int		list_push(t_list **list, char *arg);
-int		list_clear(t_list **cmds);
-int		list_rewind(t_list **list);
-int		add_arg(t_list *cmd, char *arg);
-int		exit_fatal(void);
-int		show_error(char const *str);
-void	print_parse_list(t_list *cmds);
 
 /*redirec_parse*/
 int		set_redir(t_list *cmds);

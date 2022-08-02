@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 18:53:06 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 19:43:39 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,19 @@ int	count_list(t_pipeline *data)
 	}
 }
 
-int	exec_pipes(t_pipeline *data, t_shell *shell)
-{
-	t_pipes		pipes;
-	int			i;
+// int	exec_pipes(t_pipeline *data, t_shell *shell)
+// {
+// 	t_pipes		pipes;
+// 	int			i;
 
-	i = 0;
-	pipes.size = count_list(data) - 1;
-	pipes.fd_pipe = (int **)malloc(sizeof(int) * pipes.size * 2);
-	while (i < pipes.size)
-	{
+// 	i = 0;
+// 	pipes.size = count_list(data) - 1;
+// 	pipes.fd_pipe = (int **)malloc(sizeof(int) * pipes.size * 2);
+// 	while (i < pipes.size)
+// 	{
 		
-	}
-}
+// 	}
+// }
 
 int	exec_cmd_list(t_pipeline *data, t_shell *shell)
 {
@@ -116,7 +116,6 @@ int	exec_cmd_list(t_pipeline *data, t_shell *shell)
 			ft_putstr_fd(": command not found\n", 2);
 			free(path);
 			ft_free(shell->env_exec);
-			ft_free(shell->cmds);
 			ft_free_list(&shell->env);
 			ft_free_list(&shell->exp);
 			free_commands_list(data);
@@ -130,7 +129,6 @@ int	exec_cmd_list(t_pipeline *data, t_shell *shell)
 			ft_putstr_fd(": command not found\n", 2);
 			free(path);
 			ft_free(shell->env_exec);
-			ft_free(shell->cmds);
 			ft_free_list(&shell->env);
 			ft_free_list(&shell->exp);
 			free_commands_list(data);
