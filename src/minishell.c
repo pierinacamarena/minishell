@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 01:42:28 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 03:11:09 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void    set_env_exp(t_shell *shell, char **env)
     shell->env = init_env(env);
     shell->exp = init_env(arr);
 	shell->cmds = 0;
+	shell->env_exec = 0;
     ft_free(arr);
 }
 
@@ -73,8 +74,9 @@ int main(int ac, char **av, char **env)
 			}
 			list_rewind(&cmd_parse);
 			set_redir(cmd_parse);
+			// print_parse_list(cmd_parse);
 			if (shell.cmds)
-				exec_list(cmd_parse, &shell);
+				exec_list(&cmd_parse, &shell);
 			list_clear(&cmd_parse);
             if (shell.cmds)
 				ft_free(shell.cmds);

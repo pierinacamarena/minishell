@@ -6,9 +6,14 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:05:42 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/01 23:06:04 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 02:39:27 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// void	redirection(t_list *data)
+// {
+// 	if (!data || data->redir_qty == 0)
+// 		return (0);
+// }

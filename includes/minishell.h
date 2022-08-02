@@ -6,13 +6,14 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 01:32:29 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 03:09:45 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include <string.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -83,6 +84,7 @@ typedef struct	s_list
 typedef struct s_shell
 {
 	char		**cmds;
+	char		**env_exec;
 	t_env_list	*env;
 	t_env_list	*exp;
 }				t_shell;
@@ -213,7 +215,7 @@ void	print_parse_list(t_list *cmds);
 int		set_redir(t_list *cmds);
 
 /*execute_list*/
-int	exec_list(t_list *data, t_shell *shell);
+int	exec_list(t_list **data, t_shell *shell);
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2

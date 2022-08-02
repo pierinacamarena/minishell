@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 20:54:52 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/01 23:05:53 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 02:16:38 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,50 +31,61 @@ int	check_redir_error_right(char **args)
 
 	if (args[0] == NULL)
 		return (-1);
-	if (args[1])
+	if (args[0])
 	{
 		len = array_size(args);
-		if ((ft_strcmp(args[0], ">") == 0) && (ft_strcmp(args[1], ">") == 0))
-		{	
-			write_error("minishell: syntax error near expected token 'newline'");
-			return (1);
-		}
-		else if ((ft_strcmp(args[0], ">") == 0) && args[1] == NULL)
+		if (args[1])
 		{
-			write_error("minishell: syntax error near expected token 'newline'");
-			return (1);
+			if ((ft_strcmp(args[0], ">") == 0) && (ft_strcmp(args[1], ">") == 0))
+			{	
+				write_error("minishell: syntax error near expected token 'newline'");
+				return (1);
+			}
+			else if ((ft_strcmp(args[0], ">>") == 0) && (ft_strcmp(args[1], ">>") == 0))
+			{	
+				write_error("minishell: syntax error near expected token 'newline'");
+				return (1);
+			}
+			else if ((ft_strcmp(args[0], ">") == 0) && (ft_strcmp(args[1], ">>") == 0))
+			{	
+				write_error("minishell: syntax error near expected token 'newline'");
+				return (1);
+			}
+			else if ((ft_strcmp(args[0], ">>") == 0) && (ft_strcmp(args[1], ">") == 0))
+			{
+				write_error("minishell: syntax error near expected token 'newline'");
+				return (1);
+			}
+			else if (ft_strcmp(args[len -1], ">") == 0)
+			{
+				write_error("minishell: syntax error near expected token 'newline'");
+				return (1);
+			}
+			else if (continuous_redir_left(args[0]) == 1)
+			{
+				write_error("minishell: syntax error near expected token '>>'");
+				return (1);
+			}
 		}
-		else if ((ft_strcmp(args[0], ">>") == 0) && (ft_strcmp(args[1], ">>") == 0))
-		{	
-			write_error("minishell: syntax error near expected token 'newline'");
-			return (1);
-		}
-		else if ((ft_strcmp(args[0], ">>") == 0) && args[1] == NULL)
+		else
 		{
-			write_error("minishell: syntax error near expected token 'newline'");
-			return (1);
+			if ((ft_strcmp(args[0], ">") == 0) && args[1] == NULL)
+			{
+				write_error("minishell: syntax error near expected token 'newline'");
+				return (1);
+			}
+			else if ((ft_strcmp(args[0], ">>") == 0) && args[1] == NULL)
+			{
+				write_error("minishell: syntax error near expected token 'newline'");
+				return (1);
+			}
+			else if (continuous_redir_left(args[0]) == 1)
+			{
+				write_error("minishell: syntax error near expected token '>>'");
+				return (1);
+			}
+			return (0);
 		}
-		if ((ft_strcmp(args[0], ">") == 0) && (ft_strcmp(args[1], ">>") == 0))
-		{	
-			write_error("minishell: syntax error near expected token 'newline'");
-			return (1);
-		}
-		else if ((ft_strcmp(args[0], ">>") == 0) && (ft_strcmp(args[1], ">") == 0))
-		{
-			write_error("minishell: syntax error near expected token 'newline'");
-			return (1);
-		}
-		else if (continuous_redir_left(args[0]) == 1)
-		{
-			write_error("minishell: syntax error near expected token '>>'");
-			return (1);
-		}
-		else if (ft_strcmp(args[len -1], ">") == 0)
-		{
-			write_error("minishell: syntax error near expected token 'newline'");
-			return (1);
-		}
-		return (0);
 	}
 	return (-1);
 }
@@ -83,7 +94,7 @@ int	check_redir_error_left(char **args)
 {
 	if (args[0] == NULL)
 		return (-1);
-	if (args[1])
+	if (args[0])
 	{
 		if ((ft_strcmp(args[0], "<") == 0) && (ft_strcmp(args[1], "<") == 0))
 		{	
@@ -183,7 +194,10 @@ int	check_redir_right(char **args, t_list *list)
 	if (args[0] == NULL)
 		return (-1);
 	if (check_redir_error_right(args) == 1)
+	{
+		printf("entering here\n");
 		return (-1);
+	}
 	else if (check_redir_error_left(args) == 1)
 		return (-1);
 	while (args[i])
@@ -224,6 +238,7 @@ int	check_redir_left(char **args, t_list *list)
 	}
 	return (0);
 }
+
 
 int	set_redir(t_list *cmds)
 {
