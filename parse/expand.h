@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include "common_defs.h"
+#include "../includes/minishell.h"
 #include "string_ops.h"
 #include "scanner.h"
 #include "lexer.h"

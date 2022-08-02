@@ -6,7 +6,7 @@
 #    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by pcamaren          #+#    #+#              #
-#    Updated: 2022/08/02 01:38:09 by pcamaren         ###   ########.fr        #
+#    Updated: 2022/08/02 17:40:13 by pcamaren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,17 @@ SRCS	=	./src/minishell.c\
 			./src/builtin_list/builtins_list.c\
 			./src/builtin_list/cd_list.c\
 			./src/builtin_list/export_list.c\
-			./src/builtin_list/unset_list.c			
+			./src/builtin_list/unset_list.c\
+			./parse/buffer.c\
+			./parse/buffer2.c\
+			./parse/expand.c\
+			./parse/lexer.c\
+			./parse/list.c\
+			./parse/parser.c\
+			./parse/scanner.c\
+			./parse/semantics.c\
+			./parse/string_ops.c\
+			./parse/utils.c
 
 OBJS	=	${SRCS:.c=.o}
 

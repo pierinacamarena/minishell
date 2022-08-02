@@ -1,4 +1,4 @@
-#include "buffer.h"
+#include "../includes/minishell.h"
 
 char	*collect(t_buffer *buffer)
 {

@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 03:09:45 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:53:00 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,72 @@
 #define TYPE_END	0
 #define TYPE_PIPE	1
 #define TYPE_BREAK	2
+
+/*	file type definitions */
+
+#define READ_FILE 256
+#define WRITE_FILE 257
+#define HERE_DOC 258
+#define APPEND_FILE 259
+#define SIMPLE_WORD 260
+
+/*	state definitions */
+
+#define QUOTE_STATE 265
+#define DOUBLE_QUOTE_STATE 266
+#define WORD_STATE 267
+
+/*	errors */
+
+#define	TOKEN_ERROR 256
+
+/*  parsing defs */
+
+#define BUFSIZE 1
+
+/*	token type defs	*/
+
+#define WORD_TOKEN 256
+#define MORE_TOKEN 257
+#define MORE_MORE_TOKEN 258
+#define LESS_TOKEN 259
+#define LESS_LESS_TOKEN 260
+#define PIPE_TOKEN 261
+#define OR_TOKEN 262
+#define AND_TOKEN 263
+#define EOF_TOKEN 264
+
+/*	state definitions */
+
+#define QUOTE_STATE 265
+#define DOUBLE_QUOTE_STATE 266
+#define WORD_STATE 267
+
+#define PANIC_MODE 1
+#define REGULAR_MODE 0
+
+typedef struct	s_scanner {
+	const char	*start;
+	const char	*current;
+}	t_scanner;
+
+typedef struct s_token {
+	int			type;
+	const char	*start;
+	int			length;
+}	t_token;
+
+typedef struct s_elem {
+	char			*words;
+	int				type;
+	struct s_elem	*next;
+}	t_elem;
+
+typedef struct s_pipeline {
+	char				**command;
+	t_elem				*redirections;
+	struct s_pipeline	*next;
+}	t_pipeline;
 
 typedef struct s_splitter {
 	int		len;
@@ -80,10 +146,19 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
+typedef struct s_buffer {
+	int		pos;
+	char	buf[BUFSIZE];
+	char	*collector;
+}	t_buffer;
 
+typedef struct	s_pipes
+{
+	int **fd_pipe;
+	int	size;
+}				t_pipes;
 typedef struct s_shell
 {
-	char		**cmds;
 	char		**env_exec;
 	t_env_list	*env;
 	t_env_list	*exp;
@@ -99,10 +174,10 @@ int		ft_env(t_env_list *env);
 void    ft_exit(long long i, t_shell *shell);
 
 /*builtins_list*/
-void    ft_exit_list(long long i, t_shell *shell, t_list *data);
-void     ft_unset_list(t_shell *shell, t_list *data);
-void    ft_export_list(t_shell *shell, t_list *data);
-int		ft_cd_list(t_shell *shell, t_list *data);
+void    ft_exit_list(long long i, t_shell *shell, t_pipeline *data);
+void     ft_unset_list(t_shell *shell, t_pipeline *data);
+void    ft_export_list(t_shell *shell, t_pipeline *data);
+int		ft_cd_list(t_shell *shell, t_pipeline *data);
 
 /* utils */
 int     ft_strcmp(const char *s1, const char *s2);
@@ -215,10 +290,72 @@ void	print_parse_list(t_list *cmds);
 int		set_redir(t_list *cmds);
 
 /*execute_list*/
-int	exec_list(t_list **data, t_shell *shell);
+int	exec_list(t_pipeline *data, t_shell *shell);
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2
-#endif
+/*PARSING FUNCTIONS ! :D*/
+
+/*buffer.h*/
+
+void	init_buffer(t_buffer *buffer);
+int		flush(t_buffer *buffer);
+int		add_char_to_buffer(t_buffer *buffer, int c);
+int		add_str_to_buffer(t_buffer *buffer, char *str);
+char	*collect(t_buffer *buffer);
+void	clear_buffer(t_buffer *buffer);
+char	*collect_and_clear(t_buffer *buffer);
+
+/*expand.h*/
+
+char	*expand_parameters(t_token token, t_shell *shell);
+t_elem	*split_words(t_elem *elem);
+
+/*lexer.h*/
+
+t_token	scan_token(t_scanner *scanner);
+
+/*list.h*/
+
+t_elem	*add_elem_to_list(t_elem *head, t_elem *new_elem);
+t_elem	*copy_elem(t_elem *src);
+void	print_elem_list(t_elem *head);
+void	print_commands_list(t_pipeline *commands_list);
+void	free_elem(t_elem *elem);
+void	free_elem_list(t_elem *elem);
+void	free_commands_list(t_pipeline *pipeline);
+
+/*parser.h*/
+
+int	parse(t_scanner *scanner, t_shell *shell);
+
+/*scanner.h*/
+
+void	init_scanner(t_scanner *scanner, const char *line);
+int		advance(t_scanner *scanner);
+int		peek(t_scanner scanner);
+void	skip_blanks(t_scanner *scanner);
+
+/*semantics.h*/
+
+t_elem		*new_words_list(t_elem *words_list, t_elem *elem);
+t_elem		*new_elem(t_elem *elem_list, t_token token, int type, t_shell *shell);
+t_pipeline	*new_command(t_pipeline *commands_list, t_elem *words_list);
+
+/*string_ops.h*/
+
+char	*ft_strcpy(char *dest, const char *src);
+char	*ft_strncpy(char *dest, const char *src, size_t n);
+char	*ft_strndup(const char *s, size_t n);
+char	*ft_realloc(char *s, size_t size);
+char	*append_str(char *s1, const char *s2);
+char	*append_char(char *s1, const char c);
+char	*ft_strcat(char *dest, const char *src);
+char	*ft_strncat(char *dest, const char *src, size_t n);
+
+/*utils.h*/
+
+int		ft_isblank(int c);
+int		ft_ismeta(int c);
+int		update_state(int state, int c);
+void	free_double_ptr(char **ptr);
 
 #endif

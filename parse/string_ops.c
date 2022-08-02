@@ -1,14 +1,4 @@
-#include "string_ops.h"
-
-size_t	ft_strlen(const char *s)
-{
-	const char	*end;
-
-	end = s;
-	while (*end != '\0')
-		end++;
-	return (end - s);
-}
+#include "../includes/minishell.h"
 
 char	*ft_strcpy(char *dest, const char *src)
 {
@@ -37,17 +27,6 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 	while (i < n)
 		dest[i++] = '\0';
 	return (dest);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*ret;
-
-	ret = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (ret == NULL)
-		return (NULL);
-	ft_strcpy(ret, s);
-	return (ret);
 }
 
 char	*ft_strndup(const char *s, size_t n)

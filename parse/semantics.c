@@ -1,4 +1,4 @@
-#include "semantics.h"
+#include "../includes/minishell.h"
 
 t_elem	*new_words_list(t_elem *words_list, t_elem *elem)
 {
@@ -9,7 +9,7 @@ t_elem	*new_words_list(t_elem *words_list, t_elem *elem)
 	return (words_list);
 }
 
-t_elem	*new_elem(t_elem *elem_list, t_token token, int type)
+t_elem	*new_elem(t_elem *elem_list, t_token token, int type, t_shell *shell)
 {
 	if (elem_list == NULL)
 	{
@@ -20,11 +20,11 @@ t_elem	*new_elem(t_elem *elem_list, t_token token, int type)
 		if (type == HERE_DOC)
 			elem_list->words = ft_strndup(token.start, token.length);
 		else
-			elem_list->words = expand_parameters(token);
+			elem_list->words = expand_parameters(token, shell);
 		elem_list->next = NULL;
 	}
 	else
-		elem_list->next = new_elem(elem_list->next, token, type);
+		elem_list->next = new_elem(elem_list->next, token, type, shell);
 	return (elem_list);
 }
 

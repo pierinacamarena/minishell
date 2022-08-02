@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 01:36:50 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 17:02:48 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,22 @@ void    export_check_list(t_shell *shell, char *var)
 	}
 }
 
-void    ft_export_list(t_shell *shell, t_list *data)
+void    ft_export_list(t_shell *shell, t_pipeline *data)
 {
     int     i;
 
-    if(!data->args)
+    if(!data->command)
         return;
-    if (array_size(data->args) == 1)
+    if (array_size(data->command) == 1)
     {
 		ft_print_list(shell->exp);
 	}
     else
     {
         i = 1;
-        while (data->args[i])
+        while (data->command[i])
         {
-			export_check_list(shell, data->args[i]);
+			export_check_list(shell, data->command[i]);
             i++;
         }
     }

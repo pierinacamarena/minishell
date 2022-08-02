@@ -1,4 +1,4 @@
-#include "scanner.h"
+#include "../includes/minishell.h"
 
 void	skip_blanks(t_scanner *scanner)
 {

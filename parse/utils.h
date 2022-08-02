@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "common_defs.h"
+#include "../includes/minishell.h"
 
 int		ft_isblank(int c);
 int		ft_ismeta(int c);

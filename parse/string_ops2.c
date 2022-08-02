@@ -1,4 +1,4 @@
-#include "string_ops.h"
+#include "../includes/minishell.h"
 
 char	*ft_realloc(char *s, size_t size)
 {

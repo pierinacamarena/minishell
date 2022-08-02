@@ -1,4 +1,4 @@
-#include "list.h"
+#include "../includes/minishell.h"
 
 t_elem	*copy_elem(t_elem *src)
 {

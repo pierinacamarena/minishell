@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:25 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 01:37:10 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:00:17 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ void	ft_remove_var_list(t_env_list **begin, char *value)
 	}
 }
 
-void     ft_unset_list(t_shell *shell, t_list *data)
+void     ft_unset_list(t_shell *shell, t_pipeline *data)
 {
 	int	i;
 
-    if (array_size(data->args) == 1)
+    if (array_size(data->command) == 1)
     {
 		write_error("unset: not enough arguments");
         return ;
@@ -67,19 +67,19 @@ void     ft_unset_list(t_shell *shell, t_list *data)
     else
     {
 		i = 1;
-		while (data->args[i])
+		while (data->command[i])
 		{
-			if (ft_strchr(data->args[i], '='))
+			if (ft_strchr(data->command[i], '='))
 			{
 				ft_putstr_fd("unset: ", 2);
-				ft_putstr_fd(data->args[i], 2);
+				ft_putstr_fd(data->command[i], 2);
 				ft_putstr_fd(": invalid parameter name\n", 2);
 				i++;
 			}
-			if (data->args[i])
+			if (data->command[i])
 			{
-				ft_remove_var_list(&shell->env, data->args[i]);
-				ft_remove_var_list(&shell->exp, data->args[i]);
+				ft_remove_var_list(&shell->env, data->command[i]);
+				ft_remove_var_list(&shell->exp, data->command[i]);
 				i++;
 			}
 		}

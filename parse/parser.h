@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "common_defs.h"
 #include "semantics.h"
 #include "scanner.h"
 #include "lexer.h"
@@ -14,6 +13,6 @@
 #define PANIC_MODE 1
 #define REGULAR_MODE 0
 
-int	parse(t_scanner *scanner);
+int	parse(t_scanner *scanner, t_shell *shell);
 
 #endif

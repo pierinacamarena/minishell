@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "../includes/minishell.h"
 
 static t_token	make_token(int type, t_scanner scanner)
 {

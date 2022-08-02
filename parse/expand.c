@@ -1,12 +1,11 @@
-#include "expand.h"
-#include <stdio.h>
+#include "../includes/minishell.h"
 
 /*	BAD CASES:
 	
 	< $TEST cmd (where $TEST="arg1 arg2") --> ambiguous redirect
 */
 
-static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state)
+static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state, t_shell *shell)
 {
 	int		param_len;
 	char	*tmp;
@@ -24,12 +23,12 @@ static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state)
 		if (tmp == NULL)
 			return ;
 		if (getenv(tmp) != NULL)
-			add_str_to_buffer(buffer, getenv(tmp));
+			add_str_to_buffer(buffer, ft_getenv(shell->env, tmp));
 		free(tmp);
 	}
 }
 
-char	*expand_parameters(t_token token)
+char	*expand_parameters(t_token token, t_shell *shell)
 {
 	t_scanner	scanner;
 	t_buffer	buffer;
@@ -49,7 +48,7 @@ char	*expand_parameters(t_token token)
 			while (peek(scanner) != '\0' && peek(scanner) != '"' \
 && peek(scanner) != '\'' && peek(scanner) != '$' && token.length-- > 0)
 				c = advance(&scanner);
-			add_expanded_param(scanner, &buffer, state);
+			add_expanded_param(scanner, &buffer, state, shell);
 		}
 		else
 			add_char_to_buffer(&buffer, c);

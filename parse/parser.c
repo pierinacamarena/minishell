@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "../includes/minishell.h"
 
 static void	match(int type, t_token *current, t_scanner *scanner, int *panic)
 { 
@@ -11,7 +11,7 @@ static void	match(int type, t_token *current, t_scanner *scanner, int *panic)
 	*current = scan_token(scanner);
 }
 
-static void	command_elem(t_token *current, t_scanner *scanner, t_elem **elem_list, int *panic)
+static void	command_elem(t_token *current, t_scanner *scanner, t_elem **elem_list, int *panic, t_shell *shell)
 {
 	int		type;
 
@@ -36,28 +36,28 @@ static void	command_elem(t_token *current, t_scanner *scanner, t_elem **elem_lis
 		match(MORE_MORE_TOKEN, current, scanner, panic);
 		type = APPEND_FILE;
 	}
-	*elem_list = new_elem(*elem_list, *current, type);
+	*elem_list = new_elem(*elem_list, *current, type, shell);
 	match(WORD_TOKEN, current, scanner, panic);
 }
 
-static void	command(t_token *current, t_scanner *scanner, t_elem **elem_list, int *panic)
+static void	command(t_token *current, t_scanner *scanner, t_elem **elem_list, int *panic, t_shell *shell)
 {
-	command_elem(current, scanner, elem_list, panic);
+	command_elem(current, scanner, elem_list, panic, shell);
 	if (current->type != PIPE_TOKEN \
 		&& current->type != OR_TOKEN \
 		&& current->type != AND_TOKEN \
 		&& current->type != EOF_TOKEN)
-		command(current, scanner, elem_list, panic);
+		command(current, scanner, elem_list, panic, shell);
 }
 
-static t_pipeline	*pipeline(t_pipeline *commands_list, t_token *current, t_scanner *scanner, int *panic)
+static t_pipeline	*pipeline(t_pipeline *commands_list, t_token *current, t_scanner *scanner, int *panic, t_shell *shell)
 {
 	t_elem	*elem_list;
 	t_elem	*words_list;
 	t_elem	*tmp;
 
 	elem_list = NULL;
-	command(current, scanner, &elem_list, panic);
+	command(current, scanner, &elem_list, panic, shell);
 	words_list = NULL;
 	while (elem_list != NULL)
 	{
@@ -71,41 +71,43 @@ static t_pipeline	*pipeline(t_pipeline *commands_list, t_token *current, t_scann
 	if (current->type == PIPE_TOKEN)
 	{
 		match(PIPE_TOKEN, current, scanner, panic);
-		commands_list->next = pipeline(commands_list->next, current, scanner, panic);
+		commands_list->next = pipeline(commands_list->next, current, scanner, panic, shell);
 	}
 	return (commands_list);
 }
 
-static void	list(t_token *current, t_scanner *scanner, int *panic)
+static void	list(t_token *current, t_scanner *scanner, int *panic, t_shell *shell)
 {
 	t_pipeline	*commands_list;
 
 	if (current->type == EOF_TOKEN)
 		return ;
 	commands_list = NULL;
-	commands_list = pipeline(commands_list, current, scanner, panic);
+	commands_list = pipeline(commands_list, current, scanner, panic, shell);
 	if (*panic == REGULAR_MODE)
-		print_commands_list(commands_list);
+		exec_list(commands_list, shell);
+	// if (*panic == REGULAR_MODE)
+	// 	print_commands_list(commands_list);
 	free_commands_list(commands_list);
 	if (current->type == OR_TOKEN)
 	{
 		match(OR_TOKEN, current, scanner, panic);
-		list(current, scanner, panic);
+		list(current, scanner, panic, shell);
 	}
 	else if (current->type == AND_TOKEN)
 	{
 		match(AND_TOKEN, current, scanner, panic);
-		list(current, scanner, panic);
+		list(current, scanner, panic, shell);
 	}
 }
 
-int	parse(t_scanner *scanner)
+int	parse(t_scanner *scanner, t_shell *shell)
 {
 	t_token		current;
 	int			panic;
 
 	panic = REGULAR_MODE;
 	current = scan_token(scanner);
-	list(&current, scanner, &panic);
+	list(&current, scanner, &panic, shell);
 	return (current.type);
 }

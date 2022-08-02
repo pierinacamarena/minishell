@@ -1,4 +1,4 @@
-#include "buffer.h"
+#include "../includes/minishell.h"
 
 void	init_buffer(t_buffer *buffer)
 {

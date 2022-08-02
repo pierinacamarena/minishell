@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:15 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 01:35:20 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 17:03:21 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ int len_cmds_list(char **cmds)
     return (len);
 }
 
-int ft_cd_list(t_shell *shell, t_list *data)
+int ft_cd_list(t_shell *shell, t_pipeline *data)
 {
     int     len;
     char    *SAVED_OLDPWD;
 	char	*NEW_PWD;
 
-    if (!data->args)
+    if (!data->command)
         return (-1);
-    len = len_cmds_list(data->args);
+    len = len_cmds_list(data->command);
     if (len > 2)
     {
         write_error("minishell: cd: too many arguments");
@@ -53,7 +53,7 @@ int ft_cd_list(t_shell *shell, t_list *data)
     }
     else
     {
-        if (ft_strcmp(data->args[1], "~") == 0)
+        if (ft_strcmp(data->command[1], "~") == 0)
         {
             SAVED_OLDPWD = getcwd(NULL, 0);
 			chdir(ft_getenv(shell->env, "HOME"));
@@ -69,11 +69,11 @@ int ft_cd_list(t_shell *shell, t_list *data)
         else
         {
 			SAVED_OLDPWD = getcwd(NULL, 0);
-        	if (chdir(data->args[1]) == -1)
+        	if (chdir(data->command[1]) == -1)
             {
                 free(SAVED_OLDPWD);
 				ft_putstr_fd("minishell: cd: ", 2);
-				ft_putstr_fd(data->args[1], 2);
+				ft_putstr_fd(data->command[1], 2);
 				ft_putstr_fd(": No such file or directory\n", 2);
 				return (-1);
             }

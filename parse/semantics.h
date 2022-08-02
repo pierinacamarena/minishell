@@ -5,7 +5,7 @@
 
 #include "string_ops.h"
 #include "expand.h"
-#include "common_defs.h"
+#include "../includes/minishell.h"
 #include "list.h"
 
 t_elem		*new_words_list(t_elem *words_list, t_elem *elem);
