@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:36:16 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/28 17:36:22 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/01 20:13:20 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,12 @@ int list_push(t_list **list, char *arg)
 	new->args = NULL;
 	new->length = 0;
 	new->type = TYPE_END;
-	new->has_redir = 0;
+	new->right_redir = 0;
+	new->start_redir = 0;
+	new->here_doc = 0;
+	new->here_doc_left = 0;
+	new->left_redir = 0;
 	new->redir_qty = 0;
-	new->double_redir = 0;
 	new->previous = NULL;
 	new->next = NULL;
 	if (*list)
@@ -108,34 +111,18 @@ int parse_arg(t_list **cmds, char *arg)
 		return (EXIT_SUCCESS);
 	else if (!punto_coma && (!*cmds || (*cmds)->type > TYPE_END))
 	{
-		// printf("##############\n");
-		// printf("%s\n", arg);
-		// printf("entering here\n");
-		// printf("##############\n");
 		return (list_push(cmds, arg));
 	}
 	else if (strcmp("|", arg) == 0)
 	{
-		// printf("##############\n");
-		// printf("%s\n", arg);
-		// printf("it is a pipe\n");
-		// printf("##############\n");
 		(*cmds)->type = TYPE_PIPE;
 	}
 	else if (punto_coma)
 	{
-		// printf("##############\n");
-		// printf("%s\n", arg);
-		// printf("es un punto coma\n");
-		// printf("##############\n");
 		(*cmds)->type = TYPE_BREAK;
 	}
 	else
 	{
-		// printf("##############\n");
-		// printf("%s\n", arg);
-		// printf("will call add_arg\n");
-		// printf("##############\n");
 		return (add_arg(*cmds, arg));
 	}
 	return (EXIT_SUCCESS);
@@ -156,6 +143,12 @@ void	print_parse_list(t_list *cmds)
 	{
 		printf("node %d\n", i);
 		printf("type is: %d\n", curr->type);
+		printf("start_redir is: %d\n", curr->start_redir);
+		printf("redir quantity is: %d\n", curr->redir_qty);
+		printf("right_redir: %d\n", curr->right_redir);
+		printf("left_redir: %d\n", curr->left_redir);
+		printf("here_doc: %d\n", curr->here_doc);
+		printf("here_doc_left: %d\n", curr->here_doc_left);
 		i++;
 		curr = curr->next;
 	}

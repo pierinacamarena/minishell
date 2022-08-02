@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/06 18:54:58 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/02 03:11:09 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,6 @@ char *ft_prompt(char const *str)
     return (prompt);
 }
 
-int     is_builtin(t_shell *shell)
-{
-    if (ft_strcmp(shell->cmds[0], "echo") == 0)
-        return (1);
-    else if (ft_strcmp(shell->cmds[0], "pwd") == 0)
-        return (1);
-    else if (ft_strcmp(shell->cmds[0], "env") == 0)
-        return (1);
-    else if (ft_strcmp(shell->cmds[0], "exit") == 0)
-        return (1);
-    else if (ft_strcmp(shell->cmds[0], "cd") == 0)
-        return (1);
-    else if (ft_strcmp(shell->cmds[0], "export") == 0)
-        return (1);
-    else if(ft_strcmp(shell->cmds[0], "unset") == 0)
-        return (1);
-    return (0);
-}
 
 void    set_env_exp(t_shell *shell, char **env)
 {
@@ -53,39 +35,19 @@ void    set_env_exp(t_shell *shell, char **env)
     shell->env = init_env(env);
     shell->exp = init_env(arr);
 	shell->cmds = 0;
+	shell->env_exec = 0;
     ft_free(arr);
-}
-
-/*
-Function that calls the different built_ins
-*/
-void    builtin_exec(t_shell *shell)
-{
-    if (ft_strcmp(shell->cmds[0], "echo") == 0)
-        ft_echo(shell->cmds);
-    else if (ft_strcmp(shell->cmds[0], "pwd") == 0)
-        ft_pwd();
-    else if (ft_strcmp(shell->cmds[0], "env") == 0)
-        ft_env(shell->env);
-    else if (ft_strcmp(shell->cmds[0], "exit") == 0)
-        ft_exit(0, shell);
-    else if (ft_strcmp(shell->cmds[0], "cd") == 0)
-        ft_cd(shell);
-    else if (ft_strcmp(shell->cmds[0], "export") == 0)
-        ft_export(shell);
-    else if(ft_strcmp(shell->cmds[0], "unset") == 0)
-        ft_unset(shell);
 }
 
 int main(int ac, char **av, char **env)
 {
     t_shell     shell;
-	// t_list		*cmd_parse;
+	t_list		*cmd_parse;
     char        *str;
-	// int			i;
+	int			i;
 
     str = NULL;
-	// cmd_parse = NULL;
+	cmd_parse = NULL;
     if (ac == 1)
     {
         (void)av;
@@ -101,26 +63,21 @@ int main(int ac, char **av, char **env)
                 shell.cmds = cmd_split(str);
                 free(str);
             }
-			// i = 0;
-			// if (shell.cmds)
-			// {
-			// 	while(shell.cmds[i])
-			// 	{
-			// 		// printf("here\n");
-			// 		parse_arg(&cmd_parse, shell.cmds[i]);
-			// 		i++;
-			// 	}
-			// }
-			// list_rewind(&cmd_parse);
-			// print_parse_list(cmd_parse);
-            if (shell.cmds && is_builtin(&shell) == 1)
-				builtin_exec(&shell);
-            else
-            {
-				if (shell.cmds)
-					exec(&shell);
+			i = 0;
+			if (shell.cmds)
+			{
+				while(shell.cmds[i])
+				{
+					parse_arg(&cmd_parse, shell.cmds[i]);
+					i++;
+				}
 			}
-			// list_clear(&cmd_parse);
+			list_rewind(&cmd_parse);
+			set_redir(cmd_parse);
+			// print_parse_list(cmd_parse);
+			if (shell.cmds)
+				exec_list(&cmd_parse, &shell);
+			list_clear(&cmd_parse);
             if (shell.cmds)
 				ft_free(shell.cmds);
         }

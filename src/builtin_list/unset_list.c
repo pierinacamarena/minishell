@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   unset_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/16 17:42:45 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 00:00:28 by pcamaren         ###   ########.fr       */
+/*   Created: 2022/08/01 23:40:25 by pcamaren          #+#    #+#             */
+/*   Updated: 2022/08/02 01:37:10 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Function that removes the node that contains the key we are looking for
 */
 
-void	ft_remove_var(t_env_list **begin, char *value)
+void	ft_remove_var_list(t_env_list **begin, char *value)
 {
 	t_env_list	*to_remove;
 	t_env_list	*curr;
@@ -55,11 +55,11 @@ void	ft_remove_var(t_env_list **begin, char *value)
 	}
 }
 
-void     ft_unset(t_shell *shell)
+void     ft_unset_list(t_shell *shell, t_list *data)
 {
 	int	i;
 
-    if (array_size(shell->cmds) == 1)
+    if (array_size(data->args) == 1)
     {
 		write_error("unset: not enough arguments");
         return ;
@@ -67,19 +67,19 @@ void     ft_unset(t_shell *shell)
     else
     {
 		i = 1;
-		while (shell->cmds[i])
+		while (data->args[i])
 		{
-			if (ft_strchr(shell->cmds[i], '='))
+			if (ft_strchr(data->args[i], '='))
 			{
 				ft_putstr_fd("unset: ", 2);
-				ft_putstr_fd(shell->cmds[i], 2);
+				ft_putstr_fd(data->args[i], 2);
 				ft_putstr_fd(": invalid parameter name\n", 2);
 				i++;
 			}
-			if (shell->cmds[i])
+			if (data->args[i])
 			{
-				ft_remove_var(&shell->env, shell->cmds[i]);
-				ft_remove_var(&shell->exp, shell->cmds[i]);
+				ft_remove_var_list(&shell->env, data->args[i]);
+				ft_remove_var_list(&shell->exp, data->args[i]);
 				i++;
 			}
 		}

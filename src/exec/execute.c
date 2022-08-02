@@ -3,16 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 17:14:48 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/21 17:14:50 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/01 23:23:54 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/* function that checks if the command is a builtin */
+
+int     is_builtin(t_shell *shell)
+{
+    if (ft_strcmp(shell->cmds[0], "echo") == 0)
+        return (1);
+    else if (ft_strcmp(shell->cmds[0], "pwd") == 0)
+        return (1);
+    else if (ft_strcmp(shell->cmds[0], "env") == 0)
+        return (1);
+    else if (ft_strcmp(shell->cmds[0], "exit") == 0)
+        return (1);
+    else if (ft_strcmp(shell->cmds[0], "cd") == 0)
+        return (1);
+    else if (ft_strcmp(shell->cmds[0], "export") == 0)
+        return (1);
+    else if(ft_strcmp(shell->cmds[0], "unset") == 0)
+        return (1);
+    return (0);
+}
+
+/*
+Function that calls the different built_ins
+*/
+
+void    builtin_exec(t_shell *shell)
+{
+    if (ft_strcmp(shell->cmds[0], "echo") == 0)
+        ft_echo(shell->cmds);
+    else if (ft_strcmp(shell->cmds[0], "pwd") == 0)
+        ft_pwd();
+    else if (ft_strcmp(shell->cmds[0], "env") == 0)
+        ft_env(shell->env);
+    else if (ft_strcmp(shell->cmds[0], "exit") == 0)
+        ft_exit(0, shell);
+    else if (ft_strcmp(shell->cmds[0], "cd") == 0)
+        ft_cd(shell);
+    else if (ft_strcmp(shell->cmds[0], "export") == 0)
+        ft_export(shell);
+    else if(ft_strcmp(shell->cmds[0], "unset") == 0)
+        ft_unset(shell);
+}
+
 void	exec(t_shell *shell)
+{
+	if (is_builtin(shell) == 1)
+		builtin_exec(shell);
+	else
+		exec_cmd(shell);
+}
+
+void	exec_cmd(t_shell *shell)
 {
 	pid_t	pid;
 	char	**env_exec;
@@ -30,7 +81,6 @@ void	exec(t_shell *shell)
 		{
 			ft_putstr_fd(shell->cmds[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
-			// printf("%s: command not found\n", shell->cmds[0]);
 			free(path);
 			ft_free(env_exec);
 			ft_free(shell->cmds);
@@ -42,7 +92,6 @@ void	exec(t_shell *shell)
 		{
 			ft_putstr_fd(shell->cmds[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
-			// printf("%s: command not found\n", shell->cmds[0]);
 			free(path);
 			ft_free(env_exec);
 			ft_free(shell->cmds);
