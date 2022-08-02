@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 19:43:39 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/03 00:01:20 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,81 +69,126 @@ int	count_list(t_pipeline *data)
 	}
 }
 
-// int	exec_pipes(t_pipeline *data, t_shell *shell)
-// {
-// 	t_pipes		pipes;
-// 	int			i;
+int	exec_pipes(t_pipeline *data, t_shell *shell)
+{
+	t_pipes		pipes;
+	t_pipeline	*cur;
+	int			i;
+	pid_t		pid;
+	int			command_num;
 
-// 	i = 0;
-// 	pipes.size = count_list(data) - 1;
-// 	pipes.fd_pipe = (int **)malloc(sizeof(int) * pipes.size * 2);
-// 	while (i < pipes.size)
-// 	{
-		
-// 	}
-// }
+	i = 0;
+	pipes.size = count_list(data) - 1;
+	pipes.fd_pipe = (int **)malloc(sizeof(int) * pipes.size);
+	if (!pipes.fd_pipe)
+		return (-1);
+	while (i < pipes.size)
+	{
+		pipes.fd_pipe[i] = (int *)malloc(sizeof(int) * 2);
+		if (!pipes.fd_pipe[i])
+			return (-1);
+		i++;
+	}
+	i = 0;
+	while (i < pipes.size)
+	{
+		if (pipe(pipes.fd_pipe[i]) < 0)
+		{
+			write_error("fatal error with pipes");
+			ft_exit_list(127, shell, data);
+		}
+	}
+	command_num = 0;
+	while (data)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			if (command > 0)
+			{
+				if (dup2(pipes.fd_pipe[command - 1], 0) < 0)
+				{
+					write_error("fatal error with dup");
+					ft_exit_list(127, shell, data);
+				}
+        	}
+			if (command < pipes.size)
+			{
+				if (dup2(pipes.fd_pipe[command], 1) < 0)
+				{
+					write_error("fatal error with dup");
+					ft_exit_list(127, shell, data);
+				}
+			}
+			//close all pipes
+			i = 0;
+			while (i < pipes.size)
+			{
+				close(pipes.fd_pipe[i]);
+				i++;
+			}	
+		}
+		else
+		{
+			waitpid(pid, &status, WUNTRACED | WCONTINUED);
+			i = 0;
+			while (i < pipes.size)
+			{
+				close(pipes.fd_pipe[i]);
+				i++;
+			}	
+		}
+		command_num++;
+}
+}
+
+void	exec(t_pipeline *data, t_shell *shell)
+{
+	char	*path;
+	
+	shell->env_exec = list_to_array(shell->env);
+	path = ft_path(data->command[0], shell->env_exec);
+	if (path == NULL)
+	{
+		ft_putstr_fd(data->command[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		free(path);
+		ft_free(shell->env_exec);
+		ft_free_list(&shell->env);
+		ft_free_list(&shell->exp);
+		free_commands_list(data);
+		exit(127);
+	}
+	if (execve(path, data->command, shell->env_exec) == -1)
+	{
+		ft_putstr_fd(data->command[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		free(path);
+		ft_free(shell->env_exec);
+		ft_free_list(&shell->env);
+		ft_free_list(&shell->exp);
+		free_commands_list(data);
+		exit(127);
+	}
+}
 
 int	exec_cmd_list(t_pipeline *data, t_shell *shell)
 {
 	pid_t	pid;
-	char	*path;
 	int		status;
 	int		ret;
-	// int		pipe_open;
 
 	ret = EXIT_FAILURE;
-	// pipe_open = 0;
-	// if (data->type == TYPE_PIPE || (data->previous && data->previous->type == TYPE_PIPE))
-	// {
-	// 	pipe_open = 1;
-	// 	if (pipe(data->pipes))
-	// 		return (-1);
-	// }
 	pid = fork();
 	if (pid < 0)
 		return (-1);
 	else if (pid == 0)
 	{
-		// if (data->type == TYPE_PIPE && dup2(data->pipes[1], STDOUT) < 0)
-		// 	return (-1);
-		// if (data->previous && data->previous->type == TYPE_PIPE && dup2(data->previous->pipes[0], STDIN) < 0)
-		// 	return (-1);
-		shell->env_exec = list_to_array(shell->env);
-		path = ft_path(data->command[0], shell->env_exec);
-		if (path == NULL)
-		{
-			ft_putstr_fd(data->command[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			free(path);
-			ft_free(shell->env_exec);
-			ft_free_list(&shell->env);
-			ft_free_list(&shell->exp);
-			free_commands_list(data);
-			// list_clear(&data);
-			// clear list function from parse
-			exit(127);
-		}
-		if (execve(path, data->command, shell->env_exec) == -1)
-		{
-			ft_putstr_fd(data->command[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			free(path);
-			ft_free(shell->env_exec);
-			ft_free_list(&shell->env);
-			ft_free_list(&shell->exp);
-			free_commands_list(data);
-			// list_clear(&data);
-			// clear list function from parse
-			exit(127);
-		}
+		exec(data, shell);
 	}
 	else
 	{
 		waitpid(pid, &status, WUNTRACED | WCONTINUED);
-		// if (pipe_open)
-		// 	close(data->pipes[1]);
-		// if (data->previous && data->previous->type == TYPE_PIPE)
-		// 	close(data->previous->pipes[0]);
 		// if (WIFEXITED(status))
 		// 	ret = WEXITSTATUS(status);
 	}
