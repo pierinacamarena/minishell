@@ -85,7 +85,7 @@ static void	list(t_token *current, t_scanner *scanner, int *panic, t_shell *shel
 	commands_list = NULL;
 	commands_list = pipeline(commands_list, current, scanner, panic, shell);
 	if (*panic == REGULAR_MODE)
-		exec_list(commands_list, shell);
+		exec_pipes(commands_list, shell);
 	// if (*panic == REGULAR_MODE)
 	// 	print_commands_list(commands_list);
 	free_commands_list(commands_list);

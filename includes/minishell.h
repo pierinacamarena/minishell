@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 19:52:40 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:15:41 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ int		set_redir(t_list *cmds);
 
 /*execute_list*/
 int	exec_list(t_pipeline *data, t_shell *shell);
+int	exec_pipes(t_pipeline *data, t_shell *shell);
 
 /*PARSING FUNCTIONS ! :D*/
 
