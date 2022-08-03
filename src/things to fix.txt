@@ -7,4 +7,4 @@ this is segfaulting
 2.
 the signal for ctrl-c when you stop a process prints twice the prompt
 
-
+3.builtin redirections

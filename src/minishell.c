@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/03 14:50:24 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/03 18:25:35 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int main(int ac, char **av, char **env)
     char        *str;
 
 	signal(SIGINT, sighandler);
+	signal(SIGQUIT, SIG_IGN);
     str = NULL;
     if (ac == 1)
     {
@@ -53,10 +54,17 @@ int main(int ac, char **av, char **env)
         set_env_exp(&shell, env);
         while (1)
         {
-            (void)av;
             str = ft_prompt(PROMPT_NAME);
-			init_scanner(&scanner, str);
-			parse(&scanner, &shell);
+			if (str == NULL)
+			{
+				printf("\n");
+				exit(EXIT_SUCCESS);
+			}
+			if (str)
+			{
+				init_scanner(&scanner, str);
+				parse(&scanner, &shell);
+			}
 			if (str && *str)
 				free(str);
         }
