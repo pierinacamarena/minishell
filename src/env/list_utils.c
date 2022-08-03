@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:32:28 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/15 21:32:29 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/03 17:58:54 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int     same_value(t_env_list *list, char *var)
     curr = list;
     while (curr != NULL)
     {
-        if (ft_strcmp(curr->node->content, var_split[1]) == 0)
+        if (curr->node->content && ft_strcmp(curr->node->content, var_split[1]) == 0)
         {
             ft_free(var_split);
             return (1);

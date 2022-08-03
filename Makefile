@@ -6,7 +6,7 @@
 #    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by pcamaren          #+#    #+#              #
-#    Updated: 2022/08/02 19:49:57 by pcamaren         ###   ########.fr        #
+#    Updated: 2022/08/03 17:53:00 by pcamaren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS	=	./src/minishell.c\
 			./src/builtin_list/echo.c\
 			./src/builtin_list/builtins_list.c\
 			./src/builtin_list/cd_list.c\
-			./src/builtin_list/export_list.c\
+			./src/builtin_list/export_list_builtin.c\
 			./src/builtin_list/unset_list.c\
 			./parse/buffer.c\
 			./parse/buffer2.c\
