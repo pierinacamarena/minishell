@@ -17,7 +17,7 @@ static t_token	scan_word(t_scanner *scanner, int c)
 	state = WORD_STATE;
 	while (c != '\0')
 	{
-		update_state(state, c);
+		state = update_state(state, c);
 		if (state == WORD_STATE)
 			if (ft_ismeta(c) || (c == '&' && peek(*scanner) == '&'))
 				break ;
