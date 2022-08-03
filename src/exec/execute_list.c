@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/03 13:14:47 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:20:14 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	{
 		if (pipe(pipes.fd_pipe[i]) < 0)
 		{
-			// write_error("fatal error with pipes");
 			perror("pipe");
 			ft_exit_list(127, shell, data);
 		}
@@ -133,41 +132,39 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	command_num = 0;
 	while (data)
 	{
-		//if builtin
-			//call builtin with the right pipes
-		//else
 		if (is_builtin_list(data) == 1)
 			builtin_exec_list(data, shell);
 		else
-		{pid = fork();
-		if (pid == 0)
 		{
-			if (command_num > 0)
+			pid = fork();
+			if (pid == 0)
 			{
-				if (dup2(pipes.fd_pipe[command_num - 1][0], 0) < 0)
+				if (command_num > 0)
 				{
-					perror("dup");
-					ft_exit_list(127, shell, data);
+					if (dup2(pipes.fd_pipe[command_num - 1][0], 0) < 0)
+					{
+						perror("dup");
+						ft_exit_list(127, shell, data);
+					}
 				}
-			}
-			if (command_num < pipes.size)
-			{
-				if (dup2(pipes.fd_pipe[command_num][1], 1) < 0)
+				if (command_num < pipes.size)
 				{
-					perror("dup2");
-					ft_exit_list(127, shell, data);
+					if (dup2(pipes.fd_pipe[command_num][1], 1) < 0)
+					{
+						perror("dup2");
+						ft_exit_list(127, shell, data);
+					}
 				}
-			}
-			//close all pipes
-			i = 0;
-			while (i < pipes.size)
-			{
-				close(pipes.fd_pipe[i][0]);
-				close(pipes.fd_pipe[i][1]);
-				i++;
-			}
+				i = 0;
+				while (i < pipes.size)
+				{
+					close(pipes.fd_pipe[i][0]);
+					close(pipes.fd_pipe[i][1]);
+					i++;
+				}
 			exec(data, shell);
-		}}
+			}
+		}
 		command_num++;
 		data = data->next;
 	}
@@ -178,65 +175,65 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 		close(pipes.fd_pipe[i][1]);
 		i++;
 	}
-	while (waitpid(pid, &status, 0) > 0)
+	while (waitpid(-1, &status, 0) > 0)
 		;
 	return (0);
 }
 
 
-int	exec_cmd_list(t_pipeline *data, t_shell *shell)
-{
-	pid_t	pid;
-	int		status;
-	int		ret;
+// int	exec_cmd_list(t_pipeline *data, t_shell *shell)
+// {
+// 	pid_t	pid;
+// 	int		status;
+// 	int		ret;
 
-	ret = EXIT_FAILURE;
-	pid = fork();
-	if (pid < 0)
-		return (-1);
-	else if (pid == 0)
-	{
-		exec(data, shell);
-	}
-	else
-	{
-		waitpid(pid, &status, WUNTRACED | WCONTINUED);
-		// if (WIFEXITED(status))
-		// 	ret = WEXITSTATUS(status);
-	}
-	return (ret);
-}
+// 	ret = EXIT_FAILURE;
+// 	pid = fork();
+// 	if (pid < 0)
+// 		return (-1);
+// 	else if (pid == 0)
+// 	{
+// 		exec(data, shell);
+// 	}
+// 	else
+// 	{
+// 		waitpid(pid, &status, WUNTRACED | WCONTINUED);
+// 		// if (WIFEXITED(status))
+// 		// 	ret = WEXITSTATUS(status);
+// 	}
+// 	return (ret);
+// }
 
-int	exec_list(t_pipeline *data, t_shell *shell)
-{
-	t_pipeline	*curr;
-	int		ret;
-	int		len;
+// int	exec_list(t_pipeline *data, t_shell *shell)
+// {
+// 	t_pipeline	*curr;
+// 	int		ret;
+// 	int		len;
 
-	len = count_list(data);
-	ret = EXIT_SUCCESS;
-	if (!data)
-		return (-1);
-	else
-	{		
-		while (data != NULL)
-		{
-			curr = data;
-			if (is_builtin_list(curr) == 1)
-				builtin_exec_list(curr, shell);
-			else
-			{
-				exec_pipes(curr, shell);
-				// if (len == 1)
-				// 	exec_cmd_list(curr, shell);
-				// else if (len > 1)
-				// 	exec_pipes(data, shell);
-			}
-			if (!(data)->next)
-				break ;
-			printf("finished one process\n");
-			data = data->next;
-		}
-		return (ret);
-	}
-}
+// 	len = count_list(data);
+// 	ret = EXIT_SUCCESS;
+// 	if (!data)
+// 		return (-1);
+// 	else
+// 	{		
+// 		while (data != NULL)
+// 		{
+// 			curr = data;
+// 			if (is_builtin_list(curr) == 1)
+// 				builtin_exec_list(curr, shell);
+// 			else
+// 			{
+// 				exec_pipes(curr, shell);
+// 				// if (len == 1)
+// 				// 	exec_cmd_list(curr, shell);
+// 				// else if (len > 1)
+// 				// 	exec_pipes(data, shell);
+// 			}
+// 			if (!(data)->next)
+// 				break ;
+// 			printf("finished one process\n");
+// 			data = data->next;
+// 		}
+// 		return (ret);
+// 	}
+// }

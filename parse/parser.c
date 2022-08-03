@@ -1,17 +1,17 @@
 #include "../includes/minishell.h"
 
-static void	match(int type, t_pack *pack)
+static void	match(int type, t_parse *pack)
 { 
 	if (pack->current->type != type && *pack->panic != PANIC_MODE)
 	{
 		printf("syntax error near unexpected token '%.*s'\n", \
-		current->length, current->start);
+		pack->current->length, pack->current->start);
 		*pack->panic = PANIC_MODE;
 	}
-	*pack->current = scan_token(scanner);
+	*pack->current = scan_token(pack->scanner);
 }
 
-static void	command_elem(t_pack *pack, t_elem **elem_list, t_shell *shell)
+static void	command_elem(t_parse *pack, t_elem **elem_list, t_shell *shell)
 {
 	int		type;
 
@@ -21,7 +21,7 @@ static void	command_elem(t_pack *pack, t_elem **elem_list, t_shell *shell)
 		match(LESS_TOKEN, pack);
 		type = READ_FILE;
 	}
-	else if (current->type == LESS_LESS_TOKEN)
+	else if (pack->current->type == LESS_LESS_TOKEN)
 	{
 		match(LESS_LESS_TOKEN, pack); 
 		type = HERE_DOC;
@@ -40,7 +40,7 @@ static void	command_elem(t_pack *pack, t_elem **elem_list, t_shell *shell)
 	match(WORD_TOKEN, pack);
 }
 
-static void	command(t_pack *pack, t_elem **elem_list, t_shell *shell)
+static void	command(t_parse *pack, t_elem **elem_list, t_shell *shell)
 {
 	command_elem(pack, elem_list, shell);
 	if (pack->current->type != PIPE_TOKEN \
@@ -50,7 +50,7 @@ static void	command(t_pack *pack, t_elem **elem_list, t_shell *shell)
 		command(pack, elem_list, shell);
 }
 
-static t_pipeline	*pipeline(t_pipeline *commands_list, t_pack *pack, t_shell *shell)
+static t_pipeline	*pipeline(t_pipeline *commands_list, t_parse *pack, t_shell *shell)
 {
 	t_elem	*elem_list;
 	t_elem	*words_list;
@@ -84,7 +84,7 @@ static void	list(t_parse *pack, t_shell *shell)
 		return ;
 	commands_list = NULL;
 	commands_list = pipeline(commands_list, pack, shell);
-	if (*panic == REGULAR_MODE)
+	if (*pack->panic == REGULAR_MODE)
 		exec_pipes(commands_list, shell);
 	free_commands_list(commands_list);
 	if (pack->current->type == OR_TOKEN)

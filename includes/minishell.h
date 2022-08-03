@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/03 13:15:41 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:56:58 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,12 @@ typedef struct s_token {
 	const char	*start;
 	int			length;
 }	t_token;
+
+typedef struct s_parse {
+	t_token		*current;
+	t_scanner	*scanner;
+	int			*panic;
+}	t_parse;
 
 typedef struct s_elem {
 	char			*words;
