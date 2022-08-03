@@ -1,0 +1,10 @@
+fix 
+1.
+export var
+export var
+export var=content
+this is segfaulting
+2.
+the signal for ctrl-c when you stop a process prints twice the prompt
+
+

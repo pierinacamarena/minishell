@@ -24,6 +24,8 @@
 #include <stddef.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 
 #define PROMPT_NAME "minishell% "
@@ -125,22 +127,6 @@ typedef struct	s_exp_list
 	struct s_exp_list	*next;
 }				t_exp_list;
 
-typedef struct	s_list
-{
-	char			**args;
-	int				length;
-	int				type;
-	int				start_redir;
-	int				redir_qty;
-	int				right_redir;
-	int				left_redir;
-	int				here_doc;
-	int				here_doc_left;
-	int				pipes[2];
-	struct s_list	*previous;
-	struct s_list	*next;
-}				t_list;
-
 typedef struct s_buffer {
 	int		pos;
 	char	buf[BUFSIZE];
@@ -229,11 +215,7 @@ char	*cmd_tester(char **path_split, char *arg);
 void	sighandler(int signum);
 void	sighandler2(int signum);
 
-/*redirec_parse*/
-int		set_redir(t_list *cmds);
-
 /*execute_list*/
-int	exec_list(t_pipeline *data, t_shell *shell);
 int	exec_pipes(t_pipeline *data, t_shell *shell);
 
 /*PARSING FUNCTIONS ! :D*/

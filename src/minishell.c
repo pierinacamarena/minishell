@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 19:42:33 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:50:24 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char *ft_prompt(char const *str)
     char    *prompt;
 
     prompt = readline(str);
+	add_history(prompt);
     return (prompt);
 }
 
@@ -44,6 +45,7 @@ int main(int ac, char **av, char **env)
 	t_scanner	scanner;
     char        *str;
 
+	signal(SIGINT, sighandler);
     str = NULL;
     if (ac == 1)
     {
@@ -52,7 +54,6 @@ int main(int ac, char **av, char **env)
         while (1)
         {
             (void)av;
-			signal(SIGINT, sighandler);
             str = ft_prompt(PROMPT_NAME);
 			init_scanner(&scanner, str);
 			parse(&scanner, &shell);

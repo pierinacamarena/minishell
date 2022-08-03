@@ -6,7 +6,7 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:54:51 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/27 17:54:53 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/03 15:35:58 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 void	sighandler(int signum)
 {
-	char		*env;
-
-	write(1, "\b\b  \n", 5);
-	env = getcwd(NULL, 0);
-	printf("minishell%% ");
-	free(env);
-	env = NULL;
-	(void)signum;
+	if (signum == SIGINT)
+	{
+		write(STDOUT_FILENO, "\b \b\b \b\n", 7);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }

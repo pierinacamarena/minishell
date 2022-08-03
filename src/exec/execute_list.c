@@ -99,6 +99,62 @@ void	exec(t_pipeline *data, t_shell *shell)
 	}
 }
 
+int	get_heredoc(char *heredoc)
+{
+	int		pipefd[2];
+	char	*line;
+
+	pipe(pipefd);
+	line = readline("> ");
+	while (line != NULL && strcmp(heredoc, line) != 0) //add ft_strcmp
+	{
+		write(pipefd[1], line, ft_strlen(line));
+		write(pipefd[1], "\n", 1);
+		free(line);
+		line = readline("> ");
+	}
+	free(line);
+	close(pipefd[1]);
+	return (pipefd[0]);
+}
+
+int	do_redir(t_elem *redirections)
+{
+	int	fd;
+
+	if (redirections == NULL)
+		return (-1);
+	if (redirections->type == WRITE_FILE)
+		fd = open(redirections->words, O_TRUNC | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	else if (redirections->type == READ_FILE)
+		fd = open(redirections->words, O_RDONLY);
+	else if (redirections->type == APPEND_FILE)
+		fd = open(redirections->words, O_APPEND | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	else
+		fd = get_heredoc(redirections->words);
+	return (fd);
+}
+
+void	get_redirs(t_elem *redirections, int *read_write_fds)
+{
+	while (redirections != NULL)
+	{
+		if (redirections->type == APPEND_FILE || redirections->type == WRITE_FILE)
+		{
+			if (read_write_fds[1] != STDOUT_FILENO)
+				close(read_write_fds[1]);
+			read_write_fds[1] = do_redir(redirections);
+		}
+		else
+		{
+			if (read_write_fds[0] != STDIN_FILENO)
+				close(read_write_fds[0]);
+			read_write_fds[0] = do_redir(redirections);
+		}
+		redirections=redirections->next;
+	}
+}
+
 int	exec_pipes(t_pipeline *data, t_shell *shell)
 {
 	t_pipes		pipes;
@@ -107,6 +163,7 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	int			command_num;
 	int			status;
 	int			exit_status;
+	int			read_write_fds[2];
 
 	i = 0;
 	pipes.size = count_list(data) - 1;
@@ -140,22 +197,31 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 			pid = fork();
 			if (pid == 0)
 			{
+				read_write_fds[0] = STDIN_FILENO;
+				read_write_fds[1] = STDOUT_FILENO;
+				//if NOT first command
 				if (command_num > 0)
 				{
-					if (dup2(pipes.fd_pipe[command_num - 1][0], 0) < 0)
-					{
-						perror("dup");
-						ft_exit_list(127, shell, data);
-					}
+					read_write_fds[0] = pipes.fd_pipe[command_num - 1][0];
+					// if (dup2(pipes.fd_pipe[command_num - 1][0], 0) < 0)
+					// {
+					// 	perror("dup");
+					// 	ft_exit_list(127, shell, data);
+					// }
 				}
+				//if NOT last command
 				if (command_num < pipes.size)
 				{
-					if (dup2(pipes.fd_pipe[command_num][1], 1) < 0)
-					{
-						perror("dup2");
-						ft_exit_list(127, shell, data);
-					}
+					read_write_fds[1] = pipes.fd_pipe[command_num][1];
+					// if (dup2(pipes.fd_pipe[command_num][1], 1) < 0)
+					// {
+					// 	perror("dup2");
+					// 	ft_exit_list(127, shell, data);
+					// }
 				}
+				get_redirs(data->redirections, read_write_fds);
+				dup2(read_write_fds[0], 0);
+				dup2(read_write_fds[1], 1);
 				i = 0;
 				while (i < pipes.size)
 				{
