@@ -1,63 +1,63 @@
 #include "../includes/minishell.h"
 
-static void	match(int type, t_token *current, t_scanner *scanner, int *panic)
+static void	match(int type, t_pack *pack)
 { 
-	if (current->type != type && *panic != PANIC_MODE)
+	if (pack->current->type != type && *pack->panic != PANIC_MODE)
 	{
 		printf("syntax error near unexpected token '%.*s'\n", \
 		current->length, current->start);
-		*panic = PANIC_MODE;
+		*pack->panic = PANIC_MODE;
 	}
-	*current = scan_token(scanner);
+	*pack->current = scan_token(scanner);
 }
 
-static void	command_elem(t_token *current, t_scanner *scanner, t_elem **elem_list, int *panic, t_shell *shell)
+static void	command_elem(t_pack *pack, t_elem **elem_list, t_shell *shell)
 {
 	int		type;
 
 	type = SIMPLE_WORD;
-	if (current->type == LESS_TOKEN)
+	if (pack->current->type == LESS_TOKEN)
 	{
-		match(LESS_TOKEN, current, scanner, panic);
+		match(LESS_TOKEN, pack);
 		type = READ_FILE;
 	}
 	else if (current->type == LESS_LESS_TOKEN)
 	{
-		match(LESS_LESS_TOKEN, current, scanner, panic);
+		match(LESS_LESS_TOKEN, pack); 
 		type = HERE_DOC;
 	}
-	else if (current->type == MORE_TOKEN)
+	else if (pack->current->type == MORE_TOKEN)
 	{
-		match(MORE_TOKEN, current, scanner, panic);
+		match(MORE_TOKEN, pack);
 		type = WRITE_FILE;
 	}
-	else if (current->type == MORE_MORE_TOKEN)
+	else if (pack->current->type == MORE_MORE_TOKEN)
 	{
-		match(MORE_MORE_TOKEN, current, scanner, panic);
+		match(MORE_MORE_TOKEN, pack);
 		type = APPEND_FILE;
 	}
-	*elem_list = new_elem(*elem_list, *current, type, shell);
-	match(WORD_TOKEN, current, scanner, panic);
+	*elem_list = new_elem(*elem_list, *pack->current, type, shell);
+	match(WORD_TOKEN, pack);
 }
 
-static void	command(t_token *current, t_scanner *scanner, t_elem **elem_list, int *panic, t_shell *shell)
+static void	command(t_pack *pack, t_elem **elem_list, t_shell *shell)
 {
-	command_elem(current, scanner, elem_list, panic, shell);
-	if (current->type != PIPE_TOKEN \
-		&& current->type != OR_TOKEN \
-		&& current->type != AND_TOKEN \
-		&& current->type != EOF_TOKEN)
-		command(current, scanner, elem_list, panic, shell);
+	command_elem(pack, elem_list, shell);
+	if (pack->current->type != PIPE_TOKEN \
+		&& pack->current->type != OR_TOKEN \
+		&& pack->current->type != AND_TOKEN \
+		&& pack->current->type != EOF_TOKEN)
+		command(pack, elem_list, shell);
 }
 
-static t_pipeline	*pipeline(t_pipeline *commands_list, t_token *current, t_scanner *scanner, int *panic, t_shell *shell)
+static t_pipeline	*pipeline(t_pipeline *commands_list, t_pack *pack, t_shell *shell)
 {
 	t_elem	*elem_list;
 	t_elem	*words_list;
 	t_elem	*tmp;
 
 	elem_list = NULL;
-	command(current, scanner, &elem_list, panic, shell);
+	command(pack, &elem_list, shell); 
 	words_list = NULL;
 	while (elem_list != NULL)
 	{
@@ -68,46 +68,48 @@ static t_pipeline	*pipeline(t_pipeline *commands_list, t_token *current, t_scann
 	}
 	commands_list = new_command(commands_list, words_list);
 	free_elem_list(words_list);
-	if (current->type == PIPE_TOKEN)
+	if (pack->current->type == PIPE_TOKEN)
 	{
-		match(PIPE_TOKEN, current, scanner, panic);
-		commands_list->next = pipeline(commands_list->next, current, scanner, panic, shell);
+		match(PIPE_TOKEN, pack);
+		commands_list->next = pipeline(commands_list->next, pack, shell);
 	}
 	return (commands_list);
 }
 
-static void	list(t_token *current, t_scanner *scanner, int *panic, t_shell *shell)
+static void	list(t_parse *pack, t_shell *shell)
 {
 	t_pipeline	*commands_list;
 
-	if (current->type == EOF_TOKEN)
+	if (pack->current->type == EOF_TOKEN)
 		return ;
 	commands_list = NULL;
-	commands_list = pipeline(commands_list, current, scanner, panic, shell);
+	commands_list = pipeline(commands_list, pack, shell);
 	if (*panic == REGULAR_MODE)
-		exec_list(commands_list, shell);
-	// if (*panic == REGULAR_MODE)
-	// 	print_commands_list(commands_list);
+		exec_pipes(commands_list, shell);
 	free_commands_list(commands_list);
-	if (current->type == OR_TOKEN)
+	if (pack->current->type == OR_TOKEN)
 	{
-		match(OR_TOKEN, current, scanner, panic);
-		list(current, scanner, panic, shell);
+		match(OR_TOKEN, pack);
+		list(pack, shell);
 	}
-	else if (current->type == AND_TOKEN)
+	else if (pack->current->type == AND_TOKEN)
 	{
-		match(AND_TOKEN, current, scanner, panic);
-		list(current, scanner, panic, shell);
+		match(AND_TOKEN, pack);
+		list(pack, shell);
 	}
 }
 
 int	parse(t_scanner *scanner, t_shell *shell)
 {
+	t_parse		pack;
 	t_token		current;
 	int			panic;
 
 	panic = REGULAR_MODE;
 	current = scan_token(scanner);
-	list(&current, scanner, &panic, shell);
+	pack.current = &current;
+	pack.scanner = scanner;
+	pack.panic = &panic;
+	list(&pack, shell);
 	return (current.type);
 }
