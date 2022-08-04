@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 15:04:24 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 17:24:07 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,28 @@ int     is_builtin_list(t_pipeline *data)
     return (0);
 }
 
-void    builtin_exec_list(t_pipeline *data, t_shell *shell, int *read_write_fds)
+int	builtin_exec_list(t_pipeline *data, t_shell *shell, int *read_write_fds)
 {
+	int	exit_status;
+
+	exit_status = 0;
     if (ft_strcmp(data->command[0], "echo") == 0)
-        ft_echo(data->command, read_write_fds);
+        exit_status = ft_echo(data->command, read_write_fds);
     else if (ft_strcmp(data->command[0], "pwd") == 0)
-        ft_pwd(read_write_fds);
+        exit_status = ft_pwd(read_write_fds);
     else if (ft_strcmp(data->command[0], "env") == 0)
-        ft_env(shell->env, read_write_fds);
+        exit_status = ft_env(shell->env, read_write_fds);
     else if (ft_strcmp(data->command[0], "exit") == 0)
-        ft_exit_list(0, shell, data);
+        exit_status = ft_exit_list(shell, data);
     else if (ft_strcmp(data->command[0], "cd") == 0)
-        ft_cd_list(shell, data);
+        exit_status = ft_cd_list(shell, data);
     else if (ft_strcmp(data->command[0], "export") == 0)
-        ft_export_list(shell, data, read_write_fds);
-    else if(ft_strcmp(data->command[0], "unset") == 0)
-        ft_unset_list(shell, data);
+        exit_status = ft_export_list(shell, data, read_write_fds);
+    else if (ft_strcmp(data->command[0], "unset") == 0)
+        exit_status = ft_unset_list(shell, data);
+	else
+		exit_status = 0;
+	return (exit_status);
 }
 
 int	count_list(t_pipeline *data)
@@ -80,10 +86,11 @@ void	exec(t_pipeline *data, t_shell *shell)
 		ft_putstr_fd(data->command[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		free(path);
-		ft_free(shell->env_exec);
-		ft_free_list(&shell->env);
-		ft_free_list(&shell->exp);
-		free_commands_list(data);
+		full_free(shell, data);
+		// ft_free(shell->env_exec);
+		// ft_free_list(&shell->env);
+		// ft_free_list(&shell->exp);
+		// free_commands_list(data);
 		exit(127);
 	}
 	if (execve(path, data->command, shell->env_exec) == -1)
@@ -91,10 +98,11 @@ void	exec(t_pipeline *data, t_shell *shell)
 		ft_putstr_fd(data->command[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		free(path);
-		ft_free(shell->env_exec);
-		ft_free_list(&shell->env);
-		ft_free_list(&shell->exp);
-		free_commands_list(data);
+		full_free(shell, data);
+		// ft_free(shell->env_exec);
+		// ft_free_list(&shell->env);
+		// ft_free_list(&shell->exp);
+		// free_commands_list(data);
 		exit(127);
 	}
 }
@@ -132,6 +140,8 @@ int	do_redir(t_elem *redirections)
 		fd = open(redirections->words, O_APPEND | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	else
 		fd = get_heredoc(redirections->words);
+	if (fd == -1)
+		perror(redirections->words);
 	return (fd);
 }
 
@@ -165,7 +175,9 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	int			exit_status;
 	int			read_write_fds[2];
 	struct sigaction	act;
+	int			built_check;
 
+	built_check = 0;
 	act.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &act, NULL);
 	i = 0;
@@ -186,7 +198,8 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 		if (pipe(pipes.fd_pipe[i]) < 0)
 		{
 			perror("pipe");
-			ft_exit_list(127, shell, data);
+			full_free(shell, data);
+			exit(127);
 		}
 		i++;
 	}
@@ -201,7 +214,11 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 			read_write_fds[1] = pipes.fd_pipe[command_num][1];
 		get_redirs(data->redirections, read_write_fds);
 		if (is_builtin_list(data))
-			builtin_exec_list(data, shell, read_write_fds);
+		{	
+			exit_status = builtin_exec_list(data, shell, read_write_fds);
+			if (data->next == NULL)
+				built_check = 1;
+		}
 		else
 		{
 			pid = fork();
@@ -210,6 +227,11 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 				act.sa_handler = SIG_DFL;
 				sigaction(SIGQUIT, &act, NULL);
 				sigaction(SIGINT, &act, NULL);
+				if (read_write_fds[0] == -1 || read_write_fds[1] == -1)
+				{
+					full_free(shell, data);
+					exit(1);
+				}
 				dup2(read_write_fds[0], 0);
 				dup2(read_write_fds[1], 1);
 				i = 0;
@@ -233,9 +255,9 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 		i++;
 	}
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
+	if (WIFSIGNALED(status) && built_check == 0)
 		exit_status = 128 + WTERMSIG(status);
-	else if (WIFEXITED(status))
+	else if (WIFEXITED(status) && built_check == 0)
 		exit_status = WEXITSTATUS(status);
 	while (waitpid(-1, &status, 0) > 0)
 		;

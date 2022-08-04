@@ -28,6 +28,7 @@ int	ft_isn(char *str)
 	int	len;
 
 	i = 1;
+	if (str)
 	len = ft_strlen(str);
 	if (str[0] == '-')
 	{
@@ -58,7 +59,7 @@ int	ft_echo(char **args, int *read_write_fds)
 	}
 	if (len > 1)
 	{
-		while ((ft_isn(args[i]) == 1) && args[1])
+		while (args[i] && (ft_isn(args[i]) == 1))
 		{
 			is_n = 1;
 			i++;
@@ -69,7 +70,8 @@ int	ft_echo(char **args, int *read_write_fds)
 			write(read_write_fds[1], " ", 1);
 			i++;
 		}
-		write(read_write_fds[1], args[i], ft_strlen(args[i]));
+		if (args[i])
+			write(read_write_fds[1], args[i], ft_strlen(args[i]));
 	}
 	if (is_n == 0)
 		write(read_write_fds[1], "\n", 1);

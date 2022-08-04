@@ -34,7 +34,7 @@ int	ft_cd_list(t_shell *shell, t_pipeline *data)
 	if (len > 2)
 	{
 		write_error("minishell: cd: too many arguments");
-		return (-1);
+		return (1);
 	}
 	else if (len == 1)
 	{
@@ -47,7 +47,7 @@ int	ft_cd_list(t_shell *shell, t_pipeline *data)
 		find_replace(&shell->exp, "PWD=", new_pwd);
 		free(saved_oldpwd);
 		free(new_pwd);
-		return (1);
+		return (0);
 	}
 	else
 	{
@@ -62,7 +62,7 @@ int	ft_cd_list(t_shell *shell, t_pipeline *data)
 			find_replace(&shell->exp, "PWD=", new_pwd);
 			free(saved_oldpwd);
 			free(new_pwd);
-			return (1);
+			return (0);
 		}
 		else
 		{
@@ -73,7 +73,7 @@ int	ft_cd_list(t_shell *shell, t_pipeline *data)
 				ft_putstr_fd("minishell: cd: ", 2);
 				ft_putstr_fd(data->command[1], 2);
 				ft_putstr_fd(": No such file or directory\n", 2);
-				return (-1);
+				return (1);
 			}
 			new_pwd = getcwd(NULL, 0);
 			find_replace(&shell->env, "OLDPWD=", saved_oldpwd);

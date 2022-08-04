@@ -155,11 +155,12 @@ int     is_builtin(t_shell *shell);
 
 /*builtins_list*/
 //int		ft_pwd(void);
+int		len_cmds_list(char **cmds);
 int		ft_pwd(int *read_write_fds);
 int		ft_env(t_env_list *env, int *read_write_fds);
-void    ft_exit_list(long long i, t_shell *shell, t_pipeline *data);
-void    ft_unset_list(t_shell *shell, t_pipeline *data);
-void    ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds);
+int		ft_exit_list(t_shell *shell, t_pipeline *data);
+int	    ft_unset_list(t_shell *shell, t_pipeline *data);
+int	    ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds);
 int		ft_cd_list(t_shell *shell, t_pipeline *data);
 
 /* utils */
@@ -179,6 +180,7 @@ void    ft_putchar_fd(char c, int fd);
 void    ft_putstr_fd(char *s, int fd);
 void    ft_putendl_fd(char *s, int fd);
 char	*ft_itoa(int n);
+void	full_free(t_shell *shell, t_pipeline *data);
 
 /*ft_split*/
 int			ft_wordcount(char const *s, char c);

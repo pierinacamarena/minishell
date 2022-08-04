@@ -55,33 +55,29 @@ void	ft_remove_var_list(t_env_list **begin, char *value)
 	}
 }
 
-void	ft_unset_list(t_shell *shell, t_pipeline *data)
+int	ft_unset_list(t_shell *shell, t_pipeline *data)
 {
 	int	i;
 
 	if (array_size(data->command) == 1)
+		return (0);
+
+	i = 1;
+	while (data->command[i])
 	{
-		write_error("unset: not enough arguments");
-		return ;
-	}
-	else
-	{
-		i = 1;
-		while (data->command[i])
+		if (ft_strchr(data->command[i], '='))
 		{
-			if (ft_strchr(data->command[i], '='))
-			{
-				ft_putstr_fd("unset: ", 2);
-				ft_putstr_fd(data->command[i], 2);
-				ft_putstr_fd(": invalid parameter name\n", 2);
-				i++;
-			}
-			if (data->command[i])
-			{
-				ft_remove_var_list(&shell->env, data->command[i]);
-				ft_remove_var_list(&shell->exp, data->command[i]);
-				i++;
-			}
+			ft_putstr_fd("unset: ", 2);
+			ft_putstr_fd(data->command[i], 2);
+			ft_putstr_fd(": invalid parameter name\n", 2);
+			i++;
+		}
+		if (data->command[i])
+		{
+			ft_remove_var_list(&shell->env, data->command[i]);
+			ft_remove_var_list(&shell->exp, data->command[i]);
+			i++;
 		}
 	}
+	return (0);
 }

@@ -256,3 +256,12 @@ char	*ft_itoa(int n)
 	}
 	return (nb_arr);
 }
+
+void	full_free(t_shell *shell, t_pipeline *data)
+{
+	if (shell->env_exec)
+		ft_free(shell->env_exec);
+	ft_free_list(&shell->env);
+	ft_free_list(&shell->exp);
+	free_commands_list(data);
+}

@@ -33,14 +33,30 @@ int	ft_env(t_env_list *env, int *read_write_fds)
 		write(read_write_fds[1], "\n", 1);
 		env = env->next;
 	}
-	return (1);
+	return (0);
 }
 
-void	ft_exit_list(long long i, t_shell *shell, t_pipeline *data)
+int	ft_exit_list(t_shell *shell, t_pipeline *data)
 {
+	int	len;
+	int	exit_atoi;
+
+	len = len_cmds_list(data->command);
+	if (len > 2)
+	{
+		write_error("exit: too many arguments");
+		return (1);
+	}
 	ft_free_list(&shell->env);
 	ft_free_list(&shell->exp);
 	free_commands_list(data);
-	if (i <= INT_MAX || i >= INT_MIN)
-		exit(i);
+	if (len == 1)
+		exit(0);
+	else
+	{	
+		
+		exit_atoi = atoi(data->command[1]);
+		return (-1);
+		// exit(exit_atoi);
+	}
 }

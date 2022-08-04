@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 14:33:28 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 17:14:07 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,31 +48,33 @@ int main(int ac, char **av, char **env)
 	struct sigaction	act;
 
     str = NULL;
-    if (ac == 1)
-    {
-        (void)av;
-        set_env_exp(&shell, env);
-        while (1)
-        {
-			act.sa_handler = sighandler;
-			sigaction(SIGINT, &act, NULL);
-			act.sa_handler = SIG_IGN;
-			sigaction(SIGQUIT, &act, NULL);
-            str = ft_prompt(PROMPT_NAME);
-			if (str == NULL)
-			{
-				printf("\n");
-				//free the env
-				exit(EXIT_SUCCESS);
-			}
-			if (str)
-			{
-				init_scanner(&scanner, str);
-				parse(&scanner, &shell);
-			}
-			if (str && *str)
-				free(str);
-        }
-    }
-    return (1);
+	if (ac > 1)
+	{	
+		printf("too many arguments\n");
+		return (1);
+	}
+	(void)av;
+	set_env_exp(&shell, env);
+	while (1)
+	{
+		act.sa_handler = sighandler;
+		sigaction(SIGINT, &act, NULL);
+		act.sa_handler = SIG_IGN;
+		sigaction(SIGQUIT, &act, NULL);
+		str = ft_prompt(PROMPT_NAME);
+		if (str == NULL)
+		{
+			printf("\n");
+			//free the env
+			exit(EXIT_SUCCESS);
+		}
+		if (str)
+		{
+			init_scanner(&scanner, str);
+			parse(&scanner, &shell);
+		}
+		if (str && *str)
+			free(str);
+	}
+    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 19:00:08 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/27 19:00:09 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 16:03:56 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_path(char *arg, char **env)
 	char	*cmd;
 	char	**path_split;
 
+	if (access(arg, X_OK) == 0)
+		return (ft_strdup(arg));
 	i = 0;
 	while (env[i])
 	{
