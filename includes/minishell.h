@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 15:00:30 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:10:31 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void    ft_putstr_fd(char *s, int fd);
 void    ft_putendl_fd(char *s, int fd);
 char	*ft_itoa(int n);
 void	full_free(t_shell *shell, t_pipeline *data);
+int		ft_atoi(const char *str);
 
 /*ft_split*/
 int			ft_wordcount(char const *s, char c);

@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 13:30:58 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:17:07 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ int	ft_exit_list(t_shell *shell, t_pipeline *data)
 	}
 	ft_free_list(&shell->env);
 	ft_free_list(&shell->exp);
-	free_commands_list(data);
 	if (len == 1)
 		exit(0);
 	else
 	{	
-		
-		exit_atoi = atoi(data->command[1]);
-		return (-1);
-		// exit(exit_atoi);
+		exit_atoi = ft_atoi(data->command[1]);
+		free_commands_list(data);
+		exit(exit_atoi);
 	}
 }

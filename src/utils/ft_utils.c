@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:46:18 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 15:00:00 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:09:53 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,4 +264,24 @@ void	full_free(t_shell *shell, t_pipeline *data)
 	ft_free_list(&shell->env);
 	ft_free_list(&shell->exp);
 	free_commands_list(data);
+}
+
+int	ft_atoi(const char *str)
+{
+	int	nb;
+	int	sign;
+
+	nb = 0;
+	sign = 1;
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+		nb = (nb * 10) + ((*str++) - '0');
+	return (nb * sign);
 }
