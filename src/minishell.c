@@ -6,12 +6,13 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 12:09:06 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:33:28 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	exit_code;
 /*
 Function that prints the minishell prompt using the allowed builtin function
 called readline()
@@ -46,10 +47,6 @@ int main(int ac, char **av, char **env)
 	char        		*str;
 	struct sigaction	act;
 
-	act.sa_handler = sighandler;
-	sigaction(SIGINT, &act, NULL);
-	act.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &act, NULL);
     str = NULL;
     if (ac == 1)
     {
@@ -57,10 +54,15 @@ int main(int ac, char **av, char **env)
         set_env_exp(&shell, env);
         while (1)
         {
+			act.sa_handler = sighandler;
+			sigaction(SIGINT, &act, NULL);
+			act.sa_handler = SIG_IGN;
+			sigaction(SIGQUIT, &act, NULL);
             str = ft_prompt(PROMPT_NAME);
 			if (str == NULL)
 			{
 				printf("\n");
+				//free the env
 				exit(EXIT_SUCCESS);
 			}
 			if (str)

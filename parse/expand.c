@@ -9,6 +9,8 @@ static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state, t
 {
 	int		param_len;
 	char	*tmp;
+	char	*value;
+	int		free_value;
 
 	param_len = (int)(scanner.current - scanner.start);
 	if (state == WORD_STATE && \
@@ -22,8 +24,21 @@ static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state, t
 		tmp = ft_strndup(scanner.start, param_len);
 		if (tmp == NULL)
 			return ;
-		if (getenv(tmp) != NULL)
-			add_str_to_buffer(buffer, ft_getenv(shell->env, tmp));
+		free_value = 0;
+		if (ft_strcmp(tmp, "?") == 0)
+		{
+			value = ft_itoa(exit_code);
+			free_value = 1;
+			//clean
+			if (value == NULL)
+				exit(EXIT_FAILURE);
+		}
+		else
+			value = ft_getenv(shell->env, tmp);
+		if (value != NULL)
+			add_str_to_buffer(buffer, value);
+		if (free_value)
+			free(value);
 		free(tmp);
 	}
 }

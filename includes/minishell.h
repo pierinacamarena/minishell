@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 12:44:29 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 15:00:30 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@
 
 #define PANIC_MODE 1
 #define REGULAR_MODE 0
+
+/*	global exit status variable	*/
+
+extern int	exit_code;
 
 typedef struct	s_scanner {
 	const char	*start;
@@ -174,6 +178,7 @@ void	write_error(char *str);
 void    ft_putchar_fd(char c, int fd);
 void    ft_putstr_fd(char *s, int fd);
 void    ft_putendl_fd(char *s, int fd);
+char	*ft_itoa(int n);
 
 /*ft_split*/
 int			ft_wordcount(char const *s, char c);

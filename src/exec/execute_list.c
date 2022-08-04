@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 12:17:31 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 15:04:24 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	int			read_write_fds[2];
 	struct sigaction	act;
 
+	act.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &act, NULL);
 	i = 0;
 	pipes.size = count_list(data) - 1;
 	pipes.fd_pipe = (int **)malloc(sizeof(int) * pipes.size);
@@ -207,6 +209,7 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 			{
 				act.sa_handler = SIG_DFL;
 				sigaction(SIGQUIT, &act, NULL);
+				sigaction(SIGINT, &act, NULL);
 				dup2(read_write_fds[0], 0);
 				dup2(read_write_fds[1], 1);
 				i = 0;
@@ -230,7 +233,9 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 		i++;
 	}
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
+	if (WIFSIGNALED(status))
+		exit_status = 128 + WTERMSIG(status);
+	else if (WIFEXITED(status))
 		exit_status = WEXITSTATUS(status);
 	while (waitpid(-1, &status, 0) > 0)
 		;

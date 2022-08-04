@@ -6,7 +6,7 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:54:51 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/03 18:22:16 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:45:19 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@ void	sighandler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	exit_code = 128 + signum;
 }

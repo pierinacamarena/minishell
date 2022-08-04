@@ -93,7 +93,7 @@ int	parse(t_scanner *scanner, t_shell *shell)
 	commands_list = NULL;
 	commands_list = pipeline(commands_list, &pack, shell);
 	if (commands_list != NULL && *pack.panic == REGULAR_MODE)
-		exec_pipes(commands_list, shell);
+		exit_code = exec_pipes(commands_list, shell);
 	free_commands_list(commands_list);
 	return (current.type);
 }
