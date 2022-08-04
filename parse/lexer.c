@@ -19,7 +19,7 @@ static t_token	scan_word(t_scanner *scanner, int c)
 	{
 		state = update_state(state, c);
 		if (state == WORD_STATE)
-			if (ft_ismeta(c) || (c == '&' && peek(*scanner) == '&'))
+			if (ft_ismeta(c))
 				break ;
 		c = advance(scanner);
 	}
@@ -33,10 +33,6 @@ static int	get_token_type(int c, t_scanner *scanner)
 		return (LESS_LESS_TOKEN);
 	else if (c == '>' && peek(*scanner) == '>')
 		return (MORE_MORE_TOKEN);
-	else if (c == '|' && peek(*scanner) == '|')
-		return (OR_TOKEN);
-	else if (c == '&' && peek(*scanner) == '&')
-		return (AND_TOKEN);
 	else if (c == '<')
 		return (LESS_TOKEN);
 	else if (c == '>')

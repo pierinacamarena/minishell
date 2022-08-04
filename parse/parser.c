@@ -56,6 +56,8 @@ static t_pipeline	*pipeline(t_pipeline *commands_list, t_parse *pack, t_shell *s
 	t_elem	*words_list;
 	t_elem	*tmp;
 
+	if (pack->current->type == EOF_TOKEN)
+		return (NULL);
 	elem_list = NULL;
 	command(pack, &elem_list, shell); 
 	words_list = NULL;
@@ -76,31 +78,9 @@ static t_pipeline	*pipeline(t_pipeline *commands_list, t_parse *pack, t_shell *s
 	return (commands_list);
 }
 
-static void	list(t_parse *pack, t_shell *shell)
-{
-	t_pipeline	*commands_list;
-
-	if (pack->current->type == EOF_TOKEN)
-		return ;
-	commands_list = NULL;
-	commands_list = pipeline(commands_list, pack, shell);
-	if (*pack->panic == REGULAR_MODE)
-		exec_pipes(commands_list, shell);
-	free_commands_list(commands_list);
-	if (pack->current->type == OR_TOKEN)
-	{
-		match(OR_TOKEN, pack);
-		list(pack, shell);
-	}
-	else if (pack->current->type == AND_TOKEN)
-	{
-		match(AND_TOKEN, pack);
-		list(pack, shell);
-	}
-}
-
 int	parse(t_scanner *scanner, t_shell *shell)
 {
+	t_pipeline	*commands_list;
 	t_parse		pack;
 	t_token		current;
 	int			panic;
@@ -110,6 +90,10 @@ int	parse(t_scanner *scanner, t_shell *shell)
 	pack.current = &current;
 	pack.scanner = scanner;
 	pack.panic = &panic;
-	list(&pack, shell);
+	commands_list = NULL;
+	commands_list = pipeline(commands_list, &pack, shell);
+	if (commands_list != NULL && *pack.panic == REGULAR_MODE)
+		exec_pipes(commands_list, shell);
+	free_commands_list(commands_list);
 	return (current.type);
 }
