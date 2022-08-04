@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 23:05:50 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 23:19:10 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	add_var_list(t_env_list **begin, char *var)
 	t_env_list	*curr;
 	t_env_list	*new;
 
-	printf("%s\n", var);
 	new = ft_set_node(var);
 	if (*begin == NULL)
 	{
