@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 19:17:07 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 21:13:59 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ int	ft_env(t_env_list *env, int *read_write_fds)
 	return (0);
 }
 
+int	is_digit_arg(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (s && s[++i])
+	{
+		if (s[0] == '-')
+			s++;
+		if (!ft_isdigit(s[i]))
+			return (0);
+	}
+	return (1);
+}
+
 int	ft_exit_list(t_shell *shell, t_pipeline *data)
 {
 	int	len;
@@ -52,8 +67,20 @@ int	ft_exit_list(t_shell *shell, t_pipeline *data)
 	if (len == 1)
 		exit(0);
 	else
-	{	
+	{
+		if (!is_digit_arg(data->command[1]))
+		{
+			free_commands_list(data);
+			write_error("exit: numeric argument required");
+			exit(2);
+		}
 		exit_atoi = ft_atoi(data->command[1]);
+		if (data->command[1][0] == '-')
+		{
+			exit_code = exit_code + exit_atoi;
+			free_commands_list(data);
+			exit(exit_code);
+		}
 		free_commands_list(data);
 		exit(exit_atoi);
 	}

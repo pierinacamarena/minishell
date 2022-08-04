@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:46:18 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 19:09:53 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 19:37:38 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,4 +284,9 @@ int	ft_atoi(const char *str)
 	while (*str >= '0' && *str <= '9')
 		nb = (nb * 10) + ((*str++) - '0');
 	return (nb * sign);
+}
+
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
 }
