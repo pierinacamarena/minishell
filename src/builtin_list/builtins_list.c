@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 21:13:59 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 21:20:54 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	ft_pwd(int *read_write_fds)
 
 	pwd = getcwd(NULL, 0);
 	write(read_write_fds[1], pwd, ft_strlen(pwd));
+	write(read_write_fds[1], "\n", 1);
 	free(pwd);
 	return (0);
 }
