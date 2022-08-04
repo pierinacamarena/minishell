@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:32:28 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 14:57:43 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 22:59:39 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int     key_exists(t_env_list *list, char *var)
     curr = list;
     while (curr != NULL)
     {
-        if (ft_strcmp(curr->node->key, var_split[0]) == 0)
+        if (var_split[0] && curr->node->key && ft_strcmp(curr->node->key, var_split[0]) == 0)
         {
             ft_free(var_split);
             return (1);
