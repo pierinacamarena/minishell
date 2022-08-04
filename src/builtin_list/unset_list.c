@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:25 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 18:00:17 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 13:30:10 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_remove_var_list(t_env_list **begin, char *value)
 	t_env_list	*to_remove;
 	t_env_list	*curr;
 	char		*new_val;
-	
+
 	new_val = ft_strjoin(value, "=");
 	if (*begin == NULL)
 	{
@@ -55,17 +55,17 @@ void	ft_remove_var_list(t_env_list **begin, char *value)
 	}
 }
 
-void     ft_unset_list(t_shell *shell, t_pipeline *data)
+void	ft_unset_list(t_shell *shell, t_pipeline *data)
 {
 	int	i;
 
-    if (array_size(data->command) == 1)
-    {
+	if (array_size(data->command) == 1)
+	{
 		write_error("unset: not enough arguments");
-        return ;
-    }
-    else
-    {
+		return ;
+	}
+	else
+	{
 		i = 1;
 		while (data->command[i])
 		{
@@ -83,5 +83,5 @@ void     ft_unset_list(t_shell *shell, t_pipeline *data)
 				i++;
 			}
 		}
-    }
+	}
 }
