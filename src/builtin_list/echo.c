@@ -6,7 +6,7 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:22:14 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/06 17:22:16 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 12:22:03 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int ft_isn(char *str)
         return (0);
 }
 
-int ft_echo(char **args)
+int ft_echo(char **args, int *read_write_fds)
 {
     int len;
     int is_n;
@@ -53,7 +53,8 @@ int ft_echo(char **args)
     len = num_args(args);
 	if (len == 1)
 	{
-		printf("\n");
+		write(read_write_fds[1], "\n", 1);
+		//printf("\n");
 		return (0);
 	}
     if (len > 1)
@@ -65,12 +66,16 @@ int ft_echo(char **args)
         }
         while (args[i] && i < (len - 1))
         {
-            printf("%s ",args[i]);
+			write(read_write_fds[1], args[i], ft_strlen(args[i]));
+			write(read_write_fds[1], " ", 1);
+            //printf("%s ",args[i]);
             i++;
         }
-        printf("%s", args[i]);
+		write(read_write_fds[1], args[i], ft_strlen(args[i]));
+        //printf("%s", args[i]);
     }
     if (is_n == 0)
-        printf("\n");
+		write(read_write_fds[1], "\n", 1);
+        //printf("\n");
     return (0);
 }

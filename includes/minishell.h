@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/03 17:54:58 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 12:44:29 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,12 @@ void    builtin_exec(t_shell *shell);
 int     is_builtin(t_shell *shell);
 
 /*builtins_list*/
-int		ft_pwd(void);
-int		ft_env(t_env_list *env);
+//int		ft_pwd(void);
+int		ft_pwd(int *read_write_fds);
+int		ft_env(t_env_list *env, int *read_write_fds);
 void    ft_exit_list(long long i, t_shell *shell, t_pipeline *data);
-void     ft_unset_list(t_shell *shell, t_pipeline *data);
-void    ft_export_list(t_shell *shell, t_pipeline *data);
+void    ft_unset_list(t_shell *shell, t_pipeline *data);
+void    ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds);
 int		ft_cd_list(t_shell *shell, t_pipeline *data);
 
 /* utils */
@@ -205,7 +206,8 @@ char    *ft_getenv(t_env_list *begin, char *key);
 char	*ft_str3join(char const *s1, char const *s2, char const *s3);
 
 /*echo*/
-int		ft_echo(char **args);
+//int		ft_echo(char **args);
+int		ft_echo(char **args, int *read_write_fds);
 
 /*ft_path*/
 char	*ft_path(char *arg, char **env);

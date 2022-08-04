@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/03 18:25:35 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/04 12:09:06 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ void    set_env_exp(t_shell *shell, char **env)
 
 int main(int ac, char **av, char **env)
 {
-    t_shell     shell;
-	t_scanner	scanner;
-    char        *str;
+    t_shell     		shell;
+	t_scanner			scanner;
+	char        		*str;
+	struct sigaction	act;
 
-	signal(SIGINT, sighandler);
-	signal(SIGQUIT, SIG_IGN);
+	act.sa_handler = sighandler;
+	sigaction(SIGINT, &act, NULL);
+	act.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &act, NULL);
     str = NULL;
     if (ac == 1)
     {

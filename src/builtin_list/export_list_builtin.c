@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_list.c                                      :+:      :+:    :+:   */
+/*   export_list_builtin.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/02 17:02:48 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 12:45:03 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,15 @@ void    export_check_list(t_shell *shell, char *var)
 	}
 }
 
-void    ft_export_list(t_shell *shell, t_pipeline *data)
+void    ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds)
 {
     int     i;
 
     if(!data->command)
         return;
     if (array_size(data->command) == 1)
-    {
-		ft_print_list(shell->exp);
-	}
+		ft_env(shell->exp, read_write_fds);
+		//ft_print_list(shell->exp);
     else
     {
         i = 1;

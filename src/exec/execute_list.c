@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/03 14:24:37 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/04 12:17:31 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,20 @@ int     is_builtin_list(t_pipeline *data)
     return (0);
 }
 
-void    builtin_exec_list(t_pipeline *data, t_shell *shell)
+void    builtin_exec_list(t_pipeline *data, t_shell *shell, int *read_write_fds)
 {
     if (ft_strcmp(data->command[0], "echo") == 0)
-        ft_echo(data->command);
+        ft_echo(data->command, read_write_fds);
     else if (ft_strcmp(data->command[0], "pwd") == 0)
-        ft_pwd();
+        ft_pwd(read_write_fds);
     else if (ft_strcmp(data->command[0], "env") == 0)
-        ft_env(shell->env);
+        ft_env(shell->env, read_write_fds);
     else if (ft_strcmp(data->command[0], "exit") == 0)
         ft_exit_list(0, shell, data);
     else if (ft_strcmp(data->command[0], "cd") == 0)
         ft_cd_list(shell, data);
     else if (ft_strcmp(data->command[0], "export") == 0)
-        ft_export_list(shell, data);
+        ft_export_list(shell, data, read_write_fds);
     else if(ft_strcmp(data->command[0], "unset") == 0)
         ft_unset_list(shell, data);
 }
@@ -164,6 +164,7 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	int			status;
 	int			exit_status;
 	int			read_write_fds[2];
+	struct sigaction	act;
 
 	i = 0;
 	pipes.size = count_list(data) - 1;
@@ -190,36 +191,22 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	command_num = 0;
 	while (data)
 	{
-		if (is_builtin_list(data) == 1)
-			builtin_exec_list(data, shell);
+		read_write_fds[0] = STDIN_FILENO;
+		read_write_fds[1] = STDOUT_FILENO;
+		if (command_num > 0)
+			read_write_fds[0] = pipes.fd_pipe[command_num - 1][0];
+		if (command_num < pipes.size)
+			read_write_fds[1] = pipes.fd_pipe[command_num][1];
+		get_redirs(data->redirections, read_write_fds);
+		if (is_builtin_list(data))
+			builtin_exec_list(data, shell, read_write_fds);
 		else
 		{
 			pid = fork();
 			if (pid == 0)
 			{
-				read_write_fds[0] = STDIN_FILENO;
-				read_write_fds[1] = STDOUT_FILENO;
-				//if NOT first command
-				if (command_num > 0)
-				{
-					read_write_fds[0] = pipes.fd_pipe[command_num - 1][0];
-					// if (dup2(pipes.fd_pipe[command_num - 1][0], 0) < 0)
-					// {
-					// 	perror("dup");
-					// 	ft_exit_list(127, shell, data);
-					// }
-				}
-				//if NOT last command
-				if (command_num < pipes.size)
-				{
-					read_write_fds[1] = pipes.fd_pipe[command_num][1];
-					// if (dup2(pipes.fd_pipe[command_num][1], 1) < 0)
-					// {
-					// 	perror("dup2");
-					// 	ft_exit_list(127, shell, data);
-					// }
-				}
-				get_redirs(data->redirections, read_write_fds);
+				act.sa_handler = SIG_DFL;
+				sigaction(SIGQUIT, &act, NULL);
 				dup2(read_write_fds[0], 0);
 				dup2(read_write_fds[1], 1);
 				i = 0;
