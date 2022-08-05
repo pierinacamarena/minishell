@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/05 16:17:40 by rbourdil          #+#    #+#             */
+/*   Updated: 2022/08/05 16:21:40 by rbourdil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	match(int type, t_parse *pack)
-{ 
+{
 	if (pack->current->type != type && *pack->panic != PANIC_MODE)
 	{
 		printf("syntax error near unexpected token '%.*s'\n", \
@@ -23,7 +35,7 @@ static void	command_elem(t_parse *pack, t_elem **elem_list, t_shell *shell)
 	}
 	else if (pack->current->type == LESS_LESS_TOKEN)
 	{
-		match(LESS_LESS_TOKEN, pack); 
+		match(LESS_LESS_TOKEN, pack);
 		type = HERE_DOC;
 	}
 	else if (pack->current->type == MORE_TOKEN)
@@ -50,7 +62,7 @@ static void	command(t_parse *pack, t_elem **elem_list, t_shell *shell)
 		command(pack, elem_list, shell);
 }
 
-static t_pipeline	*pipeline(t_pipeline *commands_list, t_parse *pack, t_shell *shell)
+static t_pipeline *pipeline(t_pipeline *cmds, t_parse *pack, t_shell *shell)
 {
 	t_elem	*elem_list;
 	t_elem	*words_list;
@@ -68,19 +80,19 @@ static t_pipeline	*pipeline(t_pipeline *commands_list, t_parse *pack, t_shell *s
 		elem_list = elem_list->next;
 		free_elem(tmp);
 	}
-	commands_list = new_command(commands_list, words_list);
+	cmds = new_command(cmds, words_list);
 	free_elem_list(words_list);
 	if (pack->current->type == PIPE_TOKEN)
 	{
 		match(PIPE_TOKEN, pack);
-		commands_list->next = pipeline(commands_list->next, pack, shell);
+		cmds->next = pipeline(cmds->next, pack, shell);
 	}
-	return (commands_list);
+	return (cmds);
 }
 
 int	parse(t_scanner *scanner, t_shell *shell)
 {
-	t_pipeline	*commands_list;
+	t_pipeline	*cmds;
 	t_parse		pack;
 	t_token		current;
 	int			panic;
@@ -90,10 +102,10 @@ int	parse(t_scanner *scanner, t_shell *shell)
 	pack.current = &current;
 	pack.scanner = scanner;
 	pack.panic = &panic;
-	commands_list = NULL;
-	commands_list = pipeline(commands_list, &pack, shell);
-	if (*commands_list->command != NULL && *pack.panic == REGULAR_MODE)
-		g_exit_code = exec_pipes(commands_list, shell);
-	free_commands_list(commands_list);
+	cmds = NULL;
+	cmds = pipeline(cmds, &pack, shell);
+	if (*cmds->command != NULL && *pack.panic == REGULAR_MODE)
+		g_exit_code = exec_pipes(cmds, shell);
+	free_commands_list(cmds);
 	return (current.type);
 }

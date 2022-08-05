@@ -6,17 +6,13 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 15:40:59 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 16:16:12 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_exit_code;
-/*
-Function that prints the minishell prompt using the allowed builtin function
-called readline()
-*/
 
 char	*ft_prompt(char const *str)
 {
