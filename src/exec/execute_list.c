@@ -6,11 +6,11 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 16:13:46 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 21:25:23 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int     is_builtin_list(t_pipeline *data)
 {
@@ -53,58 +53,6 @@ int	builtin_exec_list(t_pipeline *data, t_shell *shell, int *read_write_fds)
 	else
 		exit_status = 0;
 	return (exit_status);
-}
-
-int	count_list(t_pipeline *data)
-{
-	t_pipeline	*curr;
-	int			count;
-
-	count = 0;
-	if (!data)
-		return (-1);
-	else
-	{
-		curr = data;
-		while (curr != NULL)
-		{
-			count++;
-			curr = curr->next;
-		}
-		return (count);
-	}
-}
-
-void	exec(t_pipeline *data, t_shell *shell)
-{
-	char	*path;
-	
-	shell->env_exec = list_to_array(shell->env);
-	path = ft_path(data->command[0], shell->env_exec);
-	if (path == NULL)
-	{
-		ft_putstr_fd(data->command[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		free(path);
-		full_free(shell, data);
-		// ft_free(shell->env_exec);
-		// ft_free_list(&shell->env);
-		// ft_free_list(&shell->exp);
-		// free_commands_list(data);
-		exit(127);
-	}
-	if (execve(path, data->command, shell->env_exec) == -1)
-	{
-		ft_putstr_fd(data->command[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		free(path);
-		full_free(shell, data);
-		// ft_free(shell->env_exec);
-		// ft_free_list(&shell->env);
-		// ft_free_list(&shell->exp);
-		// free_commands_list(data);
-		exit(127);
-	}
 }
 
 int	get_heredoc(char *heredoc)
@@ -163,100 +111,4 @@ void	get_redirs(t_elem *redirections, int *read_write_fds)
 		}
 		redirections=redirections->next;
 	}
-}
-
-int	exec_pipes(t_pipeline *data, t_shell *shell)
-{
-	t_pipes		pipes;
-	int			i;
-	pid_t		pid;
-	int			command_num;
-	int			status;
-	int			exit_status;
-	int			read_write_fds[2];
-	int			built_check;
-
-	built_check = 0;
-	siginit(SIGINT, SIG_IGN);
-	i = 0;
-	pipes.size = count_list(data) - 1;
-	pipes.fd_pipe = (int **)malloc(sizeof(int *) * pipes.size);
-	if (!pipes.fd_pipe)
-		return (-1);
-	while (i < pipes.size)
-	{
-		pipes.fd_pipe[i] = (int *)malloc(sizeof(int) * 2);
-		if (!pipes.fd_pipe[i])
-			return (-1);
-		i++;
-	}
-	i = 0;
-	while (i < pipes.size)
-	{
-		if (pipe(pipes.fd_pipe[i]) < 0)
-		{
-			perror("pipe");
-			full_free(shell, data);
-			exit(127);
-		}
-		i++;
-	}
-	command_num = 0;
-	while (data)
-	{
-		read_write_fds[0] = STDIN_FILENO;
-		read_write_fds[1] = STDOUT_FILENO;
-		if (command_num > 0)
-			read_write_fds[0] = pipes.fd_pipe[command_num - 1][0];
-		if (command_num < pipes.size)
-			read_write_fds[1] = pipes.fd_pipe[command_num][1];
-		get_redirs(data->redirections, read_write_fds);
-		if (is_builtin_list(data))
-		{	
-			exit_status = builtin_exec_list(data, shell, read_write_fds);
-			if (data->next == NULL)
-				built_check = 1;
-		}
-		else
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				siginit(SIGINT, SIG_DFL);
-				siginit(SIGQUIT, SIG_DFL);
-				if (read_write_fds[0] == -1 || read_write_fds[1] == -1)
-				{
-					full_free(shell, data);
-					exit(1);
-				}
-				dup2(read_write_fds[0], 0);
-				dup2(read_write_fds[1], 1);
-				i = 0;
-				while (i < pipes.size)
-				{
-					close(pipes.fd_pipe[i][0]);
-					close(pipes.fd_pipe[i][1]);
-					i++;
-				}
-			exec(data, shell);
-			}
-		}
-		command_num++;
-		data = data->next;
-	}
-	i = 0;
-	while (i < pipes.size)
-	{
-		close(pipes.fd_pipe[i][0]);
-		close(pipes.fd_pipe[i][1]);
-		i++;
-	}
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status) && built_check == 0)
-		exit_status = 128 + WTERMSIG(status);
-	else if (WIFEXITED(status) && built_check == 0)
-		exit_status = WEXITSTATUS(status);
-	while (waitpid(-1, &status, 0) > 0)
-		;
-	return (exit_status);
 }
