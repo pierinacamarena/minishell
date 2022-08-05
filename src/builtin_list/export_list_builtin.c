@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 21:39:50 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 22:03:00 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,13 @@ int	export_error_helper(char *arg)
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd(": not a valid identifier\n", 2);
 		return (2);
+	}
+	else if (ft_isdigit(arg[0]))
+	{
+		ft_putstr_fd("export: ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
+		return (1);
 	}
 	return (0);
 }
