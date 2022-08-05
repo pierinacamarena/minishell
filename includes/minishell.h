@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:43:12 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 15:00:30 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 11:20:55 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ char	*cmd_tester(char **path_split, char *arg);
 
 /*signal*/
 void	sighandler(int signum);
-void	sighandler2(int signum);
+void	siginit(int signum, void (*sighandler)(int));
 
 /*execute_list*/
 int	exec_pipes(t_pipeline *data, t_shell *shell);

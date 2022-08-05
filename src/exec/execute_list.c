@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 17:24:07 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 11:25:59 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,12 +174,10 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	int			status;
 	int			exit_status;
 	int			read_write_fds[2];
-	struct sigaction	act;
 	int			built_check;
 
 	built_check = 0;
-	act.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &act, NULL);
+	siginit(SIGINT, SIG_IGN);
 	i = 0;
 	pipes.size = count_list(data) - 1;
 	pipes.fd_pipe = (int **)malloc(sizeof(int) * pipes.size);
@@ -224,9 +222,8 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 			pid = fork();
 			if (pid == 0)
 			{
-				act.sa_handler = SIG_DFL;
-				sigaction(SIGQUIT, &act, NULL);
-				sigaction(SIGINT, &act, NULL);
+				siginit(SIGINT, SIG_DFL);
+				siginit(SIGQUIT, SIG_DFL);
 				if (read_write_fds[0] == -1 || read_write_fds[1] == -1)
 				{
 					full_free(shell, data);
