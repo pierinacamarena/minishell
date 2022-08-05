@@ -1,99 +1,108 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_sort.c                                           :+:      :+:    :+:   */
+/*   export_sort.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 20:48:26 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/12 20:48:29 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 13:57:50 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-size_t  array_size(char **arr)
+size_t	array_size(char **arr)
 {
-    int len;
+	int	len;
 
-    len = 0;
-    while (arr[len])
-        len++;
-    return (len);
+	len = 0;
+	while (arr[len])
+		len++;
+	return (len);
 }
 
-void    ft_swap(char **a, char **b)
+void	ft_swap(char **a, char **b)
 {
-    char *temp;
+	char	*temp;
 
-    temp = *a;
-    *a = *b;
-    *b = temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
-int     not_sorted(char **env)
+int	not_sorted(char **env)
 {
-    int i;
-    int size;
+	int	i;
+	int	size;
 
-    i = 0;
-    size = array_size(env);
-    while (env[i] && env[i+1])
-    {
-        if (ft_strcmp(env[i], env[i+1]) > 0)
-            return (1);
-        i++;
-    }
-    if (ft_strcmp(env[size - 2], env[size - 1]) > 0)
-    {
-        printf("%s\n%s\n", env[size-2], env[size - 1]);
-        return (1);
-    }
-    return (0);
+	i = 0;
+	size = array_size(env);
+	while (env[i] && env[i + 1])
+	{
+		if (ft_strcmp(env[i], env[i + 1]) > 0)
+			return (1);
+		i++;
+	}
+	if (ft_strcmp(env[size - 2], env[size - 1]) > 0)
+	{
+		printf("%s\n%s\n", env[size - 2], env[size - 1]);
+		return (1);
+	}
+	return (0);
 }
 
-void    print_double_array(char **str)
+void	print_double_array(char **str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (str[i])
-    {
-        printf("%s\n", str[i]);
-        i++;
-    }
+	i = 0;
+	while (str[i])
+	{
+		printf("%s\n", str[i]);
+		i++;
+	}
 }
 
-char    **sorted_exp(char **env)
+char	**sorted_exp_setup(char **env)
 {
-    char    **arr;
-    int     i;
-    int     size;
+	int		size;
+	int		i;
+	char	**arr;
 
-    i = 0;
-    size = array_size(env);
-    arr = (char **)malloc(sizeof(char *) * (size + 1));
-    if (!arr)
-        return (NULL);
-    while (i < size)
-    {
-        arr[i] = ft_strdup(env[i]);
-        i++;
-    }
-    arr[size] = NULL;
-    while (not_sorted(arr) == 1)
-    {
-        i = 0;
-        while (arr[i] && arr[i + 1])
-        {
-            if (ft_strcmp(arr[i], arr[i + 1]) > 0)
-            {
-                ft_swap(&arr[i], &arr[i + 1]);
-            }
-            i++;
-        }
-        if (ft_strcmp(arr[size - 2], arr[size - 1]) > 0)
-            ft_swap(&arr[size - 2], &arr[size - 1]);
-    }
-    return (arr);
+	i = 0;
+	size = array_size(env);
+	arr = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!arr)
+		return (NULL);
+	while (i < size)
+	{
+		arr[i] = ft_strdup(env[i]);
+		i++;
+	}
+	arr[size] = NULL;
+	return (arr);
+}
+
+char	**sorted_exp(char **env)
+{
+	char	**arr;
+	int		i;
+	int		size;
+
+	size = array_size(env);
+	arr = sorted_exp_setup(env);
+	while (not_sorted(arr) == 1)
+	{
+		i = 0;
+		while (arr[i] && arr[i + 1])
+		{
+			if (ft_strcmp(arr[i], arr[i + 1]) > 0)
+				ft_swap(&arr[i], &arr[i + 1]);
+			i++;
+		}
+		if (ft_strcmp(arr[size - 2], arr[size - 1]) > 0)
+			ft_swap(&arr[size - 2], &arr[size - 1]);
+	}
+	return (arr);
 }

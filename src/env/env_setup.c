@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_setup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:43:52 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/11 16:43:55 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 13:49:58 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,28 @@ char **env. It splits it at the "=" and assigns that to a node
 of the list and returns it.
 */
 
-t_env_list *ft_set_node(char *env)
+t_env_list	*set_node_helper(t_env_list *list, t_env *node_env, char **info)
 {
-    char        **info;
+	list->node = node_env;
+	list->node->key = ft_strdup(info[0]);
+	if (info[1])
+		list->node->content = ft_strdup(info[1]);
+	else
+		list->node->content = NULL;
+	list->next = NULL;
+	return (list);
+}
+
+t_env_list	*ft_set_node(char *env)
+{
+	char		**info;
 	char		*temp;
-    t_env_list  *list;
+	t_env_list	*list;
 	t_env		*node_env;
 
-    if (!env)
-        return (NULL);
-    info = ft_split(env, '=');
+	if (!env)
+		return (NULL);
+	info = ft_split(env, '=');
 	temp = ft_strjoin(info[0], "=");
 	free(info[0]);
 	info[0] = temp;
@@ -37,15 +49,9 @@ t_env_list *ft_set_node(char *env)
 	node_env = malloc(sizeof(t_env));
 	if (!node_env)
 		return (NULL);
-	list->node = node_env;
-    list->node->key = ft_strdup(info[0]);
-	if (info[1])
-    	list->node->content = ft_strdup(info[1]);
-	else
-		list->node->content = NULL;
-	list->next = NULL;
+	set_node_helper(list, node_env, info);
 	ft_free(info);
-    return (list);
+	return (list);
 }
 
 /*
@@ -53,9 +59,9 @@ Function that loops accross the list and adds the node aux
 at the end of the list.
 */
 
-void    ft_add_node(t_env_list **begin, t_env_list *aux)
+void	ft_add_node(t_env_list **begin, t_env_list *aux)
 {
-	t_env_list *temp;
+	t_env_list	*temp;
 
 	if (*begin == NULL)
 		*begin = aux;
@@ -104,18 +110,18 @@ are stored in a struct
 
 t_env_list	*init_env(char **env)
 {
-    t_env_list  *begin;
-    t_env_list  *aux;
+	t_env_list	*begin;
+	t_env_list	*aux;
 	int			i;
 
 	i = 0;
-    begin = NULL;
-    while (env[i])
-    {
-        aux = ft_set_node(env[i]);
+	begin = NULL;
+	while (env[i])
+	{
+		aux = ft_set_node(env[i]);
 		ft_add_node(&begin, aux);
-        i++;
-    }
+		i++;
+	}
 	return (begin);
 }
 
@@ -124,7 +130,7 @@ Function that prints the list
 */
 void	ft_print_list(t_env_list *begin)
 {
-	t_env_list *temp;
+	t_env_list	*temp;
 
 	if (begin == NULL)
 		return ;
@@ -135,7 +141,7 @@ void	ft_print_list(t_env_list *begin)
 		{
 			if (temp->node->content != NULL)
 				printf("%s%s\n", temp->node->key, temp->node->content);
-			else 
+			else
 				printf("%s\n", temp->node->key);
 			temp = temp->next;
 		}
