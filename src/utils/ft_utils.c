@@ -6,33 +6,33 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:46:18 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 15:12:06 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 22:07:22 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(char c, int fd)
 {
-        write(fd, &c, 1);
+	write(fd, &c, 1);
 }
 
-void    ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(char *s, int fd)
 {
-    if (s)
+	if (s)
 	{
-        while (*s)
-            write(fd, s++, 1);
-    }
+		while (*s)
+			write(fd, s++, 1);
+	}
 }
 
-void    ft_putendl_fd(char *s, int fd)
+void	ft_putendl_fd(char *s, int fd)
 {
-    if (s)
-    {
-        ft_putstr_fd(s, fd);
-        ft_putchar_fd('\n', fd);
-    }
+	if (s)
+	{
+		ft_putstr_fd(s, fd);
+		ft_putchar_fd('\n', fd);
+	}
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
