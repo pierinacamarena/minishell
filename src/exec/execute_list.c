@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 11:25:59 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 16:05:07 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	siginit(SIGINT, SIG_IGN);
 	i = 0;
 	pipes.size = count_list(data) - 1;
-	pipes.fd_pipe = (int **)malloc(sizeof(int) * pipes.size);
+	pipes.fd_pipe = (int **)malloc(sizeof(int *) * pipes.size);
 	if (!pipes.fd_pipe)
 		return (-1);
 	while (i < pipes.size)
