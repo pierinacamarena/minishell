@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:22:14 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 13:32:44 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 13:05:09 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,34 @@ int	ft_isn(char *str)
 		return (0);
 }
 
+int	echo_helper(char **args, int len, int *read_write_fds)
+{
+	int	i;
+	int	is_n;
+
+	i = 1;
+	is_n = 0;
+	while (args[i] && (ft_isn(args[i]) == 1))
+	{
+		is_n = 1;
+		i++;
+	}
+	while (args[i] && i < (len - 1))
+	{
+		write(read_write_fds[1], args[i], ft_strlen(args[i]));
+		write(read_write_fds[1], " ", 1);
+		i++;
+	}
+	if (args[i])
+		write(read_write_fds[1], args[i], ft_strlen(args[i]));
+	return (is_n);
+}
+
 int	ft_echo(char **args, int *read_write_fds)
 {
 	int	len;
 	int	is_n;
-	int	i;
 
-	i = 1;
 	is_n = 0;
 	len = num_args(args);
 	if (len == 1)
@@ -58,21 +79,7 @@ int	ft_echo(char **args, int *read_write_fds)
 		return (0);
 	}
 	if (len > 1)
-	{
-		while (args[i] && (ft_isn(args[i]) == 1))
-		{
-			is_n = 1;
-			i++;
-		}
-		while (args[i] && i < (len - 1))
-		{
-			write(read_write_fds[1], args[i], ft_strlen(args[i]));
-			write(read_write_fds[1], " ", 1);
-			i++;
-		}
-		if (args[i])
-			write(read_write_fds[1], args[i], ft_strlen(args[i]));
-	}
+		is_n = echo_helper(args, len, read_write_fds);
 	if (is_n == 0)
 		write(read_write_fds[1], "\n", 1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 12:28:29 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 13:14:49 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,30 @@ int	is_digit_arg(char *s)
 	return (1);
 }
 
+void	exit_helper(t_pipeline *data)
+{
+	int	exit_atoi;
+
+	if (!is_digit_arg(data->command[1]))
+	{
+		free_commands_list(data);
+		write_error("exit: numeric argument required");
+		exit(2);
+	}
+	exit_atoi = ft_atoi(data->command[1]);
+	if (data->command[1][0] == '-')
+	{
+		exit_code = exit_code + exit_atoi;
+		free_commands_list(data);
+		exit(exit_code);
+	}
+	free_commands_list(data);
+	exit(exit_atoi);
+}
+
 int	ft_exit_list(t_shell *shell, t_pipeline *data)
 {
 	int	len;
-	int	exit_atoi;
 
 	len = len_cmds_list(data->command);
 	if (len > 2)
@@ -66,23 +86,13 @@ int	ft_exit_list(t_shell *shell, t_pipeline *data)
 	ft_free_list(&shell->env);
 	ft_free_list(&shell->exp);
 	if (len == 1)
+	{
+		free_commands_list(data);
 		exit(0);
+	}
 	else
 	{
-		if (!is_digit_arg(data->command[1]))
-		{
-			free_commands_list(data);
-			write_error("exit: numeric argument required");
-			exit(2);
-		}
-		exit_atoi = ft_atoi(data->command[1]);
-		if (data->command[1][0] == '-')
-		{
-			exit_code = exit_code + exit_atoi;
-			free_commands_list(data);
-			exit(exit_code);
-		}
-		free_commands_list(data);
-		exit(exit_atoi);
+		exit_helper(data);
+		return (0);
 	}
 }
