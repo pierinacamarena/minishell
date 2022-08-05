@@ -1,4 +1,16 @@
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/05 18:23:47 by rbourdil          #+#    #+#             */
+/*   Updated: 2022/08/05 18:24:07 by rbourdil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 static t_token	make_token(int type, t_scanner scanner)
 {
@@ -55,7 +67,7 @@ t_token	scan_token(t_scanner *scanner)
 	c = advance(scanner);
 	type = get_token_type(c, scanner);
 	if (type == WORD_TOKEN)
-		return (scan_word(scanner, c));	
+		return (scan_word(scanner, c));
 	else if (type != LESS_TOKEN && type != MORE_TOKEN \
 		&& type != PIPE_TOKEN)
 		advance(scanner);

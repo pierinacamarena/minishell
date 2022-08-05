@@ -6,7 +6,7 @@
 #    By: .oamaren <.oamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
-#    Updated: 2022/08/05 13:57:30 by rbourdil         ###   ########.fr        #
+#    Updated: 2022/08/05 19:01:57 by rbourdil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,16 +27,18 @@ OBJS	=	./src/minishell.o\
 			./src/builtin_list/cd_list.o\
 			./src/builtin_list/export_list_builtin.o\
 			./src/builtin_list/unset_list.o\
-			./parse/buffer.o\
-			./parse/buffer2.o\
-			./parse/expand.o\
-			./parse/lexer.o\
-			./parse/list.o\
-			./parse/parser.o\
-			./parse/scanner.o\
-			./parse/semantics.o\
-			./parse/string_ops.o\
-			./parse/utils.o
+			./src/parse/buffer.o\
+			./src/parse/buffer2.o\
+			./src/parse/expand.o\
+			./src/parse/expand2.o\
+			./src/parse/lexer.o\
+			./src/parse/list.o\
+			./src/parse/parser.o\
+			./src/parse/scanner.o\
+			./src/parse/semantics.o\
+			./src/parse/semantics2.o\
+			./src/parse/string_ops.o\
+			./src/parse/utils.o
 
 NAME	=	minishell
 

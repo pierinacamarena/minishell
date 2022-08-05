@@ -1,50 +1,38 @@
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   semantics.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/05 18:59:11 by rbourdil          #+#    #+#             */
+/*   Updated: 2022/08/05 18:59:13 by rbourdil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_elem	*new_words_list(t_elem *words_list, t_elem *elem)
-{
-	if (words_list == NULL)
-		words_list = split_words(elem);
-	else
-		words_list->next = new_words_list(words_list->next, elem);
-	return (words_list);
-}
+#include "minishell.h"
 
-t_elem	*new_elem(t_elem *elem_list, t_token token, int type, t_shell *shell)
+static int	count_cmds(t_elem *words_list)
 {
-	if (elem_list == NULL)
+	int	i;
+
+	i = 0;
+	while (words_list != NULL)
 	{
-		elem_list = (t_elem *)malloc(sizeof(t_elem));
-		if (elem_list == NULL)
-			free_exit(-1, shell, NULL, HIST | ENV);
-		elem_list->type = type;
-		if (type == HERE_DOC)
-			elem_list->words = ft_strndup(token.start, token.length);
-		else
-			elem_list->words = expand_parameters(token, shell);
-		if (elem_list->words == NULL)
-			free_exit(-1, shell, NULL, HIST | ENV);
-		elem_list->next = NULL;
+		if (words_list->type == SIMPLE_WORD)
+			i++;
+		words_list = words_list->next;
 	}
-	else
-		elem_list->next = new_elem(elem_list->next, token, type, shell);
-	return (elem_list);
+	return (i);
 }
 
 static char	**get_command(t_elem *words_list)
 {
 	char	**command;
 	char	*command_part;
-	t_elem	*pnode;
 	int		i;
 
-	i = 0;
-	pnode = words_list;
-	while (pnode != NULL)
-	{
-		if (pnode->type == SIMPLE_WORD)
-			i++;
-		pnode = pnode->next;
-	}
+	i = count_cmds(words_list);
 	command = (char **)malloc(sizeof(char *) * (i + 1));
 	if (command == NULL)
 		return (NULL);
@@ -55,10 +43,7 @@ static char	**get_command(t_elem *words_list)
 		{
 			command_part = ft_strdup(words_list->words);
 			if (command_part == NULL)
-			{
-				//free the command
-				return (NULL);
-			}
+				free_exit(-1, NULL, NULL, HIST);
 			command[i++] = command_part;
 		}
 		words_list = words_list->next;
@@ -67,7 +52,6 @@ static char	**get_command(t_elem *words_list)
 	return (command);
 }
 
-//arrange so that when there are no redirections, the return value is not NULL
 static t_elem	*get_redirections(t_elem *words_list)
 {
 	t_elem	*head;
@@ -80,10 +64,7 @@ static t_elem	*get_redirections(t_elem *words_list)
 		{
 			new_elem = copy_elem(words_list);
 			if (new_elem == NULL)
-			{
-				//free previous nodes
-				return (NULL);
-			}
+				free_exit(-1, NULL, NULL, HIST);
 			head = add_elem_to_list(head, new_elem);
 		}
 		words_list = words_list->next;
@@ -97,10 +78,9 @@ t_pipeline	*new_command(t_pipeline *commands_list, t_elem *words_list)
 	{
 		commands_list = (t_pipeline *)malloc(sizeof(t_pipeline));
 		if (commands_list == NULL)
-			return (NULL);
+			free_exit(-1, NULL, commands_list, HIST | CMD);
 		commands_list->command = get_command(words_list);
 		commands_list->redirections = get_redirections(words_list);
-		//check return values
 		commands_list->next = NULL;
 	}
 	else

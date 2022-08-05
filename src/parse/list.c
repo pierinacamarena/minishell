@@ -1,4 +1,16 @@
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/05 18:24:59 by rbourdil          #+#    #+#             */
+/*   Updated: 2022/08/05 18:25:40 by rbourdil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 t_elem	*copy_elem(t_elem *src)
 {
@@ -53,6 +65,7 @@ void	free_commands_list(t_pipeline *commands_list)
 	}
 }
 
+/*
 void	print_elem_list(t_elem *head)
 {
 	char	*s;
@@ -101,3 +114,4 @@ void	print_commands_list(t_pipeline *head)
 		head = head->next;
 	}
 }
+*/
