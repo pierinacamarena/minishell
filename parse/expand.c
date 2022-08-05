@@ -60,6 +60,8 @@ char	*expand_parameters(t_token token, t_shell *shell)
 		if (state != QUOTE_STATE && c == '$')
 		{
 			scanner.start = scanner.current;
+			if (peek(scanner) == '?')
+				c = advance(&scanner);
 			while (ft_isalnum(peek(scanner)) && token.length-- > 0)
 				c = advance(&scanner);
 			add_expanded_param(scanner, &buffer, state, shell);
