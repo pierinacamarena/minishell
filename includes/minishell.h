@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 12:12:58 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 13:56:17 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@
 #define DOUBLE_QUOTE_STATE 266
 #define WORD_STATE 267
 
-/*	errors */
-
-#define	TOKEN_ERROR 256
-
 /*  parsing defs */
 
 #define BUFSIZE 1
@@ -72,6 +68,11 @@
 
 #define PANIC_MODE 1
 #define REGULAR_MODE 0
+
+/*	error defs	*/
+
+#define ENV 0x1
+#define CMD 0x2
 
 /*	global exit status variable	*/
 
@@ -175,7 +176,6 @@ void	*ft_calloc(size_t count, size_t size);
 void	ft_free(char **str);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	write_error(char *str);
 void    ft_putchar_fd(char c, int fd);
 void    ft_putstr_fd(char *s, int fd);
 void    ft_putendl_fd(char *s, int fd);
@@ -183,6 +183,12 @@ char	*ft_itoa(int n);
 void	full_free(t_shell *shell, t_pipeline *data);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
+
+/* errors */
+void	free_struct(t_shell *shell, t_pipeline *cmds, int opt);
+void	write_error(char *str);
+void	free_exit(int exit_status, t_shell *shell, t_pipeline *cmds, int opt);
+void	print_exit(int exit_status, char *msg);
 
 /*ft_split*/
 int			ft_wordcount(char const *s, char c);

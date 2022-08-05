@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 11:45:41 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 13:05:42 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,10 @@ int main(int ac, char **av, char **env)
 	t_scanner			scanner;
 	char        		*str;
 
+	(void)av;
     str = NULL;
 	if (ac > 1)
-	{	
-		printf("too many arguments\n");
-		return (1);
-	}
-	(void)av;
+		print_exit(1, "too many arguments\n");
 	set_env_exp(&shell, env);
 	while (1)
 	{
@@ -64,15 +61,11 @@ int main(int ac, char **av, char **env)
 			printf("\n");
 			rl_clear_history();
 			free(str);
-			//free the env
-			exit(EXIT_SUCCESS);
+			free_exit(0, &shell, NULL, ENV);
 		}
-		if (str)
-		{
-			init_scanner(&scanner, str);
-			parse(&scanner, &shell);
-		}
-		if (str && *str)
+		init_scanner(&scanner, str);
+		parse(&scanner, &shell);
+		if (*str)
 			free(str);
 	}
     return (0);

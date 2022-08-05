@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:46:18 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 19:37:38 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 12:54:44 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,11 +212,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (0);
-}
-
-void	write_error(char *str)
-{
-	ft_putendl_fd(str, 2);
 }
 
 static int	size_int(int n)

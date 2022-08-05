@@ -3,63 +3,61 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
+#    By: .oamaren <.oamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/07/06 18:52:14 by pcamaren          #+#    #+#              #
-#    Updated: 2022/08/03 17:53:00 by pcamaren         ###   ########.fr        #
+#    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
+#    Updated: 2022/08/05 13:57:30 by rbourdil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-SRCS	=	./src/minishell.c\
-			./src/signal.c\
-			./src/env/env_for_execute.c\
-			./src/env/env_setup.c\
-			./src/env/export_sort.c\
-			./src/env/list_utils.c\
-			./src/utils/ft_split.c\
-			./src/utils/ft_utils.c\
-			./src/exec/ft_path.c\
-			./src/exec/execute_list.c\
-			./src/builtin_list/echo.c\
-			./src/builtin_list/builtins_list.c\
-			./src/builtin_list/cd_list.c\
-			./src/builtin_list/export_list_builtin.c\
-			./src/builtin_list/unset_list.c\
-			./parse/buffer.c\
-			./parse/buffer2.c\
-			./parse/expand.c\
-			./parse/lexer.c\
-			./parse/list.c\
-			./parse/parser.c\
-			./parse/scanner.c\
-			./parse/semantics.c\
-			./parse/string_ops.c\
-			./parse/utils.c
-
-OBJS	=	${SRCS:.c=.o}
-
-CC		=	cc
-
-CFLAGS	=	-Wall -Werror -Wextra -g3
+OBJS	=	./src/minishell.o\
+			./src/signal.o\
+			./src/env/env_for_execute.o\
+			./src/env/env_setup.o\
+			./src/env/export_sort.o\
+			./src/env/list_utils.o\
+			./src/utils/ft_split.o\
+			./src/utils/ft_utils.o\
+			./src/utils/error.o\
+			./src/exec/ft_path.o\
+			./src/exec/execute_list.o\
+			./src/builtin_list/echo.o\
+			./src/builtin_list/builtins_list.o\
+			./src/builtin_list/cd_list.o\
+			./src/builtin_list/export_list_builtin.o\
+			./src/builtin_list/unset_list.o\
+			./parse/buffer.o\
+			./parse/buffer2.o\
+			./parse/expand.o\
+			./parse/lexer.o\
+			./parse/list.o\
+			./parse/parser.o\
+			./parse/scanner.o\
+			./parse/semantics.o\
+			./parse/string_ops.o\
+			./parse/utils.o
 
 NAME	=	minishell
 
-.c		:	.o
-		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+CC		=	cc	
 
-${NAME}	:	${OBJS}
-		${CC} ${CFLAGS} ${OBJS} -lreadline -o ${NAME}
+CFLAGS	=	-Wall -Werror -Wextra
 
-all		:	${NAME}
+all:		${NAME}
 
-clean	:
-			rm -rf ${OBJS}
+${NAME}:	${OBJS}
+			${CC} ${OBJS} -lreadline -o ${NAME}
 
-fclean	:	clean
-			rm -rf ${NAME}
-			$(MAKE) -C . clean
+${OBJS}:	%.o:%.c
+			${CC} ${CFLAGS} -Iincludes -c $< -o $@
 
-re	:	fclean all
+clean:
+			rm -f ${OBJS}
 
-.PHONY	:	all clean fclean re
+fclean:		clean
+			rm -f ${NAME}
+
+re	:		fclean all
+
+.PHONY	:	all fclean clean re
