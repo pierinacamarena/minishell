@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 23:12:10 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 12:28:29 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ int	ft_env(t_env_list *env, int *read_write_fds)
 	while (env != NULL)
 	{
 		write(read_write_fds[1], env->node->key, ft_strlen(env->node->key));
-		write(read_write_fds[1], env->node->content, \
-		ft_strlen(env->node->content));
+		if (env->node->content != NULL)
+			write(read_write_fds[1], env->node->content, \
+			ft_strlen(env->node->content));
 		write(read_write_fds[1], "\n", 1);
 		env = env->next;
 	}
