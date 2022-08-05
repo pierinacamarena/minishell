@@ -6,11 +6,19 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 19:00:08 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 16:03:56 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 22:07:14 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	is_dir(const char *target)
+{
+   struct stat	statbuf;
+
+   stat(target, &statbuf);
+   return (S_ISDIR(statbuf.st_mode));
+}
 
 char	*ft_path(char *arg, char **env)
 {
@@ -20,7 +28,7 @@ char	*ft_path(char *arg, char **env)
 	char	*cmd;
 	char	**path_split;
 
-	if (access(arg, X_OK) == 0)
+	if (!is_dir(arg) && access(arg, X_OK) == 0)
 		return (ft_strdup(arg));
 	i = 0;
 	while (env[i])
@@ -54,7 +62,7 @@ char	*cmd_tester(char **path_split, char *arg)
 			cmd = ft_strjoin(path_split[i], arg);
 		else
 			cmd = ft_str3join(path_split[i], "/", arg);
-		if (access(cmd, F_OK | X_OK) == 0)
+		if (!is_dir(arg) && access(cmd, X_OK) == 0)
 		{
 			ft_free(path_split);
 			return (cmd);
