@@ -1,5 +1,4 @@
-#include "minishell.h"
-
+#include "minishell.h" 
 void	free_struct(t_shell *shell, t_pipeline *cmds, int opt)
 {
 	if ((opt & ENV) != 0)
@@ -19,6 +18,8 @@ void	write_error(char *str)
 void	free_exit(int exit_status, t_shell *shell, t_pipeline *cmds, int opt)
 {
 	free_struct(shell, cmds, opt);
+	if ((opt & HIST) != 0)
+		rl_clear_history();
 	exit(exit_status);
 }
 

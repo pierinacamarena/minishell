@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 15:12:25 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:31:25 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@
 
 #define ENV 0x1
 #define CMD 0x2
+#define HIST 0x4
 
 /*	global exit status variable	*/
 
