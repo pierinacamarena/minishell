@@ -1,10 +1,12 @@
 fix 
-1.
-export var
-export var
-export var=content
-this is segfaulting
-2.
-the signal for ctrl-c when you stop a process prints twice the prompt
 
-3.builtin redirections
+ctrl-\ in a prompt after you wrote some stuff should quit minishell
+	it is not quitting
+
+ctrl-D after a blocking command
+ctrl-\ after a blocking command
+
+
+env is now giving 
+
+var==value;
