@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 21:20:03 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 21:39:50 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,9 @@ void	export_check_list(t_shell *shell, char *var)
 	}
 }
 
-int	ft_export_error(char *arg)
+int	export_error_helper(char *arg)
 {
-	if (ft_strcmp(arg, "=") == 0)
-	{
-		write_error("export: `=': not a valid identifier");
-		return (1);
-	}
-	else if (arg[0] == '=')
-	{
-		ft_putstr_fd("export: ", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
-		return (1);
-	}
-	else if (ft_strcmp(arg, "$") == 0)
+	if (ft_strcmp(arg, "$") == 0)
 	{
 		ft_putstr_fd("export: ", 2);
 		ft_putstr_fd(arg, 2);
@@ -124,6 +112,26 @@ int	ft_export_error(char *arg)
 		return (2);
 	}
 	return (0);
+}
+
+int	ft_export_error(char *arg)
+{
+	int	error;
+
+	if (ft_strcmp(arg, "=") == 0)
+	{
+		write_error("export: `=': not a valid identifier");
+		return (1);
+	}
+	else if (arg[0] == '=')
+	{
+		ft_putstr_fd("export: ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
+		return (1);
+	}
+	error = export_error_helper(arg);
+	return (error);
 }
 
 int	ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds)
