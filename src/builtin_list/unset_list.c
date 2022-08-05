@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:25 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/04 23:23:38 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 21:25:34 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ int	ft_unset_list(t_shell *shell, t_pipeline *data)
 	if (array_size(data->command) == 1)
 		return (0);
 	i = 1;
+	if (ft_strcmp(data->command[1], "") == 0)
+	{
+		write_error("unset: `': not a valid identifier");
+		return (1);
+	}
 	while (data->command[i])
 	{
 		if (ft_strchr(data->command[i], '='))
