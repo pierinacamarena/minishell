@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 16:17:40 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 16:27:44 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 19:13:10 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	match(int type, t_parse *pack)
 		printf("syntax error near unexpected token '%.*s'\n", \
 		pack->current->length, pack->current->start);
 		*pack->panic = PANIC_MODE;
+		g_exit_code = 2;
 	}
 	*pack->current = scan_token(pack->scanner);
 }

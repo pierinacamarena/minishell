@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:03:26 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 18:14:21 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 22:03:23 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static void	getval(char *key, t_buffer *buf, t_shell *shell)
 	else
 	{
 		val = ft_getenv(shell->env, key);
-		add_str_to_buffer(buf, val);
+		if (val != NULL)
+			add_str_to_buffer(buf, val);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 15:31:25 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 21:25:51 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,11 @@ typedef struct s_shell
 }				t_shell;
 
 /*minishell*/
-void    builtin_exec(t_shell *shell);
-int     is_builtin(t_shell *shell);
+int   	builtin_exec_list(t_pipeline *data, t_shell *shell, int *read_write_fds);
+int     is_builtin_list(t_pipeline *shell);
+int		get_heredoc(char *heredoc);
+int		do_redir(t_elem *redirections);
+void	get_redirs(t_elem *redirections, int *read_write_fds);
 
 /*builtins_list*/
 //int		ft_pwd(void);

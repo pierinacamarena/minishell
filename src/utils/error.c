@@ -13,7 +13,7 @@ void	free_struct(t_shell *shell, t_pipeline *cmds, int opt)
 
 void	write_error(char *str)
 {
-	ft_putendl_fd(str, STDERR_FILENO);
+	write(STDERR_FILENO, str, ft_strlen(str));
 }
 
 void	free_exit(int exit_status, t_shell *shell, t_pipeline *cmds, int opt)
