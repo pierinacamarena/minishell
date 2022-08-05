@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:25 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 21:25:34 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 21:35:36 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,26 @@ void	ft_remove_var_list(t_env_list **begin, char *value)
 	ft_remove_helper(begin, new_val);
 }
 
-int	ft_unset_list(t_shell *shell, t_pipeline *data)
+int	unset_error(t_pipeline *data)
 {
-	int	i;
-
 	if (array_size(data->command) == 1)
 		return (0);
-	i = 1;
-	if (ft_strcmp(data->command[1], "") == 0)
+	else if (ft_strcmp(data->command[1], "") == 0)
 	{
 		write_error("unset: `': not a valid identifier");
 		return (1);
 	}
+	return (3);
+}
+
+int	ft_unset_list(t_shell *shell, t_pipeline *data)
+{
+	int	i;
+
+	i = unset_error(data);
+	if (i != 3)
+		return (i);
+	i = 1;
 	while (data->command[i])
 	{
 		if (ft_strchr(data->command[i], '='))
