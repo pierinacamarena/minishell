@@ -6,11 +6,11 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 13:14:49 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 14:39:45 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	ft_pwd(int *read_write_fds)
 {
@@ -65,9 +65,9 @@ void	exit_helper(t_pipeline *data)
 	exit_atoi = ft_atoi(data->command[1]);
 	if (data->command[1][0] == '-')
 	{
-		exit_code = exit_code + exit_atoi;
+		g_exit_code = g_exit_code + exit_atoi;
 		free_commands_list(data);
-		exit(exit_code);
+		exit(g_exit_code);
 	}
 	free_commands_list(data);
 	exit(exit_atoi);

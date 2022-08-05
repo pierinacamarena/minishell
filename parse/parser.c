@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 static void	match(int type, t_parse *pack)
 { 
@@ -92,8 +92,8 @@ int	parse(t_scanner *scanner, t_shell *shell)
 	pack.panic = &panic;
 	commands_list = NULL;
 	commands_list = pipeline(commands_list, &pack, shell);
-	if (commands_list != NULL && *pack.panic == REGULAR_MODE)
-		exit_code = exec_pipes(commands_list, shell);
+	if (*commands_list->command != NULL && *pack.panic == REGULAR_MODE)
+		g_exit_code = exec_pipes(commands_list, shell);
 	free_commands_list(commands_list);
 	return (current.type);
 }

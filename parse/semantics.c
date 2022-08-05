@@ -98,8 +98,7 @@ t_pipeline	*new_command(t_pipeline *commands_list, t_elem *words_list)
 			return (NULL);
 		commands_list->command = get_command(words_list);
 		commands_list->redirections = get_redirections(words_list);
-		if (commands_list->command == NULL) //add redirs condition
-			return (NULL);
+		//check return values
 		commands_list->next = NULL;
 	}
 	else

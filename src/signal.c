@@ -6,11 +6,11 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:54:51 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 11:37:52 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 14:38:26 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	sighandler(int signum)
 {
@@ -21,7 +21,7 @@ void	sighandler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	exit_code = 128 + signum;
+	g_exit_code = 128 + signum;
 }
 
 void	siginit(int signum, void (*sighandler)(int))

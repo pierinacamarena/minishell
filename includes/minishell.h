@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 13:56:17 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:12:25 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@
 
 /*	global exit status variable	*/
 
-extern int	exit_code;
+extern int	g_exit_code;
 
 typedef struct	s_scanner {
 	const char	*start;
@@ -183,6 +183,7 @@ char	*ft_itoa(int n);
 void	full_free(t_shell *shell, t_pipeline *data);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
+int		ft_isalnum(int c);
 
 /* errors */
 void	free_struct(t_shell *shell, t_pipeline *cmds, int opt);

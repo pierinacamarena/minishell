@@ -6,48 +6,48 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 13:05:42 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 14:50:13 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-int	exit_code;
+int	g_exit_code;
 /*
 Function that prints the minishell prompt using the allowed builtin function
 called readline()
 */
 
-char *ft_prompt(char const *str)
+char	*ft_prompt(char const *str)
 {
-    char    *prompt;
+	char	*prompt;
 
-    prompt = readline(str);
+	prompt = readline(str);
 	add_history(prompt);
-    return (prompt);
+	return (prompt);
 }
 
-
-void    set_env_exp(t_shell *shell, char **env)
+void	set_env_exp(t_shell *shell, char **env)
 {
-    char **arr;
+	char	**arr;
+
 	arr = sorted_exp(env);
-    if (!arr)
-        return ;   
-    shell->env = init_env(env);
-    shell->exp = init_env(arr);
+	if (!arr)
+		return ;
+	shell->env = init_env(env);
+	shell->exp = init_env(arr);
 	shell->env_exec = 0;
-    ft_free(arr);
+	ft_free(arr);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-    t_shell     		shell;
-	t_scanner			scanner;
-	char        		*str;
+	t_shell		shell;
+	t_scanner	scanner;
+	char		*str;
 
 	(void)av;
-    str = NULL;
+	str = NULL;
 	if (ac > 1)
 		print_exit(1, "too many arguments\n");
 	set_env_exp(&shell, env);
@@ -68,5 +68,5 @@ int main(int ac, char **av, char **env)
 		if (*str)
 			free(str);
 	}
-    return (0);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:46:18 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 12:54:44 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:12:06 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,4 +284,18 @@ int	ft_atoi(const char *str)
 int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
+}
+
+int	ft_isalnum(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	else if (c >= 'A' && c <= 'Z')
+		return (1);
+	else if (c >= '0' && c <= '9')
+		return (1);
+	else if (c == '_')
+		return (1);
+	else
+		return (0);
 }

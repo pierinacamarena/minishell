@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /*	BAD CASES:
 	
@@ -27,7 +27,7 @@ static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state, t
 		free_value = 0;
 		if (ft_strcmp(tmp, "?") == 0)
 		{
-			value = ft_itoa(exit_code);
+			value = ft_itoa(g_exit_code);
 			free_value = 1;
 			//clean
 			if (value == NULL)
@@ -60,8 +60,7 @@ char	*expand_parameters(t_token token, t_shell *shell)
 		if (state != QUOTE_STATE && c == '$')
 		{
 			scanner.start = scanner.current;
-			while (peek(scanner) != '\0' && peek(scanner) != '"' \
-&& peek(scanner) != '\'' && peek(scanner) != '$' && token.length-- > 0)
+			while (ft_isalnum(peek(scanner)) && token.length-- > 0)
 				c = advance(&scanner);
 			add_expanded_param(scanner, &buffer, state, shell);
 		}
