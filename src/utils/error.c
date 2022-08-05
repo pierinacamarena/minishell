@@ -1,4 +1,5 @@
 #include "minishell.h" 
+
 void	free_struct(t_shell *shell, t_pipeline *cmds, int opt)
 {
 	if ((opt & ENV) != 0)

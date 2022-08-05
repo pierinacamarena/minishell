@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/05 17:03:26 by rbourdil          #+#    #+#             */
+/*   Updated: 2022/08/05 17:33:58 by rbourdil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /*	BAD CASES:
@@ -5,40 +17,41 @@
 	< $TEST cmd (where $TEST="arg1 arg2") --> ambiguous redirect
 */
 
-static void	add_expanded_param(t_scanner scanner, t_buffer *buffer, int state, t_shell *shell)
+static void	getval(char *key, t_buffer *buf, t_shell *shell)
 {
-	int		param_len;
-	char	*tmp;
-	char	*value;
-	int		free_value;
+	char	*val;
 
-	param_len = (int)(scanner.current - scanner.start);
-	if (state == WORD_STATE && \
-(*scanner.start == '\0' || *scanner.start == '$'))
-		add_char_to_buffer(buffer, '$');
-	else if (state == DOUBLE_QUOTE_STATE && \
-(*scanner.start == '"' || *scanner.start == '\'' || *scanner.start == '$'))
-		add_char_to_buffer(buffer, '$');
+	if (ft_strcmp(key, "?") == 0)
+	{
+		val = ft_itoa(g_exit_code);
+		if (val == NULL)
+			free_exit(-1, shell, NULL, HIST | ENV); 
+		add_str_to_buffer(buf, val);
+		free(val);
+	}
 	else
 	{
-		tmp = ft_strndup(scanner.start, param_len);
+		val = ft_getenv(shell->env, key);
+		add_str_to_buffer(buf, val);
+	}
+}
+
+static void	parexp(t_scanner scanner, t_buffer *buf, int state, t_shell *shell)
+{
+	char	*tmp;
+
+	if (state == WORD_STATE && \
+	(*scanner.start == '\0' || *scanner.start == '$'))
+		add_char_to_buffer(buf, '$');
+	else if (state == DOUBLE_QUOTE_STATE && \
+	(*scanner.start == '"' || *scanner.start == '\'' || *scanner.start == '$'))
+		add_char_to_buffer(buf, '$');
+	else
+	{
+		tmp = ft_strndup(scanner.start, (int)(scanner.current - scanner.start));
 		if (tmp == NULL)
-			return ;
-		free_value = 0;
-		if (ft_strcmp(tmp, "?") == 0)
-		{
-			value = ft_itoa(g_exit_code);
-			free_value = 1;
-			//clean
-			if (value == NULL)
-				exit(EXIT_FAILURE);
-		}
-		else
-			value = ft_getenv(shell->env, tmp);
-		if (value != NULL)
-			add_str_to_buffer(buffer, value);
-		if (free_value)
-			free(value);
+			free_exit(-1, shell, NULL, HIST | ENV);
+		getval(tmp, buf, shell);
 		free(tmp);
 	}
 }
@@ -64,7 +77,7 @@ char	*expand_parameters(t_token token, t_shell *shell)
 				c = advance(&scanner);
 			while (ft_isalnum(peek(scanner)) && token.length-- > 0)
 				c = advance(&scanner);
-			add_expanded_param(scanner, &buffer, state, shell);
+			parexp(scanner, &buffer, state, shell);
 		}
 		else
 			add_char_to_buffer(&buffer, c);
@@ -85,21 +98,21 @@ static char	*getword(t_scanner *scanner)
 	if (*scanner->start == '\0')
 		return (NULL);
 	c = advance(scanner);
-	while (c != '\0')	
+	while (c != '\0')
 	{
 		state = update_state(state, c);
 		if (state == WORD_STATE && ft_isblank(c))
 			break ;
 		else if ((state == WORD_STATE && c != '"' && c != '\'') \
-|| (state == QUOTE_STATE && c != '\'') \
-|| (state == DOUBLE_QUOTE_STATE && c != '"'))
+		|| (state == QUOTE_STATE && c != '\'') \
+		|| (state == DOUBLE_QUOTE_STATE && c != '"'))
 			add_char_to_buffer(&buffer, c);
 		c = advance(scanner);
 	}
 	scanner->current--;
 	return (collect_and_clear(&buffer));
 }
-		
+
 static t_elem	*new_word(t_elem *words_list, char *word, int type)
 {
 	if (words_list == NULL)

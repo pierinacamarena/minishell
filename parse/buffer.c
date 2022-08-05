@@ -16,9 +16,9 @@ int	flush(t_buffer *buffer)
 		collector_size = 0;
 	buffer->collector = realloc(buffer->collector, \
 collector_size + buffer->pos + 1);
-	buffer->collector[collector_size] = '\0';
 	if (buffer->collector == NULL)
-		return (-1);
+		free_exit(-1, NULL, NULL, 0);
+	buffer->collector[collector_size] = '\0';
 	strncat(buffer->collector, buffer->buf, buffer->pos);
 	buffer->pos = 0;	
 	return (0);

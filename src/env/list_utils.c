@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:32:28 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 13:41:29 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:25:12 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ char	*ft_getenv(t_env_list *begin, char *key)
 		return (NULL);
 	curr = begin;
 	value = ft_strjoin(key, "=");
+	if (value == NULL)
+		free_exit(-1, NULL, NULL, 0);
 	while (curr != NULL)
 	{
 		if (ft_strcmp(curr->node->key, value) == 0)

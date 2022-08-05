@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 16:17:40 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 16:21:40 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 16:27:44 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	command(t_parse *pack, t_elem **elem_list, t_shell *shell)
 		command(pack, elem_list, shell);
 }
 
-static t_pipeline *pipeline(t_pipeline *cmds, t_parse *pack, t_shell *shell)
+static t_pipeline	*pipeline(t_pipeline *cmds, t_parse *pack, t_shell *shell)
 {
 	t_elem	*elem_list;
 	t_elem	*words_list;
@@ -71,7 +71,7 @@ static t_pipeline *pipeline(t_pipeline *cmds, t_parse *pack, t_shell *shell)
 	if (pack->current->type == EOF_TOKEN)
 		return (NULL);
 	elem_list = NULL;
-	command(pack, &elem_list, shell); 
+	command(pack, &elem_list, shell);
 	words_list = NULL;
 	while (elem_list != NULL)
 	{

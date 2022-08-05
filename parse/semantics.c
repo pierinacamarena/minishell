@@ -15,12 +15,14 @@ t_elem	*new_elem(t_elem *elem_list, t_token token, int type, t_shell *shell)
 	{
 		elem_list = (t_elem *)malloc(sizeof(t_elem));
 		if (elem_list == NULL)
-			return (NULL);
+			free_exit(-1, shell, NULL, HIST | ENV);
 		elem_list->type = type;
 		if (type == HERE_DOC)
 			elem_list->words = ft_strndup(token.start, token.length);
 		else
 			elem_list->words = expand_parameters(token, shell);
+		if (elem_list->words == NULL)
+			free_exit(-1, shell, NULL, HIST | ENV);
 		elem_list->next = NULL;
 	}
 	else

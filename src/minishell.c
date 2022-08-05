@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 16:16:12 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:36:14 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ int	main(int ac, char **av, char **env)
 		str = ft_prompt(PROMPT_NAME);
 		if (str == NULL)
 			exit_on_eof(str, &shell);
-		init_scanner(&scanner, str);
-		parse(&scanner, &shell);
-		if (*str)
+		else if (*str)
+		{
+			init_scanner(&scanner, str);
+			parse(&scanner, &shell);
 			free(str);
+		}
 	}
 	return (0);
 }
