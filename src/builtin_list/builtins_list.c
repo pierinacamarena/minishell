@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 14:39:45 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 12:41:01 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	ft_exit_list(t_shell *shell, t_pipeline *data)
 	len = len_cmds_list(data->command);
 	if (len > 2)
 	{
-		write_error("exit: too many arguments");
+		write_error("exit: too many arguments\n");
 		return (1);
 	}
 	ft_free_list(&shell->env);
