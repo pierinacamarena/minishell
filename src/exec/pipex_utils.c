@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:47:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 12:53:30 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:18:52 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,11 @@ void	init_pipes(t_pipes *pipes, t_pipeline *data, t_shell *shell)
 	i = 0;
 	while (i < pipes->size)
 	{
-		if (pipe(pipes->fd_pipe[i]) < 0)
+		if (pipe(pipes->fd_pipe[i++]) < 0)
 		{
 			perror("pipe");
 			free_exit(127, shell, data, ENV | CMD | HIST);
 		}
-		i++;
 	}
 }
 

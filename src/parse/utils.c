@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 18:26:16 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 18:26:17 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:36:04 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,24 @@ void	free_double_ptr(char **ptr)
 	while (ptr[i] != NULL)
 		free(ptr[i++]);
 	free(ptr);
+}
+
+char	*ft_realloc(char *src, int n)
+{
+	char	*ret;
+	int		i;
+
+	ret = malloc(sizeof(char) * n);
+	if (ret == NULL)
+		return (NULL);
+	if (src == NULL)
+		return (ret);
+	i = 0;
+	while (n-- > 0 && src[i] != '\0')
+	{
+		ret[i] = src[i];
+		i++;
+	}
+	free(src);
+	return (ret);
 }

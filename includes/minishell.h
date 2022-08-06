@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 20:35:01 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:54:30 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 
 /*  parsing defs */
 
-#define BUFSIZE 1
+#define BUFSIZE 512
 
 /*	token type defs	*/
 
@@ -309,7 +309,7 @@ t_pipeline	*new_command(t_pipeline *commands_list, t_elem *words_list);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strndup(const char *s, size_t n);
-char	*ft_realloc(char *s, size_t size);
+char	*ft_realloc(char *s, int n);
 char	*append_str(char *s1, const char *s2);
 char	*append_char(char *s1, const char c);
 char	*ft_strcat(char *dest, const char *src);

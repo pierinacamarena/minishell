@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 18:21:25 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 18:23:06 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:34:31 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	flush(t_buffer *buffer)
 	int	collector_size;
 
 	if (buffer->collector != NULL)
-		collector_size = strlen(buffer->collector);
+		collector_size = ft_strlen(buffer->collector);
 	else
 		collector_size = 0;
-	buffer->collector = realloc(buffer->collector, \
+	buffer->collector = ft_realloc(buffer->collector, \
 collector_size + buffer->pos + 1);
 	if (buffer->collector == NULL)
 		free_exit(-1, NULL, NULL, 0);

@@ -6,26 +6,11 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 18:24:23 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 18:24:25 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:32:28 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*ft_realloc(char *s, size_t size)
-{
-	char	*ret;
-
-	ret = (char *)malloc(sizeof(char) * size);
-	if (ret == NULL)
-	{
-		free(s);
-		return (NULL);
-	}
-	ft_strncpy(ret, s, size);
-	free(s);
-	return (ret);
-}
 
 char	*append_str(char *s1, const char *s2)
 {
