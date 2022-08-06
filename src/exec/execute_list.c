@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 13:08:56 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 15:04:07 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void	get_redirs(t_elem *redirs, int *read_write_fds)
 				close(read_write_fds[0]);
 			read_write_fds[0] = do_redir(redirs);
 		}
+		if (read_write_fds[0] == -1 || read_write_fds[1] == -1)
+			break ;
 		redirs = redirs->next;
 	}
 }
