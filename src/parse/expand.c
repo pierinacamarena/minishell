@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:03:26 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 22:04:04 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:33:13 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	parexp(t_scanner scanner, t_buffer *buf, t_shell *shell)
 {
 	char	*tmp;
 
-	if (!ft_isalnum(*scanner.start))
+	if (*scanner.start != '?' && !ft_isalnum(*scanner.start))
 		add_char_to_buffer(buf, '$');
 	else
 	{
@@ -65,9 +65,9 @@ char	*expand_parameters(t_token token, t_shell *shell)
 		if (state != QUOTE_STATE && c == '$')
 		{
 			scanner.start = scanner.current;
-			if (peek(scanner) == '?')
-				c = advance(&scanner);
 			while (ft_isalnum(peek(scanner)) && token.length-- > 0)
+				c = advance(&scanner);
+			if (peek(scanner) == '?')
 				c = advance(&scanner);
 			parexp(scanner, &buffer, shell);
 		}
