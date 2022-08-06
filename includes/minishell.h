@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 21:15:54 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:20:56 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,7 @@ char		*collect_and_clear(t_buffer *buffer);
 /*expand.h*/
 
 char		*expand_parameters(t_token token, t_shell *shell);
-t_elem		*split_words(t_elem *elem);
+t_elem		*split_words(t_elem *elem, t_parse *pack);
 
 /*lexer.h*/
 
@@ -299,7 +299,7 @@ void		skip_blanks(t_scanner *scanner);
 
 /*semantics.h*/
 
-t_elem		*new_words_list(t_elem *words_list, t_elem *elem);
+t_elem		*new_words_list(t_elem *words_list, t_elem *elem, t_parse *pack);
 t_elem		*new_elem(t_elem *elem_list, t_token token, int type, t_shell *sh);
 t_pipeline	*new_command(t_pipeline *commands_list, t_elem *words_list);
 

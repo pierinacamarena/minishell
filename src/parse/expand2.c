@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 18:25:58 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 18:26:00 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:20:15 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,27 @@ static t_elem	*new_word(t_elem *words_list, char *word, int type)
 	return (words_list);
 }
 
-t_elem	*split_words(t_elem *elem)
+t_elem	*split_words(t_elem *elem, t_parse *pack)
 {
 	t_elem		*words_list;
 	t_scanner	scanner;
 	char		*word;
+	int			nb_words;
 
 	init_scanner(&scanner, elem->words);
 	word = getword(&scanner);
 	words_list = NULL;
+	nb_words = 0;
 	while (word != NULL)
 	{
+		nb_words++;
 		words_list = new_word(words_list, word, elem->type);
 		word = getword(&scanner);
+	}
+	if (nb_words > 1 && elem->type != SIMPLE_WORD)
+	{
+		write_error("ambiguous redirect\n");
+		*pack->panic = PANIC_MODE;
 	}
 	return (words_list);
 }
