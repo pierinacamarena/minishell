@@ -6,7 +6,7 @@
 #    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
-#    Updated: 2022/08/06 20:28:08 by pcamaren         ###   ########.fr        #
+#    Updated: 2022/08/06 20:34:19 by pcamaren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ OBJS	=	./src/minishell.o\
 			./src/builtin_list/cd_list.o\
 			./src/builtin_list/export_list_builtin.o\
 			./src/builtin_list/unset_list.o\
+			./src/builtin_list/built_in_utils.o\
 			./src/parse/buffer.o\
 			./src/parse/buffer2.o\
 			./src/parse/expand.o\
