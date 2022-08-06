@@ -3,61 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/11 17:31:28 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/07/11 17:31:36 by pcamaren         ###   ########.fr       */
+/*   Created: 2021/12/04 14:20:36 by rbourdil          #+#    #+#             */
+/*   Updated: 2022/08/06 13:14:07 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-int	ft_wordcount(char const *s, char c)
+static int	count_words(const char *s, char c)
 {
-	int	count;
-	int	i;
+	int	state;
+	int	words;
 
-	i = 0;
-	count = 0;
-	while (s[i] != '\0')
+	state = 0;
+	words = 0;
+	while (*s != '\0')
 	{
-		if ((i == 0 && s[i] != c) || (i != 0 && s[i] != c && s[i - 1] == c))
-			count++;
-		i++;
+		if (*s == c)
+			state = 0;
+		else if (state == 0)
+		{
+			state = 1;
+			words++;
+		}
+		s++;
 	}
-	return (count);
+	return (words);
+}
+
+static int	size_word(const char *s, char c)
+{
+	int	size;
+
+	size = 0;
+	while (s[size] != c && s[size] != '\0')
+		size++;
+	return (size);
+}
+
+static char	*get_word(const char **ptrs, char c)
+{
+	char	*word;
+	char	*ptr_word;
+	int		size;
+
+	while (**ptrs == c && **ptrs != '\0')
+		(*ptrs)++;
+	size = size_word(*ptrs, c);
+	word = malloc(sizeof(char) * (size + 1));
+	if (word == NULL)
+		return (NULL);
+	ptr_word = word;
+	while (**ptrs != c && **ptrs != '\0')
+	{
+		*ptr_word = **ptrs;
+		(*ptrs)++;
+		ptr_word++;
+	}
+	*ptr_word = '\0';
+	return (word);
+}
+
+void	ft_clear(char **split_str)
+{
+	while (*split_str != NULL)
+	{
+		free(*split_str);
+		*split_str = NULL;
+		split_str++;
+	}
 }
 
 char	**ft_split(char const *s, char c)
 {
-	int		j;
-    int     i;
-    int     len;
-	char	**splitstr;
+	char	**split_str;
+	int		nb_words;
+	int		i;
 
-	if (!s)
+	nb_words = count_words(s, c);
+	split_str = malloc(sizeof(char *) * (nb_words + 1));
+	if (split_str == NULL)
 		return (NULL);
-	j = 0;
-    i = 0;
-    len = 0;
-	splitstr = (char **)malloc(sizeof(char *) * (ft_wordcount(s, c) + 1));
-	if (!splitstr)
-		return (NULL);
-    while (s[i])
+	i = 0;
+	while (i < nb_words)
 	{
-		while (s[i + len] && s[i + len] != c)
-			len++;
-		if (len)
+		split_str[i] = get_word(&s, c);
+		if (split_str[i] == NULL)
 		{
-            splitstr[j] = ft_substr(s, i, len);
-            j++;
-        }
-		if (len)
-			i += len;
-		else
-			i += 1;
-		len = 0;
+			ft_clear(split_str);
+			free(split_str);
+			split_str = NULL;
+			return (NULL);
+		}
+		i++;
 	}
-	splitstr[j] = NULL;
-	return (splitstr);
+	split_str[i] = NULL;
+	return (split_str);
 }

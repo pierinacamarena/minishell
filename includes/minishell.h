@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 21:25:51 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 12:54:37 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,14 @@ typedef struct	s_pipes
 	int **fd_pipe;
 	int	size;
 }				t_pipes;
+
+typedef struct	s_pipex {
+	t_pipes	pipes;
+	int		rw_fds[2];
+	pid_t	pid;
+	int		exit;
+}	t_pipex;
+
 typedef struct s_shell
 {
 	char		**env_exec;
@@ -157,6 +165,13 @@ int     is_builtin_list(t_pipeline *shell);
 int		get_heredoc(char *heredoc);
 int		do_redir(t_elem *redirections);
 void	get_redirs(t_elem *redirections, int *read_write_fds);
+
+/* ppipex_utils */
+int		count_list(t_pipeline *data);
+void	init_pipes(t_pipes *pipes, t_pipeline *data, t_shell *shell);
+void	close_pipes(t_pipes *pipes);
+void	init_fds(t_pipeline *data, t_pipex *pipex, int command_num);
+int		wait_children(int exit_status, pid_t pid, int built_check);
 
 /*builtins_list*/
 //int		ft_pwd(void);

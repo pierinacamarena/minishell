@@ -6,7 +6,7 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 19:00:08 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 22:07:14 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 13:09:39 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	is_dir(const char *target)
 {
-   struct stat	statbuf;
+	struct stat	statbuf;
 
-   stat(target, &statbuf);
-   return (S_ISDIR(statbuf.st_mode));
+	stat(target, &statbuf);
+	return (S_ISDIR(statbuf.st_mode));
 }
 
 char	*ft_path(char *arg, char **env)

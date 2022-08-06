@@ -6,7 +6,7 @@
 #    By: .oamaren <.oamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
-#    Updated: 2022/08/05 20:29:09 by rbourdil         ###   ########.fr        #
+#    Updated: 2022/08/06 12:53:50 by rbourdil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ OBJS	=	./src/minishell.o\
 			./src/exec/ft_path.o\
 			./src/exec/execute_list.o\
 			./src/exec/pipex.o\
+			./src/exec/pipex_utils.o\
 			./src/builtin_list/echo.o\
 			./src/builtin_list/builtins_list.o\
 			./src/builtin_list/cd_list.o\
