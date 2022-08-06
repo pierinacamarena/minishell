@@ -6,7 +6,7 @@
 #    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
-#    Updated: 2022/08/06 20:34:19 by pcamaren         ###   ########.fr        #
+#    Updated: 2022/08/06 20:39:09 by pcamaren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ OBJS	=	./src/minishell.o\
 
 NAME	=	minishell
 
-CC		=	cc	
+CC		=	cc -g	
 
 CFLAGS	=	-Wall -Werror -Wextra
 

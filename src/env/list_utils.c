@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:32:28 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 17:25:12 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 21:07:20 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	same_value(t_env_list *list, char *var)
 	curr = list;
 	while (curr != NULL)
 	{
-		if (curr->node->content && \
+		if (curr->node->content && var_split[1] && \
 		ft_strcmp(curr->node->content, var_split[1]) == 0)
 		{
 			ft_free(var_split);
