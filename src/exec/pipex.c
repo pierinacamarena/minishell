@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 19:21:42 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 12:49:59 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 13:44:23 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ static int	exec_cmd(t_pipeline *data, t_shell *shell, t_pipex *pipex)
 	if (is_builtin_list(data))
 	{	
 		pipex->exit = builtin_exec_list(data, shell, pipex->rw_fds);
-		if (data->next == NULL)
-			built_check = 1;
+		built_check = 1;
 	}
 	else
 	{
@@ -72,7 +71,8 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	while (data)
 	{
 		init_fds(data, &pipex, command_num);
-		built_check = exec_cmd(data, shell, &pipex);
+		if (data->command[0] != NULL)
+			built_check = exec_cmd(data, shell, &pipex);
 		command_num++;
 		data = data->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 12:54:37 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 13:51:55 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@
 #define LESS_TOKEN 259
 #define LESS_LESS_TOKEN 260
 #define PIPE_TOKEN 261
-#define OR_TOKEN 262
-#define AND_TOKEN 263
 #define EOF_TOKEN 264
 
 /*	state definitions */

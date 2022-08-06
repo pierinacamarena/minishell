@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 16:17:40 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 19:13:10 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 13:55:53 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ static void	match(int type, t_parse *pack)
 {
 	if (pack->current->type != type && *pack->panic != PANIC_MODE)
 	{
-		printf("syntax error near unexpected token '%.*s'\n", \
+		if (pack->current->type == EOF_TOKEN)
+			printf("syntax error near unexpected token 'newline'\n");
+		else
+			printf("syntax error near unexpected token '%.*s'\n", \
 		pack->current->length, pack->current->start);
 		*pack->panic = PANIC_MODE;
 		g_exit_code = 2;
@@ -57,8 +60,6 @@ static void	command(t_parse *pack, t_elem **elem_list, t_shell *shell)
 {
 	command_elem(pack, elem_list, shell);
 	if (pack->current->type != PIPE_TOKEN \
-		&& pack->current->type != OR_TOKEN \
-		&& pack->current->type != AND_TOKEN \
 		&& pack->current->type != EOF_TOKEN)
 		command(pack, elem_list, shell);
 }
@@ -105,7 +106,7 @@ int	parse(t_scanner *scanner, t_shell *shell)
 	pack.panic = &panic;
 	cmds = NULL;
 	cmds = pipeline(cmds, &pack, shell);
-	if (*cmds->command != NULL && *pack.panic == REGULAR_MODE)
+	if (*pack.panic == REGULAR_MODE)
 		g_exit_code = exec_pipes(cmds, shell);
 	free_commands_list(cmds);
 	return (current.type);
