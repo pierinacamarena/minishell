@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 16:17:40 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 13:55:53 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:14:11 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static t_pipeline	*pipeline(t_pipeline *cmds, t_parse *pack, t_shell *shell)
 	words_list = NULL;
 	while (elem_list != NULL)
 	{
-		words_list = new_words_list(words_list, elem_list);
+		words_list = new_words_list(words_list, elem_list, pack);
 		tmp = elem_list;
 		elem_list = elem_list->next;
 		free_elem(tmp);

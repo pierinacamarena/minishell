@@ -6,18 +6,18 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 18:54:10 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 18:54:17 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:21:31 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_elem	*new_words_list(t_elem *words_list, t_elem *elem)
+t_elem	*new_words_list(t_elem *words_list, t_elem *elem, t_parse *pack)
 {
 	if (words_list == NULL)
-		words_list = split_words(elem);
+		words_list = split_words(elem, pack);
 	else
-		words_list->next = new_words_list(words_list->next, elem);
+		words_list->next = new_words_list(words_list->next, elem, pack);
 	return (words_list);
 }
 
