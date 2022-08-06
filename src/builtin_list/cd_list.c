@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:15 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 21:13:01 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 21:37:04 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,15 @@ int	cd_helper(t_shell *shell)
 {
 	char	*saved_oldpwd;
 	char	*new_pwd;
+	char	*home_val;
 
+	home_val = ft_getenv(shell->env, "HOME");
+	if (home_val == NULL)
+		return (1);
+	else if (*home_val == '\n')
+		return (0);
 	saved_oldpwd = getcwd(NULL, 0);
-	chdir(ft_getenv(shell->env, "HOME"));
+	chdir(home_val);
 	new_pwd = getcwd(NULL, 0);
 	find_replace(&shell->env, "OLDPWD=", saved_oldpwd);
 	find_replace(&shell->env, "PWD=", new_pwd);
@@ -96,7 +102,7 @@ int	ft_cd_list(t_shell *shell, t_pipeline *data)
 	len = len_cmds_list(data->command);
 	if (len > 2)
 	{
-		write_error("minishell: cd: too many arguments");
+		write_error("minishell: cd: too many arguments\n");
 		return (1);
 	}
 	else if (len == 1)
