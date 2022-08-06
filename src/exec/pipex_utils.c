@@ -30,6 +30,8 @@ void	init_pipes(t_pipes *pipes, t_pipeline *data, t_shell *shell)
 	int	i;
 
 	pipes->size = count_list(data) - 1;
+	if (pipes->size <= 0)
+		return ;
 	pipes->fd_pipe = (int **)malloc(sizeof(int *) * pipes->size);
 	if (pipes->fd_pipe == NULL)
 		free_exit(-1, shell, data, ENV | CMD | HIST);
@@ -81,6 +83,7 @@ int	wait_children(int exit_status, pid_t pid, int built_check)
 {
 	int	status;
 
+	status = 0;
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status) && built_check == 0)
 		exit_status = 128 + WTERMSIG(status);

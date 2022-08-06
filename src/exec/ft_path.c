@@ -16,6 +16,7 @@ int	is_dir(const char *target)
 {
 	struct stat	statbuf;
 
+	ft_memset(&statbuf, 0, sizeof(statbuf));
 	stat(target, &statbuf);
 	return (S_ISDIR(statbuf.st_mode));
 }

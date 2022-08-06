@@ -201,6 +201,7 @@ void	full_free(t_shell *shell, t_pipeline *data);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
+void	free_pipes(t_pipes *pipes);
 
 /* errors */
 void	free_struct(t_shell *shell, t_pipeline *cmds, int opt);

@@ -12,6 +12,17 @@
 
 #include "minishell.h"
 
+void	free_pipes(t_pipes *pipes)
+{
+	int	i;
+
+	i = 0;
+	while (i < pipes->size)
+		free(pipes->fd_pipe[i++]);
+	if (i != 0)
+		free(pipes);
+}
+
 static void	exec_child(t_pipeline *data, t_shell *shell, t_pipex *pipex)
 {
 	char	*path;
@@ -23,6 +34,7 @@ static void	exec_child(t_pipeline *data, t_shell *shell, t_pipex *pipex)
 	dup2(pipex->rw_fds[0], 0);
 	dup2(pipex->rw_fds[1], 1);
 	close_pipes(&pipex->pipes);
+	free_pipes(&pipex->pipes);
 	shell->env_exec = list_to_array(shell->env);
 	path = ft_path(data->command[0], shell->env_exec);
 	if (path == NULL)
@@ -36,6 +48,7 @@ static void	exec_child(t_pipeline *data, t_shell *shell, t_pipex *pipex)
 		perror(data->command[0]);
 	}
 	free(path);
+	ft_free(shell->env_exec);
 	free_exit(127, shell, data, ENV | CMD | HIST);
 }
 
@@ -64,6 +77,7 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 	int			command_num;
 	int			built_check;
 
+	pipex.pid = -1;
 	built_check = 0;
 	siginit(SIGINT, SIG_IGN);
 	init_pipes(&pipex.pipes, data, shell);
@@ -77,6 +91,7 @@ int	exec_pipes(t_pipeline *data, t_shell *shell)
 		data = data->next;
 	}
 	close_pipes(&pipex.pipes);
+	free_pipes(&pipex.pipes);
 	pipex.exit = wait_children(pipex.exit, pipex.pid, built_check);
 	return (pipex.exit);
 }
