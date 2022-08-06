@@ -6,60 +6,48 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 14:58:17 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 15:49:38 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_env_list	*setnode_helper_export(t_env_list *list, t_env *node_env, \
-	char **info, int len)
+t_env_list	*setnode_helper_export(t_env_list *list, t_env *node_env, char *info_one, char *info_two)
 {
-	int	i;
-
 	list->node = node_env;
-	list->node->key = ft_strdup(info[0]);
-	if (!info[1])
+	list->node->key = ft_strdup(info_one);
+	if (!info_two)
 		list->node->content = NULL;
 	else
-		list->node->content = ft_strdup(info[1]);
-	if (len > 2)
-	{
-		i = 2;
-		while (info[i])
-		{
-			list->node->content = ft_strjoin(list->node->content, "=");
-			list->node->content = ft_strjoin(list->node->content, info[i]);
-			i++;
-		}
-	}
+		list->node->content = ft_strdup(info_two);
 	list->next = NULL;
 	return (list);
 }
 
 t_env_list	*ft_set_node_export(char *env)
 {
-	char		**info;
-	char		*temp;
+	char		*info_one;
+	char		*info_two;
 	t_env_list	*list;
 	t_env		*node_env;
-	int			len;
-
+	int			i;
+	
+	i = 0;
 	if (!env)
 		return (NULL);
-	info = ft_split(env, '=');
-	len = len_cmds_list(info);
-	temp = ft_strjoin(info[0], "=");
-	free(info[0]);
-	info[0] = temp;
+	while (env[i] != '=')
+		i++;
+	info_one = ft_substr(env, 0, i + 1);
+	info_two = ft_substr(env, i + 1, ft_strlen(env));
 	list = malloc(sizeof(t_env_list));
 	if (!list)
 		return (NULL);
 	node_env = malloc(sizeof(t_env));
 	if (!node_env)
 		return (NULL);
-	setnode_helper_export(list, node_env, info, len);
-	ft_free(info);
+	setnode_helper_export(list, node_env, info_one, info_two);
+	free(info_one);
+	free(info_two);
 	return (list);
 }
 
@@ -83,32 +71,26 @@ void	add_var_list(t_env_list **begin, char *var)
 	}
 }
 
-char	**split_export(char *var)
+void	split_export(t_shell *shell, char *var)
 {
-	int		len;
+	char	*info_one;
+	char	*info_two;
 	int		i;
-	char	**split;
 
-	split = ft_split(var, '=');
-	len = len_cmds_list(split);
-	split[0] = ft_strjoin(split[0], "=");
-	if (len > 2)
-	{
-		i = 2;
-		while (split[i])
-		{
-			split[1] = ft_strjoin(split[1], "=");
-			split[1] = ft_strjoin(split[1], split[i]);
-			i++;
-		}
-	}
-	return (split);
+	i = 0;
+
+	while (var[i] != '=')
+		i++;
+	info_one = ft_substr(var, 0, i + 1);
+	info_two = ft_substr(var, i + 1, ft_strlen(var));
+	find_replace(&shell->env, info_one, info_two);
+	find_replace(&shell->exp, info_one, info_two);
+	free(info_one);
+	free(info_two);
 }
 
 void	export_check_helper(t_shell *shell, char *var)
 {
-	char	**split;
-
 	if (key_exists(shell->env, var) == 0)
 	{
 		add_var_list(&shell->env, var);
@@ -119,10 +101,7 @@ void	export_check_helper(t_shell *shell, char *var)
 	{
 		if (same_value(shell->env, var) == 0)
 		{
-			split = split_export(var);
-			find_replace(&shell->env, split[0], split[1]);
-			find_replace(&shell->exp, split[0], split[1]);
-			ft_free(split);
+			split_export(shell, var);
 			return ;
 		}
 		else if (same_value(shell->env, var) == 1)
