@@ -1,0 +1,3 @@
+quit on open errors
+change ft_split
+> test | echo blabla; rm test

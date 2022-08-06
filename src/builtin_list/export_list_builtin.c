@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 22:03:00 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 11:36:43 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	ft_export_error(char *arg)
 
 	if (ft_strcmp(arg, "=") == 0)
 	{
-		write_error("export: `=': not a valid identifier");
+		write_error("export: `=': not a valid identifier\n");
 		return (1);
 	}
 	else if (arg[0] == '=')
