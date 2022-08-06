@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 19:21:42 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 15:24:03 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 19:21:21 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@ static void	exec_child(t_pipeline *data, t_shell *shell, t_pipex *pipex)
 	free_pipes(&pipex->pipes);
 	shell->env_exec = list_to_array(shell->env);
 	path = ft_path(data->command[0], shell->env_exec);
-	if (path == NULL)
+	if (path == NULL && g_exit_code == 126)
+	{
+		write_error(data->command[0]);
+		write_error(": permission denied\n");
+	}
+	else if (path == NULL)
 	{
 		write_error(data->command[0]);
 		write_error(": command not found\n");
