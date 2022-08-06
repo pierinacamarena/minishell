@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:11 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 12:41:01 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 12:41:59 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	exit_helper(t_pipeline *data)
 	if (!is_digit_arg(data->command[1]))
 	{
 		free_commands_list(data);
-		write_error("exit: numeric argument required");
+		write_error("exit: numeric argument required\n");
 		exit(2);
 	}
 	exit_atoi = ft_atoi(data->command[1]);
