@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:25 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 12:33:07 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:54:48 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	ft_remove_helper(t_env_list **begin, char *new_val)
 			to_remove = curr->next;
 			curr->next = curr->next->next;
 			free(to_remove);
-			free(new_val);
 			return ;
 		}
 		curr = curr->next;
@@ -60,6 +59,7 @@ void	ft_remove_var_list(t_env_list **begin, char *value)
 		return ;
 	}
 	ft_remove_helper(begin, new_val);
+	free(new_val);
 }
 
 int	unset_error(t_pipeline *data)
@@ -77,18 +77,18 @@ int	unset_error(t_pipeline *data)
 int	ft_unset_list(t_shell *shell, t_pipeline *data)
 {
 	int	i;
+	int	error;
 
 	i = unset_error(data);
 	if (i != 3)
 		return (i);
+	error = 0;
 	i = 1;
 	while (data->command[i])
 	{
 		if (ft_strchr(data->command[i], '='))
 		{
-			ft_putstr_fd("unset: ", 2);
-			ft_putstr_fd(data->command[i], 2);
-			ft_putstr_fd(": invalid parameter name\n", 2);
+			error = unset_print(data->command[i]);
 			i++;
 		}
 		if (data->command[i])
@@ -98,5 +98,5 @@ int	ft_unset_list(t_shell *shell, t_pipeline *data)
 			i++;
 		}
 	}
-	return (0);
+	return (error);
 }

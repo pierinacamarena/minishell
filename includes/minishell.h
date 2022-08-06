@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 21:15:54 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:54:22 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ int			wait_children(int exit_status, pid_t pid, int built_check);
 
 /*builtins_list_utils*/
 void		export_check_helper(t_shell *shell, char *var);
+int			unset_print(char *cmd);
 
 //int		ft_pwd(void);
 int			len_cmds_list(char **cmds);
