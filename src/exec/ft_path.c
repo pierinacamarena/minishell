@@ -6,11 +6,11 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 19:00:08 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 13:09:39 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 15:22:50 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	is_dir(const char *target)
 {
@@ -22,9 +22,7 @@ int	is_dir(const char *target)
 
 char	*ft_path(char *arg, char **env)
 {
-	int		finder;
 	int		i;
-	char	*path;
 	char	*cmd;
 	char	**path_split;
 
@@ -33,14 +31,15 @@ char	*ft_path(char *arg, char **env)
 	i = 0;
 	while (env[i])
 	{
-		finder = ft_strncmp(env[i], "PATH=", 5);
-		if (finder == 0)
-			path = env[i];
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+			break ;
 		i++;
 	}
-	path = path + 5;
-	path_split = ft_split(path, ':');
-	i = 0;
+	if (env[i] == NULL)
+		return (NULL);
+	path_split = ft_split(env[i] + 5, ':');
+	if (path_split == NULL)
+		return (NULL);
 	cmd = cmd_tester(path_split, arg);
 	if (cmd)
 		return (cmd);
