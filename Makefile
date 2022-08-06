@@ -6,7 +6,7 @@
 #    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
-#    Updated: 2022/08/06 20:20:57 by pcamaren         ###   ########.fr        #
+#    Updated: 2022/08/06 20:28:08 by pcamaren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ OBJS	=	./src/minishell.o\
 			./src/signal.o\
 			./src/env/env_for_execute.o\
 			./src/env/env_setup.o\
+			./src/env/env_utils.o\
 			./src/env/export_sort.o\
 			./src/env/sort_utils.o\
 			./src/env/list_utils.o\
