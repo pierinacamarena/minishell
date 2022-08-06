@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:25:32 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 15:04:07 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 21:04:51 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,23 @@ int	is_builtin_list(t_pipeline *data)
 	return (0);
 }
 
-int	builtin_exec_list(t_pipeline *data, t_shell *shell, int *read_write_fds)
+int	builtin_exec_list(t_pipeline *data, t_shell *shell, int *rw_fds)
 {
 	int	exit_status;
 
 	exit_status = 0;
 	if (ft_strcmp(data->command[0], "echo") == 0)
-		exit_status = ft_echo(data->command, read_write_fds);
+		exit_status = ft_echo(data->command, rw_fds);
 	else if (ft_strcmp(data->command[0], "pwd") == 0)
-		exit_status = ft_pwd(read_write_fds);
+		exit_status = ft_pwd(rw_fds);
 	else if (ft_strcmp(data->command[0], "env") == 0)
-		exit_status = ft_env(shell->env, read_write_fds);
+		exit_status = ft_env(shell->env, rw_fds);
 	else if (ft_strcmp(data->command[0], "exit") == 0)
 		exit_status = ft_exit_list(shell, data);
 	else if (ft_strcmp(data->command[0], "cd") == 0)
 		exit_status = ft_cd_list(shell, data);
 	else if (ft_strcmp(data->command[0], "export") == 0)
-		exit_status = ft_export_list(shell, data, read_write_fds);
+		exit_status = ft_export_list(shell, data, rw_fds);
 	else if (ft_strcmp(data->command[0], "unset") == 0)
 		exit_status = ft_unset_list(shell, data);
 	else
@@ -93,23 +93,23 @@ int	do_redir(t_elem *redirections)
 	return (fd);
 }
 
-void	get_redirs(t_elem *redirs, int *read_write_fds)
+void	get_redirs(t_elem *redirs, int *rw_fds)
 {
 	while (redirs != NULL)
 	{
 		if (redirs->type == APPEND_FILE || redirs->type == WRITE_FILE)
 		{
-			if (read_write_fds[1] != STDOUT_FILENO)
-				close(read_write_fds[1]);
-			read_write_fds[1] = do_redir(redirs);
+			if (rw_fds[1] != STDOUT_FILENO)
+				close(rw_fds[1]);
+			rw_fds[1] = do_redir(redirs);
 		}
 		else
 		{
-			if (read_write_fds[0] != STDIN_FILENO)
-				close(read_write_fds[0]);
-			read_write_fds[0] = do_redir(redirs);
+			if (rw_fds[0] != STDIN_FILENO)
+				close(rw_fds[0]);
+			rw_fds[0] = do_redir(redirs);
 		}
-		if (read_write_fds[0] == -1 || read_write_fds[1] == -1)
+		if (rw_fds[0] == -1 || rw_fds[1] == -1)
 			break ;
 		redirs = redirs->next;
 	}
