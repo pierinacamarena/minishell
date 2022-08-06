@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:25 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 22:54:48 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 23:06:30 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_remove_helper(t_env_list **begin, char *new_val)
 		{
 			to_remove = curr->next;
 			curr->next = curr->next->next;
-			free(to_remove);
+			free_unset(to_remove);
 			return ;
 		}
 		curr = curr->next;
@@ -55,7 +55,7 @@ void	ft_remove_var_list(t_env_list **begin, char *value)
 	{
 		to_remove = *begin;
 		*begin = (*begin)->next;
-		free(to_remove);
+		free_unset(to_remove);
 		return ;
 	}
 	ft_remove_helper(begin, new_val);
