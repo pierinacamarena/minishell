@@ -6,13 +6,13 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 17:36:14 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:08:48 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_code;
+int	g_exit_code = 0;
 
 char	*ft_prompt(char const *str)
 {
