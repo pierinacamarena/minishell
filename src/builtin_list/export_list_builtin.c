@@ -6,18 +6,69 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 12:04:39 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 14:58:17 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+t_env_list	*setnode_helper_export(t_env_list *list, t_env *node_env, \
+	char **info, int len)
+{
+	int	i;
+
+	list->node = node_env;
+	list->node->key = ft_strdup(info[0]);
+	if (!info[1])
+		list->node->content = NULL;
+	else
+		list->node->content = ft_strdup(info[1]);
+	if (len > 2)
+	{
+		i = 2;
+		while (info[i])
+		{
+			list->node->content = ft_strjoin(list->node->content, "=");
+			list->node->content = ft_strjoin(list->node->content, info[i]);
+			i++;
+		}
+	}
+	list->next = NULL;
+	return (list);
+}
+
+t_env_list	*ft_set_node_export(char *env)
+{
+	char		**info;
+	char		*temp;
+	t_env_list	*list;
+	t_env		*node_env;
+	int			len;
+
+	if (!env)
+		return (NULL);
+	info = ft_split(env, '=');
+	len = len_cmds_list(info);
+	temp = ft_strjoin(info[0], "=");
+	free(info[0]);
+	info[0] = temp;
+	list = malloc(sizeof(t_env_list));
+	if (!list)
+		return (NULL);
+	node_env = malloc(sizeof(t_env));
+	if (!node_env)
+		return (NULL);
+	setnode_helper_export(list, node_env, info, len);
+	ft_free(info);
+	return (list);
+}
 
 void	add_var_list(t_env_list **begin, char *var)
 {
 	t_env_list	*curr;
 	t_env_list	*new;
 
-	new = ft_set_node(var);
+	new = ft_set_node_export(var);
 	if (*begin == NULL)
 	{
 		*begin = new;
@@ -30,6 +81,28 @@ void	add_var_list(t_env_list **begin, char *var)
 			curr = curr->next;
 		curr->next = new;
 	}
+}
+
+char	**split_export(char *var)
+{
+	int		len;
+	int		i;
+	char	**split;
+
+	split = ft_split(var, '=');
+	len = len_cmds_list(split);
+	split[0] = ft_strjoin(split[0], "=");
+	if (len > 2)
+	{
+		i = 2;
+		while (split[i])
+		{
+			split[1] = ft_strjoin(split[1], "=");
+			split[1] = ft_strjoin(split[1], split[i]);
+			i++;
+		}
+	}
+	return (split);
 }
 
 void	export_check_helper(t_shell *shell, char *var)
@@ -46,8 +119,7 @@ void	export_check_helper(t_shell *shell, char *var)
 	{
 		if (same_value(shell->env, var) == 0)
 		{
-			split = ft_split(var, '=');
-			split[0] = ft_strjoin(split[0], "=");
+			split = split_export(var);
 			find_replace(&shell->env, split[0], split[1]);
 			find_replace(&shell->exp, split[0], split[1]);
 			ft_free(split);
@@ -159,10 +231,9 @@ int	ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds)
 				return (error);
 			else if (error == 2)
 			{
-				if (!data->command[i + 1])
+				if (!data->command[i++ + 1])
 					return (1);
 				error = 1;
-				i++;
 			}
 			export_check_list(shell, data->command[i]);
 			i++;
