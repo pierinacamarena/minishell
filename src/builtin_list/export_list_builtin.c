@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 22:03:00 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 12:04:39 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	ft_export_error(char *arg)
 
 	if (ft_strcmp(arg, "=") == 0)
 	{
-		write_error("export: `=': not a valid identifier");
+		write_error("export: `=': not a valid identifier\n");
 		return (1);
 	}
 	else if (arg[0] == '=')
@@ -146,6 +146,7 @@ int	ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds)
 	int	i;
 	int	error;
 
+	error = 0;
 	if (array_size(data->command) == 1)
 		ft_env(shell->exp, read_write_fds);
 	else
@@ -155,16 +156,17 @@ int	ft_export_list(t_shell *shell, t_pipeline *data, int *read_write_fds)
 		{
 			error = ft_export_error(data->command[i]);
 			if (error == 1)
-				return (1);
+				return (error);
 			else if (error == 2)
 			{
 				if (!data->command[i + 1])
 					return (1);
+				error = 1;
 				i++;
 			}
 			export_check_list(shell, data->command[i]);
 			i++;
 		}
 	}
-	return (0);
+	return (error);
 }
