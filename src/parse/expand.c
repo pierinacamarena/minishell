@@ -6,16 +6,11 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:03:26 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 22:03:23 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 22:04:04 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*	BAD CASES:
-	
-	< $TEST cmd (where $TEST="arg1 arg2") --> ambiguous redirect
-*/
 
 static void	getval(char *key, t_buffer *buf, t_shell *shell)
 {
@@ -37,15 +32,11 @@ static void	getval(char *key, t_buffer *buf, t_shell *shell)
 	}
 }
 
-static void	parexp(t_scanner scanner, t_buffer *buf, int state, t_shell *shell)
+static void	parexp(t_scanner scanner, t_buffer *buf, t_shell *shell)
 {
 	char	*tmp;
 
-	if (state == WORD_STATE && \
-	(*scanner.start == '\0' || *scanner.start == '$'))
-		add_char_to_buffer(buf, '$');
-	else if (state == DOUBLE_QUOTE_STATE && \
-	(*scanner.start == '"' || *scanner.start == '\'' || *scanner.start == '$'))
+	if (!ft_isalnum(*scanner.start))
 		add_char_to_buffer(buf, '$');
 	else
 	{
@@ -78,7 +69,7 @@ char	*expand_parameters(t_token token, t_shell *shell)
 				c = advance(&scanner);
 			while (ft_isalnum(peek(scanner)) && token.length-- > 0)
 				c = advance(&scanner);
-			parexp(scanner, &buffer, state, shell);
+			parexp(scanner, &buffer, shell);
 		}
 		else
 			add_char_to_buffer(&buffer, c);
