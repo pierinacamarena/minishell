@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:15 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 15:08:35 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 16:22:16 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	cd_helper_two(t_pipeline *data, t_shell *shell)
 	char	*new_pwd;
 
 	saved_oldpwd = getcwd(NULL, 0);
-	printf("%s\n", data->command[1]);
 	if (chdir(data->command[1]) == -1)
 	{
 		free(saved_oldpwd);

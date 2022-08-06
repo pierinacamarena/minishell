@@ -6,13 +6,14 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 15:49:38 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/06 16:04:08 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_env_list	*setnode_helper_export(t_env_list *list, t_env *node_env, char *info_one, char *info_two)
+t_env_list	*setnode_helper_export(t_env_list *list, t_env *node_env, \
+	char *info_one, char *info_two)
 {
 	list->node = node_env;
 	list->node->key = ft_strdup(info_one);
@@ -31,7 +32,7 @@ t_env_list	*ft_set_node_export(char *env)
 	t_env_list	*list;
 	t_env		*node_env;
 	int			i;
-	
+
 	i = 0;
 	if (!env)
 		return (NULL);
@@ -78,7 +79,6 @@ void	split_export(t_shell *shell, char *var)
 	int		i;
 
 	i = 0;
-
 	while (var[i] != '=')
 		i++;
 	info_one = ft_substr(var, 0, i + 1);
