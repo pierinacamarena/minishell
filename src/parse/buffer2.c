@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 18:24:43 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/05 18:24:45 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/07 12:38:57 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*collect(t_buffer *buffer)
 {
 	flush(buffer);
-	return (strdup(buffer->collector));
+	return (ft_strdup(buffer->collector));
 }
 
 void	clear_buffer(t_buffer *buffer)

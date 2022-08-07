@@ -6,7 +6,7 @@
 /*   By: rbourdil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 18:21:25 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 20:34:31 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/07 12:36:33 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ collector_size + buffer->pos + 1);
 	if (buffer->collector == NULL)
 		free_exit(-1, NULL, NULL, 0);
 	buffer->collector[collector_size] = '\0';
-	strncat(buffer->collector, buffer->buf, buffer->pos);
+	ft_strncat(buffer->collector, buffer->buf, buffer->pos);
 	buffer->pos = 0;
 	return (0);
 }

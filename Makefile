@@ -6,7 +6,7 @@
 #    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
-#    Updated: 2022/08/06 22:54:04 by pcamaren         ###   ########.fr        #
+#    Updated: 2022/08/07 12:37:12 by rbourdil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ OBJS	=	./src/minishell.o\
 			./src/parse/semantics.o\
 			./src/parse/semantics2.o\
 			./src/parse/string_ops.o\
+			./src/parse/string_ops2.o\
 			./src/parse/utils.o
 
 NAME	=	minishell

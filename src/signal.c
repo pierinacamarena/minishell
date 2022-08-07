@@ -6,7 +6,7 @@
 /*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:54:51 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/05 14:38:26 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/07 12:35:40 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	siginit(int signum, void (*sighandler)(int))
 {
 	struct sigaction	act;
 
-	memset(&act, 0, sizeof(act));
+	ft_memset(&act, 0, sizeof(act));
 	act.sa_handler = sighandler;
 	sigemptyset(&act.sa_mask);
 	sigaction(signum, &act, NULL);
