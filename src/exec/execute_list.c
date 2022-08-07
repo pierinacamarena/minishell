@@ -39,7 +39,7 @@ int	builtin_exec_list(t_pipeline *data, t_shell *shell, int *rw_fds)
 	if (ft_strcmp(data->command[0], "echo") == 0)
 		exit_status = ft_echo(data->command, rw_fds);
 	else if (ft_strcmp(data->command[0], "pwd") == 0)
-		exit_status = ft_pwd(rw_fds);
+		exit_status = ft_pwd(rw_fds, shell);
 	else if (ft_strcmp(data->command[0], "env") == 0)
 		exit_status = ft_env(shell->env, rw_fds);
 	else if (ft_strcmp(data->command[0], "exit") == 0)

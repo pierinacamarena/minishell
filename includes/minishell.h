@@ -173,7 +173,7 @@ int			unset_print(char *cmd);
 
 //int		ft_pwd(void);
 int			len_cmds_list(char **cmds);
-int			ft_pwd(int *read_write_fds);
+int			ft_pwd(int *read_write_fds, t_shell *shell);
 int			ft_env(t_env_list *env, int *read_write_fds);
 int			ft_exit_list(t_shell *shell, t_pipeline *data);
 int			ft_unset_list(t_shell *shell, t_pipeline *data);
