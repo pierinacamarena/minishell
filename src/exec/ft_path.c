@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_path.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcamaren <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 19:00:08 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 20:51:27 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/06 23:33:06 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*ft_path(char *arg, char **env)
 		return (cmd);
 	else if (cmd && !is_dir(cmd))
 		g_exit_code = 126;
+	free(cmd);
 	return (NULL);
 }
 
