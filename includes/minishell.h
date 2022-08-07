@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/06 22:56:17 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/07 12:43:57 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <limits.h>
-# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stddef.h>
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/stat.h>
