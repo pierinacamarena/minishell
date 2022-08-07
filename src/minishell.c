@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 18:52:54 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 22:08:48 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:18:43 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int ac, char **av, char **env)
 		siginit(SIGINT, sighandler);
 		siginit(SIGQUIT, SIG_IGN);
 		str = ft_prompt(PROMPT_NAME);
+		shell.prompt = str;
 		if (str == NULL)
 			exit_on_eof(str, &shell);
 		else if (*str)

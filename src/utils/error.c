@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 20:06:17 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 20:06:20 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:19:19 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	free_struct(t_shell *shell, t_pipeline *cmds, int opt)
 	{
 		ft_free_list(&shell->env);
 		ft_free_list(&shell->exp);
+		free(shell->prompt);
 	}
 	if ((opt & CMD) != 0)
 		free_commands_list(cmds);

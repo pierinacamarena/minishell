@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/07 12:43:57 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:17:50 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ typedef struct s_shell
 	char		**env_exec;
 	t_env_list	*env;
 	t_env_list	*exp;
+	char		*prompt;
 }				t_shell;
 
 /*minishell*/
