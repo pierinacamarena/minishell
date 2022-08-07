@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:32:28 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 21:37:59 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:52:10 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,25 +104,21 @@ char	*ft_getenv(t_env_list *begin, char *key)
 
 int	same_value(t_env_list *list, char *var)
 {
-	char		**var_split;
-	t_env_list	*curr;
+	char		*info_one;
+	char		*info_two;
+	int			i;
 
+	i = 0;
 	if (list == NULL)
 		return (0);
 	if (!var)
 		return (-1);
-	var_split = ft_split(var, '=');
-	curr = list;
-	while (curr != NULL)
-	{
-		if (curr->node->content && var_split[1] && \
-		ft_strcmp(curr->node->content, var_split[1]) == 0)
-		{
-			ft_free(var_split);
-			return (1);
-		}
-		curr = curr->next;
-	}
-	ft_free(var_split);
-	return (0);
+	while (var[i] != '=')
+		i++;
+	info_one = ft_substr(var, 0, i + 1);
+	info_two = ft_substr(var, i + 1, ft_strlen(var));
+	i = same_value_helper(list, info_one, info_two);
+	free(info_one);
+	free(info_two);
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 12:12:55 by rbourdil          #+#    #+#             */
-/*   Updated: 2022/08/07 14:17:50 by rbourdil         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:52:39 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,7 @@ int			key_exists(t_env_list *list, char *var);
 int			same_value(t_env_list *list, char *var);
 char		*ft_getenv(t_env_list *begin, char *key);
 char		*ft_str3join(char const *s1, char const *s2, char const *s3);
+int			same_value_helper(t_env_list *list, char *info_one, char *info_two);
 
 /*echo*/
 //int		ft_echo(char **args);
