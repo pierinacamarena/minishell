@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 23:40:21 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/06 20:33:27 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/07 13:43:45 by rbourdil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	export_check_helper_two(t_shell *shell, char *empty_var)
 {
 	t_env_list	*aux;
 
-	empty_var = ft_strjoin(empty_var, "=''");
 	aux = ft_set_node(empty_var);
 	ft_add_node(&shell->exp, aux);
 	free(empty_var);
@@ -35,10 +34,12 @@ void	export_check_list(t_shell *shell, char *var)
 		if (key_exists(shell->exp, empty_var))
 		{
 			if (key_exists(shell->env, empty_var))
+			{
+				free(empty_var);
 				return ;
+			}
 			else
 			{
-				empty_var = ft_strjoin(var, "=");
 				aux = ft_set_node(empty_var);
 				ft_add_node(&shell->env, aux);
 				free(empty_var);
