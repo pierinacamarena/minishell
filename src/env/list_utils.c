@@ -6,7 +6,7 @@
 /*   By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 21:32:28 by pcamaren          #+#    #+#             */
-/*   Updated: 2022/08/07 14:52:10 by pcamaren         ###   ########.fr       */
+/*   Updated: 2022/08/07 15:01:25 by pcamaren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ int	same_value(t_env_list *list, char *var)
 	info_one = ft_substr(var, 0, i + 1);
 	info_two = ft_substr(var, i + 1, ft_strlen(var));
 	i = same_value_helper(list, info_one, info_two);
-	free(info_one);
-	free(info_two);
+	if (info_one)
+		free(info_one);
+	if (info_two)
+		free(info_two);
 	return (i);
 }
