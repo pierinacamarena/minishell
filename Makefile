@@ -6,7 +6,7 @@
 #    By: pcamaren <pcamaren@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 18:52:14 by .oamaren          #+#    #+#              #
-#    Updated: 2022/08/07 12:37:12 by rbourdil         ###   ########.fr        #
+#    Updated: 2022/08/07 14:53:14 by pcamaren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ OBJS	=	./src/minishell.o\
 			./src/env/export_sort.o\
 			./src/env/sort_utils.o\
 			./src/env/list_utils.o\
+			./src/env/list_utils_utils.o\
 			./src/utils/ft_split.o\
 			./src/utils/ft_utils.o\
 			./src/utils/utils_one.o\
